@@ -2,27 +2,44 @@
 import Base from '../layouts/Base.astro';
 import ProjectGrid from '../components/ProjectGrid.astro';
 import ProjectLogo from '../components/ProjectLogo.astro';
-import { projects, byType, recentUpdates, baseOf } from '../lib/projects';
+import ProjectLogo from '../components/ProjectLogo.astro';
+import { projects, byType, recentUpdates, baseOf, hasAsset } from '../lib/projects';
 
 const apps = byType('app');
 const libs = byType('lib');
 const updates = recentUpdates(8);
 const pkgCount = projects.reduce((n, p) => n + (p.nuget?.length ?? 0), 0);
+const visuals = apps.map((p) => ({
+  p,
+  shot: p.heroShot && hasAsset(`${p.slug}/${p.heroShot}`) ? `/assets/${p.slug}/${p.heroShot.split('/').map(encodeURIComponent).join('/')}` : null,
+}));
 ---
 
 <Base title="码坊 CodeWF · 开源应用与组件库" active="home">
   <div class="wrap">
     <section class="hero">
-      <span class="pill">开源 · 免费 · 跨平台</span>
+      <span class="pill">全部开源 · 全部免费</span>
       <h1>桌面应用与 .NET 组件库<br /><span class="grad">一站式文档中心</span></h1>
-      <p>
-        {apps.length} 款 Avalonia 跨平台桌面应用 + {libs.length} 个 NuGet 组件库（{pkgCount} 个包），全部开源。这里有下载入口、使用文档与更新动态，帮你把每一个项目用好。
-      </p>
+      <p>{apps.length} 款桌面应用 + {libs.length} 个组件库（{pkgCount} 个 NuGet 包），点图即达。</p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="/apps/">浏览应用</a>
         <a class="btn btn-ghost" href="/libs/">浏览组件库</a>
-        <a class="btn btn-ghost" href="https://codewf.com" target="_blank" rel="noopener">访问博客 ↗</a>
       </div>
+
+      <div class="visual-strip">
+        {visuals.map(({ p, shot }) => (
+          <a class="visual-card" class:list={{ 'no-shot': !shot }} href={baseOf(p)} title={p.tagline}>
+            {shot && <img src={shot} alt={`${p.name} 界面预览`} loading="eager" />}
+            {!shot && <ProjectLogo slug={p.slug} name={p.name} />}
+            <span class="vc-brand">
+              {shot && <ProjectLogo slug={p.slug} name={p.name} size="sm" />}
+              {p.name}
+            </span>
+          </a>
+        ))}
+      </div>
+      <div class="visual-caption">▲ 点卡片进入项目 · 动图为真实运行画面</div>
+
       <div class="stats">
         <div class="stat"><b>{projects.length}</b><span>开源项目</span></div>
         <div class="stat"><b>{pkgCount}+</b><span>NuGet 包</span></div>
@@ -34,7 +51,7 @@ const pkgCount = projects.reduce((n, p) => n + (p.nuget?.length ?? 0), 0);
     <section class="section" id="apps">
       <div class="sec-head">
         <h2>应用</h2><span class="en">Applications</span>
-        <p>开箱即用的跨平台桌面软件，均内置自动更新</p>
+        <p>开箱即用 · 内置自动更新</p>
         <a class="more" href="/apps/">全部应用 →</a>
       </div>
       <ProjectGrid type="app" />
@@ -43,7 +60,7 @@ const pkgCount = projects.reduce((n, p) => n + (p.nuget?.length ?? 0), 0);
     <section class="section" id="libs">
       <div class="sec-head">
         <h2>组件库</h2><span class="en">Libraries</span>
-        <p>NuGet 直接安装，目标框架 net8.0 / net10.0 / net11.0，AOT 友好</p>
+        <p>dotnet add 即用 · AOT 友好</p>
         <a class="more" href="/libs/">全部组件 →</a>
       </div>
       <ProjectGrid type="lib" addCard />

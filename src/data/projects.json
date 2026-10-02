@@ -118,7 +118,8 @@
           "title": "搜索即达",
           "desc": "触边或热键唤出，拼音/首字母搜索，回车直接启动。"
         }
-      ]
+      ],
+      "heroShot": "gifs/search.gif"
     },
     {
       "slug": "clearc",
@@ -192,7 +193,8 @@
           "title": "确认清理",
           "desc": "中风险项手动确认后执行，失败原因逐条可查。"
         }
-      ]
+      ],
+      "heroShot": null
     },
     {
       "slug": "zhijian",
@@ -290,7 +292,8 @@
           "title": "三视图编辑",
           "desc": "大纲、Markdown、脑图随意切换，导出 OPML/XMind 分享。"
         }
-      ]
+      ],
+      "heroShot": "media/zhijian-main-window.gif"
     },
     {
       "slug": "vex",
@@ -391,7 +394,8 @@
           "title": "导出分享",
           "desc": "导出 PDF/长图/Word，或一键复制公众号、知乎、掘金富文本。"
         }
-      ]
+      ],
+      "heroShot": "typora/5_typora_编辑.png"
     },
     {
       "slug": "lang-avalonia",

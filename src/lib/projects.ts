@@ -23,6 +23,7 @@ export interface Project {
   features: { icon: string; title: string; desc: string }[];
   quickStart?: { title: string; desc: string }[];
   screenshots?: { src: string; caption: string }[];
+  heroShot?: string;
   archImage?: string;
   demoImage?: string;
   samples?: { title: string; lang: string; code: string }[];
