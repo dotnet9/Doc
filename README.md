@@ -98,14 +98,14 @@ jobs:
 
 ## 上线前配置清单（TODO）
 
-| 项 | 位置 | 说明 |
+| 项 | 位置 | 状态 |
 |---|---|---|
-| DNS | 域名解析 | 添加 `doc` A/CNAME 记录指向服务器 |
-| Nginx | 服务器 | `doc.codewf.com` server 块，root 指向部署目录，证书（acme） |
-| 部署 Secrets | Doc 仓库 Settings → Secrets | `DEPLOY_SSH_KEY` / `DEPLOY_HOST` / `DEPLOY_USER` / `DEPLOY_PATH` |
-| giscus | `src/config/site.ts` | 到 giscus.app 用 dotnet9/Doc 生成 repoId / categoryId 并填入，`enabled: true` |
-| 访问统计 | `src/config/site.ts` | 填 51.La 站点 key |
-| 实时同步 | 各源仓库 | 可选：加「通知文档站同步」workflow + `DOC_SITE_PAT` |
+| DNS | 域名解析 | ✅ `doc.codewf.com` 已解析到 185.245.41.161 |
+| Nginx + 证书 | 服务器 | ⬜ 按 [docs/deploy.md](docs/deploy.md) 第 4-5 步执行 |
+| 部署 Secrets | Doc 仓库 Settings → Secrets | ⬜ 按 [docs/deploy.md](docs/deploy.md) 第 2-3 步生成密钥并配置 |
+| giscus | `src/config/site.ts` | ✅ ID 已填并启用；⬜ 仅剩安装 giscus App（github.com/apps/giscus 选 dotnet9/Doc） |
+| 访问统计 | `src/config/site.ts` | ⬜ 51.La 添加站点后填 `analytics.key` |
+| 实时同步 | 各源仓库 | ✅ 11 个源仓库已加通知 workflow；⬜ 创建 PAT 配置各仓 `DOC_SITE_PAT`（见 deploy.md 第 7 步） |
 
 ## 实施状态
 
@@ -114,10 +114,10 @@ jobs:
 | P0 原型评审（design/ 五页） | ✅ 已确认 |
 | P1 站点骨架（设计令牌、五类页面模板、亮暗主题） | ✅ |
 | P2 清单 + 同步机制（11 项目全量接入） | ✅ |
-| P3 功能（Pagefind / giscus 位 / 下载页 / 日志页 / 首页动态 / 实时徽章） | ✅（giscus、统计待填 key） |
-| P4 部署（workflow 已就绪，服务器配置待做） | ⏳ |
+| P3 功能（Pagefind / giscus / 下载页 / 日志页 / 首页动态 / 实时徽章） | ✅（统计待填 51.La key） |
+| P4 部署（workflow + 部署手册就绪，服务器侧待执行） | ⏳ 按 docs/deploy.md 执行 |
 | P5 SEO（sitemap / RSS / meta） | ✅ |
-| P6 主站改造 | ⬜ 独立执行 |
+| P6 主站改造 | ✅ 主站 doc 代码已移除、菜单外链化（develop 分支）；资源站 site/doc/ 已删除 |
 
 ## 与主站/资源站的改造（独立阶段执行）
 
