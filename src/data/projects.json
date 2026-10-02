@@ -78,20 +78,20 @@
       ],
       "screenshots": [
         {
-          "src": "gifs/dock.gif",
-          "caption": "Dock 停靠与唤出"
+          "src": "gifs/settings.gif",
+          "caption": "设置与便携模式"
         },
         {
           "src": "gifs/search.gif",
           "caption": "拼音搜索即达"
         },
         {
-          "src": "gifs/edit.gif",
-          "caption": "编辑模式：拖动排序"
+          "src": "gifs/dock.gif",
+          "caption": "Dock 停靠与唤出"
         },
         {
-          "src": "gifs/settings.gif",
-          "caption": "设置与便携模式"
+          "src": "gifs/edit.gif",
+          "caption": "编辑模式：拖动排序"
         }
       ],
       "docs": {
@@ -119,7 +119,7 @@
           "desc": "触边或热键唤出，拼音/首字母搜索，回车直接启动。"
         }
       ],
-      "heroShot": "gifs/search.gif"
+      "heroShot": "gifs/settings.gif"
     },
     {
       "slug": "clearc",
@@ -293,7 +293,7 @@
           "desc": "大纲、Markdown、脑图随意切换，导出 OPML/XMind 分享。"
         }
       ],
-      "heroShot": "media/zhijian-main-window.gif"
+      "heroShot": "media/zhijian-mind-drag.gif"
     },
     {
       "slug": "vex",
@@ -395,7 +395,7 @@
           "desc": "导出 PDF/长图/Word，或一键复制公众号、知乎、掘金富文本。"
         }
       ],
-      "heroShot": "typora/5_typora_编辑.png"
+      "heroShot": "typora/2_typora_文件列表.png"
     },
     {
       "slug": "lang-avalonia",

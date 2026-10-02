@@ -237,7 +237,7 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:40px 0 34px;back
 /* ── 视觉优先改版（与实现同步） ───────── */
 .hero p { max-width: 560px; margin: 0 auto 26px; color: var(--text-3); font-size: 14.5px; }
 .visual-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 44px 0 8px; }
-.visual-card { position: relative; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--panel); aspect-ratio: 16/10.5; box-shadow: var(--shadow); display: block; }
+.visual-card { position: relative; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--panel); aspect-ratio: 16/9; box-shadow: var(--shadow); display: block; }
 .visual-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
 .visual-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--brand-line); }
 .visual-card .vc-brand { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 8px; padding: 20px 12px 9px; font-size: 12.5px; font-weight: 700; color: #fff; background: linear-gradient(transparent, rgba(20,14,46,.72)); z-index: 1; }
@@ -246,7 +246,7 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:40px 0 34px;back
 .visual-card.no-shot .plogo { width: 72px; height: 72px; border-radius: 16px; font-size: 26px; opacity: .92; }
 .visual-caption { text-align: center; color: var(--text-3); font-size: 12px; margin-top: 12px; }
 .app-grid .card.hoverable { padding: 0; overflow: hidden; display: block; }
-.app-shot { position: relative; display: block; aspect-ratio: 16/8.2; overflow: hidden; background: linear-gradient(135deg, var(--brand-soft), var(--glass)); }
+.app-shot { position: relative; display: block; aspect-ratio: 16/9; overflow: hidden; background: linear-gradient(135deg, var(--brand-soft), var(--glass)); }
 .app-shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 320ms cubic-bezier(.22,1,.36,1); }
 .app-card:hover .app-shot img { transform: scale(1.04); }
 .app-shot .app-shot-fallback { position: absolute; inset: 0; display: grid; place-items: center; }
@@ -295,7 +295,7 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:40px 0 34px;back
     <section class="hero">
       <span class="pill">开源 · 免费 · 跨平台</span>
       <h1>桌面应用与 .NET 组件库<br><span class="grad">一站式文档中心</span></h1>
-      <p>4 款桌面应用 + 7 个组件库（20+ 个 NuGet 包），点图即达。</p>
+      <p>4 款桌面应用 + 7 个组件库（24+ 个 NuGet 包），点图即达。</p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="#apps">浏览应用</a>
         <a class="btn btn-ghost" href="#libs">浏览组件库</a>
@@ -303,7 +303,7 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:40px 0 34px;back
 
       <div class="visual-strip">
         <a class="visual-card" href="app.html">
-          <img src="../public/assets/quickapp/gifs/search.gif" alt="QuickApp 搜索">
+          <img src="../public/assets/quickapp/gifs/settings.gif" alt="QuickApp 搜索">
           <span class="vc-brand"><span class="plogo" data-l="Q"><img src="../../QuickApp/logo.svg" alt="" onerror="this.remove()"></span>QuickApp</span>
         </a>
         <a class="visual-card no-shot" href="#">
@@ -311,11 +311,11 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:40px 0 34px;back
           <span class="vc-brand">ClearC</span>
         </a>
         <a class="visual-card" href="#">
-          <img src="../public/assets/zhijian/media/zhijian-main-window.gif" alt="枝见脑图">
+          <img src="../public/assets/zhijian/media/zhijian-mind-drag.gif" alt="枝见脑图">
           <span class="vc-brand"><span class="plogo" data-l="枝"><img src="../../Zhijian/logo.svg" alt="" onerror="this.remove()"></span>枝见</span>
         </a>
         <a class="visual-card" href="app.html">
-          <img src="../public/assets/vex/typora/5_typora_编辑.png" alt="维刻编辑器">
+          <img src="../public/assets/vex/typora/2_typora_文件列表.png" alt="维刻编辑器">
           <span class="vc-brand"><span class="plogo" data-l="V"><img src="../../Vex/logo.svg" alt="" onerror="this.remove()"></span>维刻</span>
         </a>
       </div>
@@ -337,7 +337,7 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:40px 0 34px;back
       <div class="app-grid">
 
         <a class="card hoverable app-card" href="#">
-          <span class="app-shot"><img src="../public/assets/quickapp/gifs/search.gif" alt="QuickApp"></span>
+          <span class="app-shot"><img src="../public/assets/quickapp/gifs/settings.gif" alt="QuickApp"></span>
           <span class="app-card-body">
             <span class="card-top">
               <span class="plogo sm" data-l="Q"><img src="../../QuickApp/logo.svg" alt="" onerror="this.remove()"></span>
@@ -365,7 +365,7 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:40px 0 34px;back
         </a>
 
         <a class="card hoverable app-card" href="#">
-          <span class="app-shot"><img src="../public/assets/zhijian/media/zhijian-main-window.gif" alt="枝见"></span>
+          <span class="app-shot"><img src="../public/assets/zhijian/media/zhijian-mind-drag.gif" alt="枝见"></span>
           <span class="app-card-body">
             <span class="card-top">
               <span class="plogo sm" data-l="枝"><img src="../../Zhijian/logo.svg" alt="" onerror="this.remove()"></span>
@@ -379,7 +379,7 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:40px 0 34px;back
         </a>
 
         <a class="card hoverable app-card" href="app.html">
-          <span class="app-shot"><img src="../public/assets/vex/typora/5_typora_编辑.png" alt="维刻"></span>
+          <span class="app-shot"><img src="../public/assets/vex/typora/2_typora_文件列表.png" alt="维刻"></span>
           <span class="app-card-body">
             <span class="card-top">
               <span class="plogo sm" data-l="V"><img src="../../Vex/logo.svg" alt="" onerror="this.remove()"></span>

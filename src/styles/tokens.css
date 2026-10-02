@@ -6,6 +6,7 @@
   --brand-line: rgba(81, 43, 212, 0.35);
   --brand-glow: rgba(81, 43, 212, 0.24);
   --blue: #0078d4;
+  --blue-soft: rgba(0, 120, 212, 0.12);
   --violet: #8b5cf6;
   --teal: #038387;
   --amber: #b25f00;
@@ -29,6 +30,9 @@
 }
 
 [data-theme="dark"] {
+  --blue: #5cb0ef;
+  --blue-soft: rgba(92, 176, 239, 0.16);
+  --teal: #3fc1c7;
   --bg: #161322;
   --bg-2: #1a1730;
   --panel: #201c36;
