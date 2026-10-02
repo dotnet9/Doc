@@ -16,3 +16,7 @@ src/generated/
 *.log
 .DS_Store
 Thumbs.db
+
+# 内容同步产物（构建时由 sync-content.mjs 生成）
+public/assets/
+public/logos/

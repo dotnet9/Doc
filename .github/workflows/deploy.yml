@@ -37,6 +37,8 @@ jobs:
 
       - name: 构建（实时指标 + Astro + Pagefind 索引）
         run: node scripts/build.mjs --no-sync
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 部署到自有服务器（rsync）
         if: github.event_name != 'pull_request'
