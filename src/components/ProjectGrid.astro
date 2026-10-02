@@ -1,6 +1,6 @@
 ---
 import ProjectLogo from '../components/ProjectLogo.astro';
-import { byType, starText, loadMetrics, categories, type Project } from '../lib/projects';
+import { byType, starText, loadMetrics, categories, platformLabels, type Project } from '../lib/projects';
 
 interface Props {
   type: 'app' | 'lib';
@@ -30,7 +30,7 @@ const totalPkgs = list.reduce((n, p) => n + (p.nuget?.length ?? 0), 0);
           <div class="meta-row">{p.tags.map((t) => <span class="tag">{t}</span>)}</div>
           <div class="card-foot">
             {p.platforms.map((pl) => (
-              <span class="pill blue">{pl}</span>
+              <span class="pill blue">{platformLabels[pl]?.label ?? pl}</span>
             ))}
             <span class="spacer" />
             <a class="btn btn-ghost btn-sm" href="/download/">
@@ -43,8 +43,7 @@ const totalPkgs = list.reduce((n, p) => n + (p.nuget?.length ?? 0), 0);
         </div>
       ))}
     </div>
-  ) : (
-    <>
+  ) : (    <>
       <div class="chip-row" data-chips>
         <button class="chip on" data-cat="all">
           全部

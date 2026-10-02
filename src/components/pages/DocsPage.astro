@@ -28,6 +28,11 @@ const prev = idx > 0 ? pages[idx - 1] : null;
 const next = idx >= 0 && idx < pages.length - 1 ? pages[idx + 1] : null;
 const repoEdit = `${p.repo}/blob/HEAD/${page.sourcePath.split('/').map(encodeURIComponent).join('/')}`;
 const updatedAt = sync?.updatedAt ?? docs.updatedAt;
+// 预计阅读时间：CJK 字符按字数、拉丁词按词数，每分钟约 400 单位
+const plain = page.html.replace(/<[^>]+>/g, ' ');
+const cjk = (plain.match(/[一-鿿]/g) ?? []).length;
+const latin = (plain.match(/[A-Za-z0-9_]+/g) ?? []).length;
+const readingMinutes = Math.max(1, Math.ceil((cjk + latin * 2) / 400));
 
 // 侧边栏分组：概述(index) → 根级页面 → 子目录页面
 const groups: { title: string; items: DocPage[] }[] = [];
@@ -106,6 +111,7 @@ const subLabel = (d: DocPage) => {
       </div>
       <h1 class="doc-title">{page.title}</h1>
       <div class="doc-meta">
+        <span>⏱ 预计阅读 {readingMinutes} 分钟</span>
         {isApp && p.platforms.length > 0 && <span>平台：{p.platforms.join(' / ')}</span>}
         {!isApp && p.frameworks.length > 0 && <span>适用于 {p.frameworks.join(' / ')}</span>}
         {updatedAt && <span>同步于 {updatedAt}</span>}

@@ -21,6 +21,7 @@ export interface Project {
   nuget?: string[];
   primaryPackage?: string;
   features: { icon: string; title: string; desc: string }[];
+  quickStart?: { title: string; desc: string }[];
   screenshots?: { src: string; caption: string }[];
   archImage?: string;
   demoImage?: string;

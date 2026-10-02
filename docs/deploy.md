@@ -52,6 +52,8 @@ server {
     location / {
         try_files $uri $uri/ $uri/index.html =404;
     }
+
+    error_page 404 /404.html;
 }
 ```
 

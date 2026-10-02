@@ -177,6 +177,32 @@ const projBar = [
       </div>
     </section>
 
+    <!-- 应用：快速开始 -->
+    {
+      isApp && p.quickStart && (
+        <section class="section">
+          <div class="sec-head">
+            <h2>三步上手</h2>
+            <span class="en">Quick Start</span>
+            {pages.length > 0 && (
+              <a class="more" href={docHref}>
+                完整文档 →
+              </a>
+            )}
+          </div>
+          <div class="steps">
+            {p.quickStart.map((st, i) => (
+              <div class="card step">
+                <div class="num">{i + 1}</div>
+                <b>{st.title}</b>
+                <p>{st.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
     <!-- 库：安装 + 代码示例 -->
     {
       !isApp && p.nuget && p.nuget.length > 0 && (

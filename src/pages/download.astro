@@ -63,6 +63,8 @@ const grouped = Object.entries(categories).map(([key, c]) => ({
                   <span>·</span>
                   <a href={`/${p.type}s/${p.slug}/changelog/`} style="color:var(--brand);font-weight:600">更新日志</a>
                   <span>·</span>
+                  <a href={p.repo + '/releases'} target="_blank" rel="noopener" style="color:var(--brand);font-weight:600">历史版本</a>
+                  <span>·</span>
                   <a href={`/${p.type}s/${p.slug}/`} style="color:var(--brand);font-weight:600">项目详情</a>
                 </div>
               </div>

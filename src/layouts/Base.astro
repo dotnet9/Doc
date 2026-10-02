@@ -44,6 +44,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="alternate" type="application/rss+xml" title="码坊开源更新动态" href="/rss.xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="码坊 CodeWF" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(brand ? brand.logo : '/logo.svg', Astro.site)} />
     <script is:inline>
       // 主题初始化：优先用户选择，其次跟随系统（阻塞式防闪烁）
       (function () {
@@ -88,6 +94,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <SearchModal />
 
     <script>
+      // 汉堡按钮仅在文档页（存在侧栏）时可用
+      if (!document.getElementById('docSidebar')) {
+        document.getElementById('menuBtn')?.style.setProperty('display', 'none');
+      }
       const btn = document.getElementById('themeBtn') as HTMLButtonElement | null;
       const setDark = (dark: boolean) => {
         if (dark) document.documentElement.dataset.theme = 'dark';
