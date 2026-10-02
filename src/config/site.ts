@@ -7,13 +7,13 @@ export const SITE = {
   /** 主站与 GitHub */
   blog: 'https://codewf.com',
   githubOrg: 'https://github.com/dotnet9',
-  /** giscus 评论：在 https://giscus.app 生成后填入；enabled=false 时显示占位框 */
+  /** giscus 评论：仓库需安装 giscus App（https://github.com/apps/giscus，选择 dotnet9/Doc）后生效 */
   giscus: {
-    enabled: false,
+    enabled: true,
     repo: 'dotnet9/Doc',
-    repoId: '', // TODO: giscus.app 生成
+    repoId: 'R_kgDOU5A3FA',
     category: 'Announcements',
-    categoryId: '', // TODO: giscus.app 生成
+    categoryId: 'DIC_kwDOU5A3FM4DG49q',
     mapping: 'pathname',
     reactionsEnabled: '1',
   },
