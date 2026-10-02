@@ -1,0 +1,20 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectGrid from '../../components/ProjectGrid.astro';
+---
+
+<Base
+  title="NuGet 组件库 - 码坊 CodeWF"
+  description="码坊出品的 .NET 开源组件库：i18n、Markdown 渲染、事件总线、网络序列化、日志、工具库，net8/10/11 多目标，AOT 友好。"
+  active="libs"
+>
+  <div class="wrap">
+    <section class="hero" style="padding: 54px 0 10px;">
+      <h1 style="font-size: 36px;">组件库</h1>
+      <p class="lead">NuGet 直接安装，目标框架 net8.0 / net10.0 / net11.0，NativeAOT 友好。</p>
+    </section>
+    <section class="section" style="padding-top: 26px;">
+      <ProjectGrid type="lib" addCard />
+    </section>
+  </div>
+</Base>

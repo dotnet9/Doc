@@ -1,0 +1,105 @@
+---
+import '../styles/global.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SearchModal from '../components/SearchModal.astro';
+import { SITE } from '../config/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** 项目品牌（项目相关页面传入后，页头品牌区切换为该项目） */
+  brand?: { name: string; sub?: string; logo: string; href: string; mono?: boolean } | null;
+  crumb?: { label: string; href: string }[];
+  active?: '' | 'home' | 'apps' | 'libs' | 'download';
+  projBar?: { label: string; href: string; on?: boolean }[] | null;
+  ghLink?: string | null;
+  /** 页脚使用简版（项目内页） */
+  simpleFooter?: boolean;
+}
+
+const {
+  title,
+  description = '码坊 CodeWF 出品的开源桌面应用与 .NET 组件库：下载、文档与更新动态。',
+  brand = null,
+  crumb = [],
+  active = '',
+  projBar = null,
+  ghLink = null,
+  simpleFooter = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title="码坊开源更新动态" href="/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="generator" content={Astro.generator} />
+    <script is:inline>
+      // 主题初始化：优先用户选择，其次跟随系统（阻塞式防闪烁）
+      (function () {
+        try {
+          var t = localStorage.getItem('doc-theme');
+          var dark = t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+          if (dark) document.documentElement.dataset.theme = 'dark';
+        } catch (e) {}
+      })();
+    </script>
+    {SITE.analytics.key && SITE.analytics.provider === '51la' && (
+      <script is:inline defer src="https://sdk.51.la/js-sdk-pro.min.js" data-id={SITE.analytics.key}></script>
+    )}
+  </head>
+  <body>
+    <SiteHeader {brand} {crumb} {active} />
+    {
+      projBar && (
+        <div class="proj-bar">
+          <div class="proj-bar-inner">
+            {projBar.map((item) => (
+              <a href={item.href} class:list={[{ on: item.on }]}>
+                {item.label}
+              </a>
+            ))}
+            {ghLink && (
+              <a class="gh" href={ghLink} target="_blank" rel="noopener">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+                </svg>
+                GitHub · 源码与 Issue ↗
+              </a>
+            )}
+          </div>
+        </div>
+      )
+    }
+    <main>
+      <slot />
+    </main>
+    <SiteFooter simple={simpleFooter} />
+    <SearchModal />
+
+    <script>
+      const btn = document.getElementById('themeBtn') as HTMLButtonElement | null;
+      const setDark = (dark: boolean) => {
+        if (dark) document.documentElement.dataset.theme = 'dark';
+        else delete document.documentElement.dataset.theme;
+        try {
+          localStorage.setItem('doc-theme', dark ? 'dark' : 'light');
+        } catch {}
+        if (btn) btn.textContent = dark ? '☀' : '☾';
+        window.dispatchEvent(new CustomEvent('theme-change', { detail: { dark } }));
+      };
+      btn?.addEventListener('click', () => setDark(document.documentElement.dataset.theme !== 'dark'));
+      if (btn) btn.textContent = document.documentElement.dataset.theme === 'dark' ? '☀' : '☾';
+    </script>
+  </body>
+</html>

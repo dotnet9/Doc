@@ -1,0 +1,86 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectLogo from '../ProjectLogo.astro';
+import Giscus from '../Giscus.astro';
+import { baseOf, loadChangelog, loadMetrics, type Project } from '../../lib/projects';
+
+interface Props {
+  p: Project;
+}
+const { p } = Astro.props;
+const isApp = p.type === 'app';
+const section = isApp ? 'apps' : 'libs';
+const base = baseOf(p);
+const cl = loadChangelog(p.slug);
+const metrics = loadMetrics();
+const releaseUrl = metrics.releases[p.slug]?.url ?? `${p.repo}/releases`;
+
+const projBar = [
+  { label: '概览', href: base },
+  { label: '更新日志', href: `${base}changelog/`, on: true },
+  ...(isApp ? [{ label: '下载', href: '/download/' }] : []),
+];
+---
+
+<Base
+  title={`${p.name} 更新日志 - 码坊开源`}
+  description={`${p.name} 的版本更新记录。`}
+  brand={{ name: p.name, logo: p.slug, href: base, mono: !isApp }}
+  crumb={[
+    { label: '码坊', href: '/' },
+    { label: isApp ? '应用' : '组件库', href: `/${section}/` },
+  ]}
+  active={isApp ? 'apps' : 'libs'}
+  {projBar}
+  ghLink={p.repo}
+  simpleFooter
+>
+  <div class="wrap">
+    <section class="proj-hero" style="padding: 48px 0 26px;">
+      <ProjectLogo slug={p.slug} name={p.name} size="lg" />
+      <div class="info">
+        <h1 style="font-size: 30px;">更新日志</h1>
+        <div class="slogan">{p.name} · {p.tagline}</div>
+        <p class="desc" style="margin-bottom: 0;">
+          {
+            cl.source ? (
+              <>
+                来源仓库文件 <code style="font-family:var(--mono);font-size:12px">{cl.source}</code>
+                {cl.updatedAt && <> · 同步于 {cl.updatedAt}</>}
+              </>
+            ) : (
+              '该项目尚未在仓库内维护结构化更新日志。'
+            )
+          }
+        </p>
+      </div>
+    </section>
+
+    {
+      cl.entries.length > 0 ? (
+        cl.entries.map((e) => (
+          <section class="section" style="padding-top: 4px;">
+            <div class="card">
+              <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px;">
+                <span class="pill">{e.version || e.title}</span>
+                {e.date && <time style="color:var(--text-3);font-size:12px">{e.date}</time>}
+                {e.version && e.title !== e.version && (
+                  <b style="font-size:14px">{e.title}</b>
+                )}
+              </div>
+              <div class="doc-body" set:html={e.html} />
+            </div>
+          </section>
+        ))
+      ) : (
+        <div class="note-card">
+          <b>提示：</b>可前往 <a href={releaseUrl} target="_blank" rel="noopener" style="color:var(--brand)">GitHub Releases</a> 查看每个版本的完整变更。
+        </div>
+      )
+    }
+
+    <section class="section">
+      <Giscus />
+    </section>
+  </div>
+</Base>

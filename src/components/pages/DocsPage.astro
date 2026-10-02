@@ -1,0 +1,198 @@
+---
+import Base from '../../layouts/Base.astro';
+import Giscus from '../Giscus.astro';
+import {
+  baseOf,
+  docUrl,
+  loadDocs,
+  loadSyncInfo,
+  orderedDocs,
+  repoName,
+  type DocPage,
+  type Project,
+} from '../../lib/projects';
+
+interface Props {
+  p: Project;
+  page: DocPage;
+}
+const { p, page } = Astro.props;
+const isApp = p.type === 'app';
+const section = isApp ? 'apps' : 'libs';
+const base = baseOf(p);
+const docs = loadDocs(p.slug);
+const pages = orderedDocs(docs);
+const sync = loadSyncInfo().projects[p.slug];
+const idx = pages.findIndex((d) => d.path === page.path);
+const prev = idx > 0 ? pages[idx - 1] : null;
+const next = idx >= 0 && idx < pages.length - 1 ? pages[idx + 1] : null;
+const repoEdit = `${p.repo}/blob/HEAD/${page.sourcePath.split('/').map(encodeURIComponent).join('/')}`;
+const updatedAt = sync?.updatedAt ?? docs.updatedAt;
+
+// 侧边栏分组：概述(index) → 根级页面 → 子目录页面
+const groups: { title: string; items: DocPage[] }[] = [];
+for (const d of pages) {
+  if (d.path === '') continue;
+  const dir = d.path.includes('/') ? d.path.split('/')[0] + '/' : '';
+  let g = groups.find((x) => x.title === dir);
+  if (!g) {
+    g = { title: dir, items: [] };
+    groups.push(g);
+  }
+  g.items.push(d);
+}
+const rootGroup = groups.find((g) => g.title === '');
+const subGroups = groups.filter((g) => g.title !== '');
+const subLabel = (d: DocPage) => {
+  const rest = d.path.split('/').slice(1).join('/');
+  return rest || d.title;
+};
+---
+
+<Base
+  title={`${page.title} · ${p.name} 文档 - 码坊开源`}
+  description={page.excerpt || `${p.name} 文档：${page.title}`}
+  brand={{ name: p.name, sub: '文档', logo: p.slug, href: base, mono: !isApp }}
+  crumb={[
+    { label: '码坊', href: '/' },
+    { label: isApp ? '应用' : '组件库', href: `/${section}/` },
+  ]}
+  active={isApp ? 'apps' : 'libs'}
+  ghLink={p.repo}
+  simpleFooter
+>
+  <div class="layout">
+    <aside class="sidebar" id="docSidebar">
+      <a class="side-back" href={base}>← 返回 {p.name} 概览</a>
+      {
+        pages.some((d) => d.path === '') && (
+          <div class="side-group">
+            <b>概述</b>
+            <a href={docUrl(p, '')} class:list={[{ on: page.path === '' }]}>
+              {pages.find((d) => d.path === '')!.title}
+            </a>
+          </div>
+        )
+      }
+      {
+        rootGroup && (
+          <div class="side-group">
+            <b>文档</b>
+            {rootGroup.items.map((d) => (
+              <a href={docUrl(p, d.path)} class:list={[{ on: page.path === d.path }]} title={d.title}>
+                {d.title}
+              </a>
+            ))}
+          </div>
+        )
+      }
+      {
+        subGroups.map((g) => (
+          <div class="side-group">
+            <b>{g.title.replace('/', '')}</b>
+            {g.items.map((d) => (
+              <a href={docUrl(p, d.path)} class:list={[{ on: page.path === d.path }]} title={d.title}>
+                {subLabel(d)}
+              </a>
+            ))}
+          </div>
+        ))
+      }
+    </aside>
+
+    <article class="content">
+      <div class="doc-crumb">
+        <a href={base}>{p.name}</a> / 文档 / <span style="color:var(--text)">{page.title}</span>
+      </div>
+      <h1 class="doc-title">{page.title}</h1>
+      <div class="doc-meta">
+        {isApp && p.platforms.length > 0 && <span>平台：{p.platforms.join(' / ')}</span>}
+        {!isApp && p.frameworks.length > 0 && <span>适用于 {p.frameworks.join(' / ')}</span>}
+        {updatedAt && <span>同步于 {updatedAt}</span>}
+        <span>
+          来源：
+          <a href={`${p.repo}/blob/HEAD/${page.sourcePath.split('/').map(encodeURIComponent).join('/')}`} target="_blank" rel="noopener">
+            {repoName(p)} · {page.sourcePath}
+          </a>
+        </span>
+        <span>
+          <a href={repoEdit} target="_blank" rel="noopener">✎ 在 GitHub 编辑此页</a>
+        </span>
+      </div>
+      <div class="doc-body" set:html={page.html} />
+
+      <div class="pager">
+        {
+          prev ? (
+            <a href={docUrl(p, prev.path)}>← 上一篇<b>{prev.title}</b></a>
+          ) : (
+            <span />
+          )
+        }
+        {
+          next ? (
+            <a class="next" href={docUrl(p, next.path)}>下一篇<b>{next.title}</b>→</a>
+          ) : (
+            <span />
+          )
+        }
+      </div>
+
+      <Giscus />
+    </article>
+
+    {
+      page.toc.length > 0 && (
+        <aside class="toc" id="docToc">
+          <b>本页目录</b>
+          {page.toc.map((t) => (
+            <a href={`#${t.id}`} class:list={[{ l2: t.level === 3 }]} data-toc-link={t.id} title={t.text}>
+              {t.text}
+            </a>
+          ))}
+        </aside>
+      )
+    }
+  </div>
+</Base>
+
+<script>
+  // 移动端侧边栏
+  document.getElementById('menuBtn')?.addEventListener('click', () => {
+    document.getElementById('docSidebar')?.classList.toggle('open');
+  });
+  // TOC 点击高亮 + 平滑滚动
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]'));
+  links.forEach((a) =>
+    a.addEventListener('click', () => {
+      links.forEach((x) => x.classList.remove('on'));
+      a.classList.add('on');
+    }),
+  );
+  // 滚动高亮（取视口上方最近的标题）
+  const headings = links
+    .map((a) => document.getElementById(a.dataset.tocLink!))
+    .filter((el): el is HTMLElement => !!el);
+  if (headings.length) {
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      let current: Element | null = null;
+      for (const h of headings) {
+        if (h.getBoundingClientRect().top <= 100) current = h;
+      }
+      links.forEach((a) => a.classList.toggle('on', a.dataset.tocLink === current?.id));
+    };
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      },
+      { passive: true },
+    );
+    update();
+  }
+</script>

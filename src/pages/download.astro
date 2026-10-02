@@ -1,0 +1,142 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectLogo from '../components/ProjectLogo.astro';
+import { byType, loadMetrics, categories, countText, platformLabels } from '../lib/projects';
+
+const apps = byType('app');
+const libs = byType('lib');
+const metrics = loadMetrics();
+const grouped = Object.entries(categories).map(([key, c]) => ({
+  label: c.label,
+  items: libs.filter((p) => p.category === key),
+}));
+---
+
+<Base
+  title="下载中心 - 码坊 CodeWF"
+  description="码坊开源应用下载中心：QuickApp、ClearC、枝见、维刻 全平台安装包与 .NET 组件库 NuGet 安装。"
+  active="download"
+>
+  <div class="wrap">
+    <section class="hero" style="padding: 56px 0 8px;">
+      <h1>下载中心</h1>
+      <p class="lead">所有应用均开源免费、内置自动更新；组件库通过 NuGet 安装。</p>
+      <div class="note" style="margin-top:14px;color:var(--text-3);font-size:12.5px;">
+        ⬇ 下载按钮直达 GitHub Releases 最新版 · 版本号与发布时间实时拉取
+      </div>
+    </section>
+
+    <section class="section" id="apps-download">
+      <div class="sec-head">
+        <h2>桌面应用</h2><span class="en">Applications</span>
+        <p>版本号与文件清单来自各仓库 GitHub Releases</p>
+      </div>
+      <div class="app-grid">
+        {
+          apps.map((p) => {
+            const rel = metrics.releases[p.slug];
+            const url = rel?.url ?? `${p.repo}/releases`;
+            return (
+              <div class="card hoverable" style="display:flex;flex-direction:column;gap:14px;">
+                <div class="card-top">
+                  <ProjectLogo slug={p.slug} name={p.name} size="lg" />
+                  <div>
+                    <div class="nm">
+                      {p.name} {rel?.version && <span class="pill muted">v{rel.version}</span>}
+                    </div>
+                    <div class="ds">{p.tagline}</div>
+                  </div>
+                  <div class="upd" style="margin-left:auto;text-align:right;color:var(--text-3);font-size:11.5px;white-space:nowrap;">
+                    发布于<br /><b style="color:var(--text)">{rel?.date ?? '—'}</b>
+                  </div>
+                </div>
+                <div class="btn-row" style="display:flex;gap:9px;flex-wrap:wrap;">
+                  <a class="btn btn-primary btn-sm" href={url} target="_blank" rel="noopener">
+                    下载最新版
+                  </a>
+                  {p.platforms.map((pl) => (
+                    <span class="pill blue">{platformLabels[pl]?.label ?? pl}</span>
+                  ))}
+                </div>
+                <div class="dl-foot" style="display:flex;gap:12px;align-items:center;color:var(--text-3);font-size:12px;flex-wrap:wrap;">
+                  <span style="color:var(--teal)">⟳ 支持自动更新</span>
+                  <span>·</span>
+                  <a href={`/${p.type}s/${p.slug}/changelog/`} style="color:var(--brand);font-weight:600">更新日志</a>
+                  <span>·</span>
+                  <a href={`/${p.type}s/${p.slug}/`} style="color:var(--brand);font-weight:600">项目详情</a>
+                </div>
+              </div>
+            );
+          })
+        }
+      </div>
+      <div class="note-card">
+        <b>系统要求：</b>应用基于 .NET 10 / .NET 11（Avalonia）构建，安装包已内置运行时，无需单独安装 .NET。Windows 10 1809+ / macOS 12+ / 主要 Linux 发行版（glibc 2.31+）。
+      </div>
+    </section>
+
+    <section class="section" id="libs-download">
+      <div class="sec-head">
+        <h2>NuGet 组件库</h2><span class="en">Libraries</span>
+        <p>点击「安装」展开命令并复制；完整子包列表见各库详情页</p>
+      </div>
+      <div class="card" style="padding: 6px 4px;">
+        <table class="tbl">
+          <tr><th style="width:32%">包名</th><th>说明</th><th style="width:110px">下载量</th><th style="width:110px"></th></tr>
+          {
+            grouped.map((g) => (
+              <>
+                <tr class="group">
+                  <td colspan="4">{g.label}</td>
+                </tr>
+                {g.items.map((p) => {
+                  const pkg = p.primaryPackage || p.nuget?.[0];
+                  const dl = p.nuget?.reduce((n, id) => n + (metrics.nuget[id] ?? 0), 0) ?? 0;
+                  return (
+                    <tr>
+                      <td class="pkts">{pkg}</td>
+                      <td>{p.tagline}</td>
+                      <td><span class="pill">{countText(dl)}</span></td>
+                      <td style="text-align:right">
+                        <button class="cp" type="button" data-install={pkg}>⧉ 安装</button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </>
+            ))
+          }
+        </table>
+      </div>
+      <div class="note-card">
+        <b>提示：</b>组件库目标框架为 net8.0 / net10.0 / net11.0；所有包在
+        <a href="https://www.nuget.org/profiles/CodeWF" target="_blank" rel="noopener" style="color:var(--brand)">nuget.org</a>
+        与
+        <a href="https://github.com/dotnet9" target="_blank" rel="noopener" style="color:var(--brand)">GitHub @dotnet9</a>
+        同步发布，CI 采用 Trusted Publishing 签名。
+      </div>
+    </section>
+  </div>
+</Base>
+
+<script>
+  // NuGet 安装命令：首次点击展开，再次点击复制
+  document.querySelectorAll<HTMLButtonElement>('[data-install]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const tr = btn.closest('tr')!;
+      const pkg = btn.dataset.install!;
+      if (!tr.classList.contains('expanded')) {
+        tr.classList.add('expanded');
+        const cmd = document.createElement('div');
+        cmd.className = 'pkg-cmd';
+        cmd.textContent = `dotnet add package ${pkg}`;
+        tr.querySelector('td:nth-child(2)')!.appendChild(cmd);
+        btn.textContent = '⧉ 复制命令';
+      } else {
+        navigator.clipboard?.writeText(tr.querySelector('.pkg-cmd')!.textContent!.trim());
+        btn.textContent = '✓ 已复制';
+        setTimeout(() => (btn.textContent = '⧉ 复制命令'), 1200);
+      }
+    });
+  });
+</script>

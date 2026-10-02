@@ -1,0 +1,11 @@
+---
+import ChangelogPage from '../../../components/pages/ChangelogPage.astro';
+import { byType } from '../../../lib/projects';
+
+export function getStaticPaths() {
+  return byType('app').map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+const { p } = Astro.props;
+---
+
+<ChangelogPage p={p} />

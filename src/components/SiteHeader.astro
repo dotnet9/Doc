@@ -1,0 +1,80 @@
+---
+import ProjectLogo from './ProjectLogo.astro';
+import { SITE } from '../config/site';
+
+interface Props {
+  brand?: { name: string; sub?: string; logo: string; href: string; mono?: boolean } | null;
+  crumb?: { label: string; href: string }[];
+  active?: string;
+}
+const { brand = null, crumb = [], active = '' } = Astro.props;
+
+const nav = [
+  { key: 'home', label: '首页', href: '/' },
+  { key: 'apps', label: '应用', href: '/apps/' },
+  { key: 'libs', label: '组件库', href: '/libs/' },
+  { key: 'download', label: '下载', href: '/download/' },
+  { key: 'blog', label: '博客 ↗', href: SITE.blog, ext: true },
+];
+---
+
+<header class="site-head">
+  <div class="head-inner">
+    <button class="icon-btn menu-btn" id="menuBtn" title="文档目录" aria-label="打开文档目录">☰</button>
+    {
+      crumb.length > 0 && (
+        <nav class="crumb" aria-label="面包屑">
+          {crumb.map((c, i) => (
+            <>
+              {i > 0 && <span>/</span>}
+              <a href={c.href}>{c.label}</a>
+            </>
+          ))}
+        </nav>
+      )
+    }
+    {
+      brand ? (
+        <a class:list={['brand', brand.mono && 'mono']} href={brand.href}>
+          <ProjectLogo slug={brand.logo} name={brand.name} size="sm" />
+          {brand.name}
+          {brand.sub && <small>{brand.sub}</small>}
+        </a>
+      ) : (
+        <a class="brand" href="/">
+          <ProjectLogo slug="_site" name="码" size="sm" home />
+          {SITE.brand.name}
+          <small>{SITE.brand.sub}</small>
+        </a>
+      )
+    }
+    <nav class="nav push" aria-label="全局导航">
+      {
+        nav.map((n) => (
+          <a
+            href={n.href}
+            class:list={[{ active: n.key === active }]}
+            target={n.ext ? '_blank' : undefined}
+            rel={n.ext ? 'noopener' : undefined}
+          >
+            {n.label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="head-tools">
+      <button class="search-trigger" id="searchTrigger" type="button" title="站内搜索">
+        ⌕ <span>搜索文档…</span><kbd>Ctrl K</kbd>
+      </button>
+      <button class="icon-btn" id="themeBtn" type="button" title="切换亮/暗主题" aria-label="切换主题">☾</button>
+      <a class="gh-link" href={SITE.githubOrg} target="_blank" rel="noopener" aria-label="GitHub">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"
+          />
+        </svg>
+        dotnet9
+      </a>
+    </div>
+  </div>
+</header>

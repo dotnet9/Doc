@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title>CodeWF NetWeaver logo</title>
+  <desc>A minimal socket port mark with two data contacts.</desc>
+  <rect width="512" height="512" rx="96" fill="#101820"/>
+  <rect x="88" y="158" width="336" height="216" rx="64" fill="#32d7c5"/>
+  <rect x="140" y="214" width="232" height="104" rx="32" fill="#101820"/>
+  <circle cx="204" cy="266" r="26" fill="#f8fafc"/>
+  <circle cx="308" cy="266" r="26" fill="#f8fafc"/>
+</svg>

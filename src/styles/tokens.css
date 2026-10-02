@@ -1,0 +1,44 @@
+/* ── CodeWF Docs 设计令牌：Fluent 白 × .NET 紫（与主站 codewf.com 同源）── */
+:root {
+  --brand: #512bd4;
+  --brand-deep: #3a1f9e;
+  --brand-soft: rgba(81, 43, 212, 0.08);
+  --brand-line: rgba(81, 43, 212, 0.35);
+  --brand-glow: rgba(81, 43, 212, 0.24);
+  --blue: #0078d4;
+  --violet: #8b5cf6;
+  --teal: #038387;
+  --amber: #b25f00;
+
+  --bg: #ffffff;
+  --bg-2: #faf9f8;
+  --panel: #ffffff;
+  --text: #1b1b1f;
+  --muted: #47474f;
+  --text-3: #7c7c85;
+  --line: rgba(32, 31, 30, 0.12);
+  --glass: rgba(32, 31, 30, 0.04);
+  --ink-panel: #1e1b2e;
+  --soft: rgba(81, 43, 212, 0.06);
+
+  --shadow: 0 8px 28px rgba(32, 31, 30, 0.08);
+  --shadow-hover: 0 18px 48px rgba(32, 31, 30, 0.14);
+  --radius: 10px;
+  --mono: "Cascadia Code", "JetBrains Mono", Consolas, "Courier New", monospace;
+  --sans: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+[data-theme="dark"] {
+  --bg: #161322;
+  --bg-2: #1a1730;
+  --panel: #201c36;
+  --text: #edeaf8;
+  --muted: #b6b0d4;
+  --text-3: #837da6;
+  --line: rgba(255, 255, 255, 0.12);
+  --glass: rgba(255, 255, 255, 0.05);
+  --brand-soft: rgba(129, 90, 240, 0.14);
+  --soft: rgba(129, 90, 240, 0.1);
+  --shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+  --shadow-hover: 0 18px 48px rgba(0, 0, 0, 0.5);
+}

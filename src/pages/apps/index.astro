@@ -1,0 +1,22 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectGrid from '../../components/ProjectGrid.astro';
+
+const crumbs = undefined;
+---
+
+<Base
+  title="开源应用 - 码坊 CodeWF"
+  description="码坊出品的跨平台桌面应用：快捷启动器、C 盘清理、脑图编辑器、Markdown 编辑器，全部开源免费、内置自动更新。"
+  active="apps"
+>
+  <div class="wrap">
+    <section class="hero" style="padding: 54px 0 10px;">
+      <h1 style="font-size: 36px;">开源应用</h1>
+      <p class="lead">开箱即用的 Avalonia 跨平台桌面软件，均内置自动更新。</p>
+    </section>
+    <section class="section" style="padding-top: 26px;">
+      <ProjectGrid type="app" />
+    </section>
+  </div>
+</Base>

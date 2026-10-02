@@ -1,0 +1,15 @@
+---
+interface Props {
+  slug: string;
+  name: string;
+  size?: 'sm' | 'lg' | 'xl';
+  /** 首页品牌：使用主站 logo（public 根） */
+  home?: boolean;
+}
+const { slug, name, size, home = false } = Astro.props;
+const src = home ? '/logo.svg' : `/logos/${slug}.svg`;
+---
+
+<span class:list={['plogo', size]} data-l={name.slice(0, 1)}>
+  <img src={src} alt="" loading="lazy" onerror="this.remove()" />
+</span>

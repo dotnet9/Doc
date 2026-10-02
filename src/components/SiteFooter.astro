@@ -1,0 +1,48 @@
+---
+import ProjectLogo from './ProjectLogo.astro';
+import { SITE } from '../config/site';
+
+interface Props {
+  simple?: boolean;
+}
+const { simple = false } = Astro.props;
+---
+
+<footer>
+  <div class="wrap">
+    {
+      !simple && (
+        <div class="foot-grid">
+          <div>
+            <h4>码坊 CodeWF</h4>
+            <p>独立开发者的开源实验室：跨平台桌面应用与 .NET 组件库，全部开源免费。</p>
+          </div>
+          <div>
+            <h4>本站</h4>
+            <a href="/apps/">应用</a>
+            <a href="/libs/">组件库</a>
+            <a href="/download/">下载中心</a>
+            <a href="/rss.xml">RSS 订阅</a>
+          </div>
+          <div>
+            <h4>主站</h4>
+            <a href={SITE.blog} target="_blank" rel="noopener">博客</a>
+            <a href={`${SITE.blog}/tool`} target="_blank" rel="noopener">在线工具</a>
+            <a href={`${SITE.blog}/album`} target="_blank" rel="noopener">专辑</a>
+          </div>
+          <div>
+            <h4>开源</h4>
+            <a href={SITE.githubOrg} target="_blank" rel="noopener">GitHub @dotnet9</a>
+            <a href="/sitemap-index.xml">站点地图</a>
+          </div>
+        </div>
+      )
+    }
+  </div>
+  <div class="foot-bottom">
+    <span>© {new Date().getFullYear()} CodeWF 码坊 · 用心做好每一个开源项目</span>
+    <span>
+      <a href="/">开源矩阵</a> · <a href={SITE.blog} target="_blank" rel="noopener">博客</a>
+    </span>
+  </div>
+</footer>

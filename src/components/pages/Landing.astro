@@ -1,0 +1,371 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectLogo from '../ProjectLogo.astro';
+import Giscus from '../Giscus.astro';
+import {
+  bySlug,
+  baseOf,
+  docUrl,
+  loadDocs,
+  loadChangelog,
+  loadMetrics,
+  orderedDocs,
+  starText,
+  countText,
+  hasAsset,
+  platformLabels,
+  type Project,
+} from '../../lib/projects';
+
+interface Props {
+  p: Project;
+}
+const { p } = Astro.props;
+
+const isApp = p.type === 'app';
+const section = isApp ? 'apps' : 'libs';
+const base = baseOf(p);
+
+const metrics = loadMetrics();
+const release = metrics.releases[p.slug] ?? null;
+const docs = loadDocs(p.slug);
+const pages = orderedDocs(docs);
+const cl = loadChangelog(p.slug);
+
+const pkg = p.primaryPackage ?? p.nuget?.[0];
+const nugetTotal = (p.nuget ?? []).reduce((n, id) => n + (metrics.nuget[id] ?? 0), 0);
+const builtWith = p.builtWith.map((s) => bySlug(s)).filter(Boolean) as Project[];
+const usedBy = p.usedBy.map((s) => bySlug(s)).filter(Boolean) as Project[];
+const shots = (p.screenshots ?? []).filter((s) => hasAsset(`${p.slug}/${s.src}`));
+const archOk = p.archImage ? hasAsset(`${p.slug}/${p.archImage}`) : false;
+const demoOk = p.demoImage ? hasAsset(`${p.slug}/${p.demoImage}`) : false;
+const docEntries = pages.slice(0, 4);
+const topLogs = cl.entries.slice(0, 3);
+const lastDate = release?.date ?? cl.entries.find((e) => e.date)?.date ?? cl.updatedAt;
+const releaseUrl = release?.url ?? `${p.repo}/releases`;
+const docHref = pages.length ? docUrl(p, pages[0]!.path) : `${base}docs/`;
+
+const projBar = [
+  { label: '概览', href: base, on: true },
+  ...(pages.length ? [{ label: '文档', href: docHref }] : []),
+  { label: '更新日志', href: `${base}changelog/` },
+  ...(isApp ? [{ label: '下载', href: '/download/' }] : []),
+];
+---
+
+<Base
+  title={`${p.name} · ${p.tagline} - 码坊开源`}
+  description={p.description}
+  brand={{ name: p.name, logo: p.slug, href: base, mono: !isApp }}
+  crumb={[
+    { label: '码坊', href: '/' },
+    { label: isApp ? '应用' : '组件库', href: `/${section}/` },
+  ]}
+  active={isApp ? 'apps' : 'libs'}
+  {projBar}
+  ghLink={p.repo}
+  simpleFooter
+>
+  <div class="wrap">
+    <!-- Hero -->
+    <section class="proj-hero">
+      <ProjectLogo slug={p.slug} name={p.name} size="xl" />
+      <div class="info">
+        <h1 class:list={[{ mono: !isApp }]}>
+          {p.name}
+          {release?.version && <span class="pill muted">v{release.version}</span>}
+        </h1>
+        <div class="slogan">{p.tagline}</div>
+        <p class="desc">{p.description}</p>
+        <div class="badge-row">
+          {p.platforms.map((pl) => (
+            <span class="pill blue">{platformLabels[pl]?.label ?? pl}</span>
+          ))}
+          {p.frameworks.map((f) => (
+            <span class="fw">{f}</span>
+          ))}
+          {p.tags.map((t) => (
+            <span class="tag">{t}</span>
+          ))}
+          <span class="tag">开源免费</span>
+        </div>
+        <div class="cta-row">
+          {
+            isApp ? (
+              <>
+                <a class="btn btn-primary btn-lg" href={releaseUrl} target="_blank" rel="noopener">
+                  ⬇ 下载最新版
+                </a>
+                {pages.length > 0 && (
+                  <a class="btn btn-ghost btn-lg" href={docHref}>
+                    阅读文档
+                  </a>
+                )}
+              </>
+            ) : pkg ? (
+              <div class="cmd-box" style="max-width:460px">
+                <span class="ps">&gt;</span>
+                <span>dotnet add package {pkg}</span>
+                <button class="cp" type="button" data-copy={pkg}>复制</button>
+              </div>
+            ) : null
+          }
+          <a class="btn btn-ghost btn-lg" href={p.repo} target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="side-stats">
+        <div class="ss">GitHub Star <b>★ {starText(metrics.stars[p.slug])}</b></div>
+        {
+          isApp ? (
+            <>
+              <div class="ss">最近发布 <b>{lastDate ?? '—'}</b></div>
+              <div class="ss">内置 <b>自动更新</b></div>
+            </>
+          ) : (
+            <>
+              <div class="ss">NuGet 下载 <b>{countText(nugetTotal)}</b></div>
+              <div class="ss">子包数量 <b>{p.nuget?.length ?? 0}</b></div>
+            </>
+          )
+        }
+      </div>
+    </section>
+
+    <!-- 截图 / 演示 -->
+    {
+      shots.length > 0 && (
+        <section class="section" style="padding-top: 8px;">
+          <div class="shots-grid">
+            {shots.map((s) => (
+              <figure class="shot-item" style="margin:0">
+                <img src={`/assets/${p.slug}/${s.src.split('/').map(encodeURIComponent).join('/')}`} alt={s.caption} loading="lazy" />
+                <figcaption>{s.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      )
+    }
+    {
+      demoOk && p.demoImage && (
+        <section class="section" style="padding-top: 8px;">
+          <div class="shot">
+            <img
+              src={`/assets/${p.slug}/${p.demoImage.split('/').map(encodeURIComponent).join('/')}`}
+              alt={`${p.name} 演示`}
+              loading="lazy"
+            />
+          </div>
+        </section>
+      )
+    }
+
+    <!-- 特性 -->
+    <section class="section">
+      <div class="sec-head">
+        <h2>{isApp ? '核心特性' : '为什么选它'}</h2>
+        <span class="en">Features</span>
+      </div>
+      <div class="feat-grid">
+        {p.features.map((f) => (
+          <div class="card feat">
+            <div class="ic">{f.icon}</div>
+            <b>{f.title}</b>
+            <p>{f.desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- 库：安装 + 代码示例 -->
+    {
+      !isApp && p.nuget && p.nuget.length > 0 && (
+        <section class="section" style="padding-top: 8px;">
+          <div class:list={['install', p.samples?.length ? '' : 'single']}>
+            <div class="card">
+              {p.nuget.length > 1 && (
+                <div class="tabs" data-tabs>
+                  {p.nuget.map((id, i) => (
+                    <div class:list={['tab', { on: i === 0 }]} data-pkg={id}>
+                      {id.replace(/^CodeWF\./, '').replace(/^Lang\.Avalonia$/, 'Lang.Avalonia').replace('CodeWF.', '') || id}
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div class="cmd-box">
+                <span class="ps">&gt;</span>
+                <span data-tabcmd>dotnet add package {pkg}</span>
+                <button class="cp" type="button" data-copy={pkg}>复制</button>
+              </div>
+              <p class="hint">
+                核心包按需引入；目标框架 {p.frameworks.join(' / ')}。全部包在 nuget.org 与 GitHub 同步发布。
+              </p>
+            </div>
+            {p.samples && (
+              <div>
+                {p.samples.map((s) => (
+                  <div style="margin-bottom: 14px;">
+                    <div class="hint" style="margin: 0 0 8px; font-weight: 600;">{s.title}</div>
+                    <div class="codeblock">
+                      <span class="lang">{s.lang}</span>
+                      <pre class="code"><code set:html={s.code.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c] ?? c))} /></pre>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )
+    }
+
+    <!-- 库：包列表 -->
+    {
+      !isApp && p.nuget && p.nuget.length > 1 && (
+        <section class="section">
+          <div class="sec-head">
+            <h2>包列表</h2>
+            <span class="en">Packages</span>
+            <p>按需安装，版本与核心包保持同步发布</p>
+          </div>
+          <div class="card" style="padding: 6px 4px;">
+            <table class="tbl">
+              <tr><th>包名</th><th>说明</th><th style="width:110px"></th></tr>
+              {p.nuget.map((id, i) => (
+                <tr>
+                  <td class="pkts">{id}</td>
+                  <td>{i === 0 ? '核心包' : '集成 / 扩展包'}</td>
+                  <td style="text-align:right">
+                    <button class="cp" type="button" data-copy={id}>⧉ 复制安装命令</button>
+                  </td>
+                </tr>
+              ))}
+            </table>
+          </div>
+        </section>
+      )
+    }
+
+    <!-- 架构图 -->
+    {
+      (archOk || p.archImage) && (
+        <section class="section">
+          <div class="sec-head">
+            <h2>架构一览</h2>
+            <span class="en">Architecture</span>
+            {pages.length > 0 && <a class="more" href={docHref}>设计文档 →</a>}
+          </div>
+          {archOk && p.archImage ? (
+            <div class="arch">
+              <img
+                src={`/assets/${p.slug}/${p.archImage.split('/').map(encodeURIComponent).join('/')}`}
+                alt={`${p.name} 架构图`}
+                loading="lazy"
+              />
+            </div>
+          ) : (
+            <div class="arch placeholder">📐 架构图占位（文档同步后自动展示）</div>
+          )}
+        </section>
+      )
+    }
+
+    <!-- 文档入口 -->
+    {
+      docEntries.length > 0 && (
+        <section class="section">
+          <div class="sec-head">
+            <h2>文档</h2>
+            <span class="en">Documentation</span>
+            <a class="more" href={`${base}docs/`}>全部文档 →</a>
+          </div>
+          <div class="doc-cards">
+            {docEntries.map((d) => (
+              <a class="card hoverable doc-card" href={docUrl(p, d.path)}>
+                <b>{d.title}</b>
+                <p>{d.excerpt || d.path}</p>
+                <span class="go">阅读 →</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <!-- 更新日志摘要 -->
+    <section class="section">
+      <div class="sec-head">
+        <h2>最近更新</h2>
+        <span class="en">Changelog</span>
+        <a class="more" href={`${base}changelog/`}>{cl.entries.length ? '查看完整日志 →' : '前往 GitHub Releases →'}</a>
+      </div>
+      {
+        topLogs.length > 0 ? (
+          <div class="card log-list">
+            {topLogs.map((e) => (
+              <div class="log-item">
+                <span class="ver">{e.version || '•'}</span>
+                <span class="what">{e.digest || e.title}</span>
+                <time>{e.date ?? ''}</time>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="note-card">
+            <b>更新日志整理中：</b>该项目尚未在仓库内维护结构化日志，可前往 <a href={releaseUrl} target="_blank" rel="noopener" style="color:var(--brand)">GitHub Releases</a> 查看每个版本的变更。
+          </div>
+        )
+      }
+    </section>
+
+    <!-- 生态关联 -->
+    {
+      (builtWith.length > 0 || usedBy.length > 0) && (
+        <section class="section">
+          <div class="sec-head">
+            <h2>{isApp ? '基于这些开源库' : '谁在使用'}</h2>
+            <span class="en">{isApp ? 'Built With' : 'Used By'}</span>
+            <p>{isApp ? '码坊自研组件支撑自家应用，应用反哺组件迭代' : '码坊自家的应用都在用它，问题反馈与修复路径最短'}</p>
+          </div>
+          <div class="eco-row">
+            {(isApp ? builtWith : usedBy).map((o) => (
+              <a class="card hoverable eco" href={baseOf(o!)}>
+                <ProjectLogo slug={o!.slug} name={o!.name} size="sm" />
+                <div>
+                  <b>{o!.name}</b>
+                  <span>{o!.tagline}</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <section class="section">
+      <Giscus />
+    </section>
+  </div>
+</Base>
+
+<script>
+  // 安装命令 tab 切换 + 复制（门面页）
+  document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((tabs) => {
+    const out = tabs.parentElement?.querySelector<HTMLElement>('[data-tabcmd]');
+    tabs.querySelectorAll<HTMLElement>('.tab').forEach((t) => {
+      t.addEventListener('click', () => {
+        tabs.querySelectorAll('.tab').forEach((x) => x.classList.remove('on'));
+        t.classList.add('on');
+        if (out) out.textContent = `dotnet add package ${t.dataset.pkg}`;
+      });
+    });
+  });
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      navigator.clipboard?.writeText(`dotnet add package ${btn.dataset.copy}`);
+      const old = btn.textContent;
+      btn.textContent = '✓ 已复制';
+      setTimeout(() => (btn.textContent = old), 1200);
+    });
+  });
+</script>

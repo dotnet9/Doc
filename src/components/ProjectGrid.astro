@@ -1,0 +1,127 @@
+---
+import ProjectLogo from '../components/ProjectLogo.astro';
+import { byType, starText, loadMetrics, categories, type Project } from '../lib/projects';
+
+interface Props {
+  type: 'app' | 'lib';
+  addCard?: boolean;
+}
+const { type, addCard = false } = Astro.props;
+const list = byType(type);
+const metrics = loadMetrics();
+const totalPkgs = list.reduce((n, p) => n + (p.nuget?.length ?? 0), 0);
+---
+
+{
+  type === 'app' ? (
+    <div class="app-grid">
+      {list.map((p: Project) => (
+        <div class="card hoverable app-card">
+          <div class="card-top">
+            <ProjectLogo slug={p.slug} name={p.name} />
+            <div>
+              <div class="nm">
+                {p.name} <span class="pill muted">{metrics.releases[p.slug]?.version ? `v${metrics.releases[p.slug]!.version}` : ''}</span>
+              </div>
+              <div class="ds">{p.tagline}</div>
+            </div>
+          </div>
+          <p class="desc">{p.description}</p>
+          <div class="meta-row">{p.tags.map((t) => <span class="tag">{t}</span>)}</div>
+          <div class="card-foot">
+            {p.platforms.map((pl) => (
+              <span class="pill blue">{pl}</span>
+            ))}
+            <span class="spacer" />
+            <a class="btn btn-ghost btn-sm" href="/download/">
+              下载
+            </a>
+            <a class="btn btn-primary btn-sm" href={`/${p.type}s/${p.slug}/`}>
+              详情
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <>
+      <div class="chip-row" data-chips>
+        <button class="chip on" data-cat="all">
+          全部
+        </button>
+        {Object.entries(categories).map(([key, c]) => (
+          <button class="chip" data-cat={key}>
+            {c.label}
+          </button>
+        ))}
+      </div>
+      <div class="lib-grid" data-libgrid>
+        {list.map((p: Project) => {
+          const pkg = p.primaryPackage || p.nuget?.[0];
+          return (
+            <div class="card hoverable lib-card" data-cat={p.category}>
+              <div class="card-top">
+                <ProjectLogo slug={p.slug} name={p.name} size="sm" />
+                <div>
+                  <div class="nm mono">{p.name}</div>
+                  <div class="ds">{p.tagline}</div>
+                </div>
+              </div>
+              <div class="one">{p.description}</div>
+              {pkg && (
+                <div class="pkg-line">
+                  <span>dotnet add package {pkg}</span>
+                  <button class="cp" data-copy={pkg} title="复制安装命令" type="button">
+                    ⧉
+                  </button>
+                </div>
+              )}
+              <div class="foot">
+                {metrics.releases[p.slug]?.version && <span class="pill">v{metrics.releases[p.slug]!.version}</span>}
+                {p.frameworks.map((f) => (
+                  <span class="fw">{f}</span>
+                ))}
+                <a class="gh-mini" href={`/${p.type}s/${p.slug}/`} style="margin-left:auto">
+                  详情 →
+                </a>
+              </div>
+            </div>
+          );
+        })}
+        {addCard && (
+          <div class="card lib-card add">
+            <b>＋ 更多组件</b>
+            <span>持续加入中，敬请期待</span>
+          </div>
+        )}
+      </div>
+    </>
+  )
+}
+
+<script>
+  // 分类筛选（组件库）
+  document.querySelectorAll('[data-chips]').forEach((row) => {
+    const grid = row.parentElement?.querySelector('[data-libgrid]');
+    if (!grid) return;
+    row.querySelectorAll<HTMLButtonElement>('.chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        row.querySelectorAll('.chip').forEach((c) => c.classList.remove('on'));
+        chip.classList.add('on');
+        const cat = chip.dataset.cat;
+        grid.querySelectorAll<HTMLElement>('.lib-card').forEach((card) => {
+          card.style.display = cat === 'all' || card.dataset.cat === cat ? '' : 'none';
+        });
+      });
+    });
+  });
+  // 复制安装命令
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      navigator.clipboard?.writeText(`dotnet add package ${btn.dataset.copy}`);
+      const old = btn.textContent;
+      btn.textContent = '✓';
+      setTimeout(() => (btn.textContent = old), 1200);
+    });
+  });
+</script>

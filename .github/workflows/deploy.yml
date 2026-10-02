@@ -1,0 +1,50 @@
+name: 构建并部署文档站
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # 每日 UTC 19:00（北京时间 03:00）兜底同步各仓库文档
+    - cron: '0 19 * * *'
+  repository_dispatch:
+    # 源仓库 push 后发来的实时同步通知（event_type: source-updated）
+    types: [source-updated]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-deploy
+  cancel-in-progress: false
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: 同步各仓库文档（depth-1 克隆到 .source/）
+        run: node scripts/sync-content.mjs --ci
+
+      - name: 构建（实时指标 + Astro + Pagefind 索引）
+        run: node scripts/build.mjs --no-sync
+
+      - name: 部署到自有服务器（rsync）
+        if: github.event_name != 'pull_request'
+        uses: easingthemes/ssh-deploy@v5
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          ARGS: '-rlgoDz --delete'
+          SOURCE: 'dist/'
+          REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
+          REMOTE_USER: ${{ secrets.DEPLOY_USER }}
+          TARGET: ${{ secrets.DEPLOY_PATH }}

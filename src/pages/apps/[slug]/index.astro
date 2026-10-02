@@ -1,0 +1,11 @@
+---
+import Landing from '../../../components/pages/Landing.astro';
+import { byType } from '../../../lib/projects';
+
+export function getStaticPaths() {
+  return byType('app').map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+const { p } = Astro.props;
+---
+
+<Landing p={p} />

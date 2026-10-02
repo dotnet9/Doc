@@ -1,0 +1,16 @@
+---
+import DocsPage from '../../../../components/pages/DocsPage.astro';
+import { byType, loadDocs } from '../../../../lib/projects';
+
+export function getStaticPaths() {
+  return byType('app').flatMap((p) =>
+    loadDocs(p.slug).pages.map((page) => ({
+      params: { slug: p.slug, path: page.path || undefined },
+      props: { p, page },
+    })),
+  );
+}
+const { p, page } = Astro.props;
+---
+
+<DocsPage p={p} page={page} />
