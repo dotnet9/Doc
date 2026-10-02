@@ -219,6 +219,12 @@ footer{border-top:1px solid var(--line);margin-top:56px;padding:34px 0;backgroun
   .feat-grid,.steps,.doc-cards,.eco-row{grid-template-columns:1fr}
   .thumbs{grid-template-columns:1fr}
 }
+
+/* ── 视觉优先改版（与实现同步） ───────── */
+.proj-hero .desc { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.feat { padding: 16px; }
+.feat .ic { width: 42px; height: 42px; border-radius: 11px; font-size: 20px; margin-bottom: 8px; }
+.feat p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 </style>
 </head>
 <body>
@@ -268,9 +274,9 @@ footer{border-top:1px solid var(--line);margin-top:56px;padding:34px 0;backgroun
   <section class="proj-hero">
     <span class="plogo xl" data-l="V"><img src="../../Vex/logo.svg" alt="" onerror="this.remove()"></span>
     <div class="info">
-      <h1>维刻 Vex <span class="pill muted">v1.2.0</span></h1>
+      <h1>维刻 Vex <span class="pill muted">v1.3.0</span></h1>
       <div class="slogan">极简之力，妙笔成章</div>
-      <p class="desc">跨平台 Markdown 编辑器，为写作、技术文档与自媒体排版而生。实时预览、多格式导出、一键复制公众号/知乎/掘金富文本，内置本机 AI MCP Server。</p>
+      <p class="desc">跨平台 Markdown 编辑器：实时预览、多格式导出、一键复制公众号/知乎/掘金富文本，内置 AI MCP Server。</p>
       <div class="badge-row">
         <span class="pill blue">Windows</span><span class="pill blue">macOS</span>
         <span class="tag">Avalonia 12</span><span class="tag">.NET 11</span><span class="tag">开源免费</span>
@@ -328,9 +334,18 @@ footer{border-top:1px solid var(--line);margin-top:56px;padding:34px 0;backgroun
     </div>
     <div class="shot-note">▲ 实施时替换为仓库 docs/ 中的真实截图与演示 GIF（此处为 CSS 示意）</div>
     <div class="thumbs">
-      <div class="thumb">截图：多排版主题</div>
-      <div class="thumb">截图：导出菜单</div>
-      <div class="thumb">GIF：公众号一键复制</div>
+      <figure class="shot-item" style="margin:0">
+        <img src="../public/assets/vex/typora/3_typora_大纲.png" alt="大纲导航" loading="lazy" style="aspect-ratio:16/9.6;width:100%;object-fit:cover;object-position:top">
+        <figcaption style="padding:8px 12px;font-size:12px;color:var(--text-3);text-align:center">大纲导航</figcaption>
+      </figure>
+      <figure class="shot-item" style="margin:0">
+        <img src="../public/assets/vex/typora/2_typora_文件列表.png" alt="文件夹工作流" loading="lazy" style="aspect-ratio:16/9.6;width:100%;object-fit:cover;object-position:top">
+        <figcaption style="padding:8px 12px;font-size:12px;color:var(--text-3);text-align:center">文件夹工作流</figcaption>
+      </figure>
+      <figure class="shot-item" style="margin:0">
+        <img src="../public/assets/vex/typora/9_typora_主题.png" alt="多排版主题" loading="lazy" style="aspect-ratio:16/9.6;width:100%;object-fit:cover;object-position:top">
+        <figcaption style="padding:8px 12px;font-size:12px;color:var(--text-3);text-align:center">多排版主题</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -372,7 +387,7 @@ footer{border-top:1px solid var(--line);margin-top:56px;padding:34px 0;backgroun
   <section class="section">
     <div class="sec-head"><h2>最近更新</h2><span class="en">Changelog</span><a class="more" href="#">查看完整日志 →</a></div>
     <div class="card log-list">
-      <div class="log-item"><span class="ver">v1.2.0</span><span class="what">UI 全面改版对齐设计原型；MCP 工具调用新增确认记忆机制；修复 AOT 发布问题</span><time>2026-10-02</time></div>
+      <div class="log-item"><span class="ver">v1.3.0</span><span class="what">UI 全面改版对齐设计原型；MCP 工具调用新增确认记忆机制；修复 AOT 发布问题</span><time>2026-10-02</time></div>
       <div class="log-item"><span class="ver">v1.1.4</span><span class="what">新增知乎/掘金排版主题；修复外部文件变更检测在 Windows 网络盘的误报</span><time>2026-09-18</time></div>
       <div class="log-item"><span class="ver">v1.1.0</span><span class="what">内置本机 MCP Server（127.0.0.1:17891，Bearer Token 鉴权）；四语言界面</span><time>2026-09-02</time></div>
     </div>
