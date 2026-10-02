@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 原型说明：本页对应线上 URL /libs/codewf-eventbus/（组件库门面页）。
+     安装命令、包版本由清单文件驱动；代码示例取自各仓库 README/文档。 -->
+<title>CodeWF.EventBus · 轻量进程内事件总线</title>
+<meta name="description" content="CodeWF.EventBus：轻量进程内事件总线，Command 分发与 Query 查询回传，多 IOC 容器集成，AOT 友好，更轻的 MediatR 替代。">
+<style>
+:root{
+  --brand:#512bd4; --brand-deep:#3a1f9e; --brand-soft:rgba(81,43,212,.08);
+  --brand-line:rgba(81,43,212,.35); --brand-glow:rgba(81,43,212,.24);
+  --blue:#0078d4; --violet:#8b5cf6; --teal:#038387; --amber:#b25f00;
+  --bg:#ffffff; --bg-2:#faf9f8; --panel:#ffffff;
+  --text:#1b1b1f; --muted:#47474f; --text-3:#7c7c85;
+  --line:rgba(32,31,30,.12); --glass:rgba(32,31,30,.04);
+  --ink-panel:#1e1b2e; --soft:rgba(81,43,212,.06);
+  --shadow:0 8px 28px rgba(32,31,30,.08); --shadow-hover:0 18px 48px rgba(32,31,30,.14);
+  --radius:10px;
+  --mono:"Cascadia Code","JetBrains Mono",Consolas,"Courier New",monospace;
+  --sans:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+}
+[data-theme="dark"]{
+  --bg:#161322; --bg-2:#1a1730; --panel:#201c36;
+  --text:#edeaf8; --muted:#b6b0d4; --text-3:#837da6;
+  --line:rgba(255,255,255,.12); --glass:rgba(255,255,255,.05);
+  --brand-soft:rgba(129,90,240,.14); --soft:rgba(129,90,240,.1);
+  --shadow:0 8px 28px rgba(0,0,0,.35); --shadow-hover:0 18px 48px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.7;
+  background:
+    radial-gradient(900px 460px at 88% -140px, rgba(81,43,212,.10), transparent 65%),
+    radial-gradient(700px 400px at 6% -100px, rgba(0,120,212,.07), transparent 60%),
+    var(--bg);
+  position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(32,31,30,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(32,31,30,.025) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 35%,transparent 100%);
+}
+[data-theme="dark"] body::before{
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+}
+a{color:inherit;text-decoration:none}
+a,button{transition:all 220ms cubic-bezier(.22,1,.36,1)}
+img{display:block}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+/* ── 页头 ─────────────────────────── */
+.site-head{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.head-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:62px;display:flex;align-items:center;gap:18px}
+.crumb{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-3);white-space:nowrap}
+.crumb a:hover{color:var(--brand)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14.5px;white-space:nowrap;font-family:var(--mono)}
+.brand .plogo{width:30px;height:30px}
+.brand small{color:var(--text-3);font-weight:500;font-size:12px;font-family:var(--sans)}
+.nav{display:flex;gap:4px;margin-left:auto}
+.nav a{padding:7px 13px;border-radius:8px;color:var(--muted);font-size:13.5px}
+.nav a:hover{color:var(--text);background:var(--glass)}
+.head-tools{display:flex;align-items:center;gap:10px}
+.search{display:flex;align-items:center;gap:8px;min-width:190px;height:34px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:var(--glass);color:var(--text-3);font-size:12.5px;cursor:pointer}
+.search:hover{border-color:var(--brand-line)}
+.search kbd{margin-left:auto;font-family:var(--mono);font-size:10.5px;padding:1px 6px;border:1px solid var(--line);border-radius:5px;background:var(--bg-2)}
+.icon-btn{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;font-size:15px}
+.icon-btn:hover{border-color:var(--brand-line);color:var(--brand)}
+.proj-bar{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg-2) 70%,transparent)}
+.proj-bar-inner{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:6px;height:44px;overflow-x:auto}
+.proj-bar-inner>a{padding:5px 12px;border-radius:7px;font-size:12.5px;color:var(--muted);white-space:nowrap}
+.proj-bar-inner>a:hover{color:var(--text);background:var(--glass)}
+.proj-bar-inner>a.on{color:var(--brand);background:var(--brand-soft);font-weight:600}
+.proj-bar-inner .gh{margin-left:auto;color:var(--text-3);display:inline-flex;gap:6px;align-items:center;font-size:12.5px;white-space:nowrap}
+.proj-bar-inner .gh:hover{color:var(--brand)}
+
+/* ── 通用 ─────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 18px;border-radius:8px;font-size:13.5px;font-weight:600;border:1px solid transparent;cursor:pointer}
+.btn-primary{background:var(--brand);color:#fff;box-shadow:0 4px 16px var(--brand-glow)}
+.btn-primary:hover{background:var(--brand-deep);transform:translateY(-1px)}
+.btn-ghost{border-color:var(--line);color:var(--text);background:var(--panel)}
+.btn-ghost:hover{border-color:var(--brand-line);color:var(--brand)}
+.btn-lg{height:44px;padding:0 24px;font-size:14px}
+.pill{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 10px;border-radius:999px;font-size:11.5px;font-weight:600;background:var(--brand-soft);color:var(--brand)}
+.pill.blue{background:rgba(0,120,212,.1);color:var(--blue)}
+.pill.muted{background:var(--glass);color:var(--text-3);font-weight:500}
+.tag{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;background:var(--glass);color:var(--text-3);border:1px solid var(--line)}
+.plogo{position:relative;display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:9px;color:#fff;font-weight:800;font-size:18px;background:linear-gradient(135deg,var(--brand),var(--violet));box-shadow:0 4px 14px var(--brand-glow)}
+.plogo::before{content:attr(data-l)}
+.plogo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:10%}
+.plogo.xl{width:84px;height:84px;border-radius:18px;font-size:32px;box-shadow:0 10px 30px var(--brand-glow)}
+.plogo.sm{width:34px;height:34px;border-radius:8px;font-size:14px}
+.section{padding:52px 0 0}
+.sec-head{display:flex;align-items:flex-end;gap:14px;margin-bottom:22px}
+.sec-head h2{margin:0;font-size:23px;font-weight:800;letter-spacing:-.3px}
+.sec-head .en{color:var(--text-3);font-size:12.5px;font-weight:500;font-family:var(--mono)}
+.sec-head p{margin:4px 0 0;color:var(--text-3);font-size:13px;flex:1}
+.sec-head .more{font-size:13px;color:var(--brand);font-weight:600;white-space:nowrap}
+.sec-head .more:hover{text-decoration:underline}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+.card:hover{box-shadow:var(--shadow-hover);border-color:var(--brand-line)}
+.fw{font-family:var(--mono);font-size:10px;padding:1px 6px;border-radius:5px;border:1px solid var(--line);color:var(--text-3)}
+
+/* ── Hero ─────────────────────────── */
+.proj-hero{padding:56px 0 40px;display:flex;gap:32px;align-items:center}
+.proj-hero .info{flex:1}
+.proj-hero h1{margin:0 0 6px;font-size:34px;font-weight:800;letter-spacing:-.5px;font-family:var(--mono);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.proj-hero .slogan{color:var(--brand);font-size:15px;font-weight:600;margin-bottom:10px}
+.proj-hero .desc{color:var(--muted);font-size:14.5px;max-width:640px;margin:0 0 16px}
+.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;align-items:center}
+.cta-row{display:flex;gap:11px;flex-wrap:wrap;align-items:center}
+.side-stats{display:flex;flex-direction:column;gap:10px;min-width:150px}
+.side-stats .ss{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--text-3)}
+.side-stats .ss b{color:var(--text);font-size:13px;font-family:var(--mono)}
+
+/* 安装区 */
+.install{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;align-items:stretch}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:14px;flex-wrap:wrap}
+.tab{padding:7px 14px;font-size:12.5px;color:var(--muted);cursor:pointer;border-radius:8px 8px 0 0;border-bottom:2px solid transparent}
+.tab:hover{color:var(--text)}
+.tab.on{color:var(--brand);border-bottom-color:var(--brand);font-weight:600}
+.cmd-box{
+  display:flex;align-items:center;gap:10px;background:var(--ink-panel);border-radius:8px;
+  padding:12px 14px;font-family:var(--mono);font-size:12.5px;color:#e8e6f0;
+}
+.cmd-box .ps{color:#8b5cf6;user-select:none}
+.cmd-box .cp{margin-left:auto;border:1px solid rgba(255,255,255,.2);background:transparent;color:#cfcbe6;font-size:11.5px;border-radius:6px;padding:4px 10px;cursor:pointer;white-space:nowrap}
+.cmd-box .cp:hover{border-color:var(--brand);color:#fff}
+.hint{color:var(--text-3);font-size:12px;margin-top:10px}
+
+/* 代码块 */
+.code{
+  background:var(--ink-panel);border-radius:var(--radius);padding:18px 20px;
+  font-family:var(--mono);font-size:12.5px;line-height:1.85;color:#d7dae0;overflow-x:auto;
+  counter-reset:ln;
+}
+.code .ln{display:block;counter-increment:ln;white-space:pre}
+.code .ln::before{content:counter(ln);display:inline-block;width:2.2em;margin-right:14px;text-align:right;color:rgba(255,255,255,.22);user-select:none}
+.kw{color:#c678dd}.ty{color:#e5c07b}.st{color:#98c379}.fn{color:#61afef}.nu{color:#d19a66}.cm{color:#7f848e;font-style:italic}
+
+/* 特性 */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.feat{padding:18px}
+.feat .ic{width:38px;height:38px;border-radius:9px;display:grid;place-items:center;font-size:17px;background:var(--brand-soft);margin-bottom:6px}
+.feat b{font-size:14px;display:block}
+.feat p{margin:0;color:var(--text-3);font-size:12.5px}
+
+/* 包列表 */
+table.pkgs{width:100%;border-collapse:collapse;font-size:13px}
+.pkgs th{text-align:left;padding:10px 14px;color:var(--text-3);font-size:12px;font-weight:600;border-bottom:1px solid var(--line)}
+.pkgs td{padding:12px 14px;border-bottom:1px solid var(--line)}
+.pkgs tr:last-child td{border-bottom:none}
+.pkts{font-family:var(--mono);font-size:12.5px;font-weight:600}
+.pkgs .cp{border:none;background:none;color:var(--text-3);cursor:pointer;font-size:12px}
+.pkgs .cp:hover{color:var(--brand)}
+
+/* 架构图占位 */
+.arch{border:1px dashed var(--brand-line);border-radius:var(--radius);background:var(--bg-2);min-height:220px;display:grid;place-items:center;text-align:center;color:var(--text-3);font-size:12.5px;padding:24px}
+
+/* 文档入口 / 使用者 */
+.doc-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.doc-card{padding:18px;display:flex;flex-direction:column;gap:6px}
+.doc-card b{font-size:14px}
+.doc-card p{margin:0;color:var(--text-3);font-size:12px;flex:1}
+.doc-card .go{color:var(--brand);font-size:12.5px;font-weight:600}
+.eco-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.eco{display:flex;gap:11px;align-items:center;padding:14px 16px}
+.eco b{font-size:13px;display:block}
+.eco span{font-size:11.5px;color:var(--text-3)}
+.eco:hover b{color:var(--brand)}
+.log-list{display:flex;flex-direction:column}
+.log-item{display:flex;gap:14px;padding:14px 0;align-items:baseline}
+.log-item+.log-item{border-top:1px dashed var(--line)}
+.log-item .ver{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--brand);min-width:90px}
+.log-item .what{flex:1;color:var(--muted);font-size:13px}
+.log-item time{color:var(--text-3);font-size:11.5px;white-space:nowrap}
+.giscus-ph{margin-top:16px;border:1px dashed var(--line);border-radius:var(--radius);padding:30px;text-align:center;color:var(--text-3);font-size:12.5px;background:var(--bg-2)}
+
+footer{border-top:1px solid var(--line);margin-top:56px;padding:34px 0;background:var(--bg-2)}
+.foot-inner{display:flex;justify-content:space-between;gap:14px;color:var(--text-3);font-size:12px;flex-wrap:wrap}
+.foot-inner a{color:var(--text-3)}
+.foot-inner a:hover{color:var(--brand)}
+
+@media (max-width:960px){
+  .nav,.crumb .sep-2{display:none}
+  .search{min-width:0;width:34px;padding:0;justify-content:center}
+  .search span,.search kbd{display:none}
+  .proj-hero{flex-direction:column;align-items:flex-start;gap:20px}
+  .side-stats{flex-direction:row;width:100%}
+  .side-stats .ss{flex:1;flex-direction:column;align-items:flex-start;gap:2px}
+  .install{grid-template-columns:1fr}
+  .feat-grid,.doc-cards,.eco-row{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  .feat-grid,.doc-cards,.eco-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="head-inner">
+    <nav class="crumb">
+      <a href="index.html">码坊</a><span class="sep-2">/</span>
+      <a href="index.html#libs">组件库</a>
+    </nav>
+    <a class="brand" href="lib.html">
+      <span class="plogo" data-l="E"><img src="../../../libs/CodeWF.EventBus/logo.svg" alt="" onerror="this.remove()"></span>
+      EventBus <small>CodeWF</small>
+    </a>
+    <nav class="nav">
+      <a href="index.html">首页</a>
+      <a href="index.html#apps">应用</a>
+      <a href="index.html#libs">组件库</a>
+      <a href="download.html">下载</a>
+      <a href="https://codewf.com" target="_blank">博客 ↗</a>
+    </nav>
+    <div class="head-tools">
+      <div class="search" title="站内搜索（Pagefind）">⌕ <span>搜索文档…</span><kbd>Ctrl K</kbd></div>
+      <button class="icon-btn" id="themeBtn" title="切换亮/暗主题">☾</button>
+    </div>
+  </div>
+</header>
+
+<div class="proj-bar">
+  <div class="proj-bar-inner">
+    <a class="on" href="lib.html">概览</a>
+    <a href="doc.html">文档</a>
+    <a href="#">API 参考</a>
+    <a href="#">更新日志</a>
+    <a class="gh" href="https://github.com/dotnet9/CodeWF.EventBus" target="_blank">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+      GitHub · 源码与 Issue ↗
+    </a>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- Hero -->
+  <section class="proj-hero">
+    <span class="plogo xl" data-l="E"><img src="../../../libs/CodeWF.EventBus/logo.svg" alt="" onerror="this.remove()"></span>
+    <div class="info">
+      <h1>CodeWF.EventBus <span class="pill muted">v3.4.5.27</span></h1>
+      <div class="slogan">更轻的 MediatR 替代：进程内事件总线</div>
+      <p class="desc">模块解耦的进程内事件总线：Command 命令分发、Query 查询回传（简易 CQRS），多 IOC 容器集成，WPF / WinForms / Avalonia / ASP.NET Core / 控制台通用，NativeAOT 友好。</p>
+      <div class="badge-row">
+        <span class="pill">NuGet v3.4.5.27</span>
+        <span class="fw">net8.0</span><span class="fw">net10.0</span><span class="fw">net11.0</span>
+        <span class="tag">零 UI 依赖</span><span class="tag">AOT 友好</span><span class="tag">开源免费</span>
+      </div>
+      <div class="cta-row">
+        <div class="cmd-box" id="installCmd">
+          <span class="ps">&gt;</span>
+          <span id="cmdText">dotnet add package CodeWF.EventBus</span>
+          <button class="cp" id="copyBtn">复制</button>
+        </div>
+      </div>
+    </div>
+    <div class="side-stats">
+      <div class="ss">GitHub Star <b>★ 386</b></div>
+      <div class="ss">NuGet 下载 <b>52k+</b></div>
+      <div class="ss">子包数量 <b>4</b></div>
+    </div>
+  </section>
+
+  <!-- 安装 + 代码 -->
+  <section class="section" style="padding-top:8px">
+    <div class="install">
+      <div class="card">
+        <div class="tabs" id="pkgTabs">
+          <div class="tab on" data-pkg="CodeWF.EventBus">核心包</div>
+          <div class="tab" data-pkg="CodeWF.AspNetCore.EventBus">ASP.NET Core</div>
+          <div class="tab" data-pkg="CodeWF.DryIoc.EventBus">DryIoc / Prism</div>
+          <div class="tab" data-pkg="CodeWF.IOC.EventBus">IOC 抽象</div>
+        </div>
+        <div class="cmd-box">
+          <span class="ps">&gt;</span><span id="tabCmd">dotnet add package CodeWF.EventBus</span>
+          <button class="cp" id="tabCopy">复制</button>
+        </div>
+        <p class="hint">核心包无第三方依赖；按所用容器选择集成包，即可获得 <code style="font-family:var(--mono)">services.AddCodeWFEventBus()</code> 风格的注册扩展。</p>
+      </div>
+      <div class="code"><span class="ln"><span class="cm">// 定义命令与查询（记录类型即可）</span></span><span class="ln"><span class="kw">public record</span> <span class="ty">SendEmailCommand</span>(<span class="kw">string</span> To, <span class="kw">string</span> Title) : <span class="ty">ICommand</span>;</span><span class="ln"><span class="kw">public record</span> <span class="ty">GetUserQuery</span>(<span class="kw">int</span> Id) : <span class="ty">IQuery</span>&lt;<span class="ty">UserDto</span>&gt;;</span><span class="ln">&nbsp;</span><span class="ln"><span class="cm">// 发布命令：多处理器并行消费</span></span><span class="ln"><span class="kw">await</span> eventBus.<span class="fn">PublishAsync</span>(<span class="kw">new</span> <span class="ty">SendEmailCommand</span>(<span class="st">"dev@codewf.com"</span>, <span class="st">"你好"</span>));</span><span class="ln">&nbsp;</span><span class="ln"><span class="cm">// 查询回传：简易 CQRS</span></span><span class="ln"><span class="ty">var</span> user = <span class="kw">await</span> eventBus.<span class="fn">QueryAsync</span>(<span class="kw">new</span> <span class="ty">GetUserQuery</span>(<span class="nu">42</span>));</span></div>
+    </div>
+  </section>
+
+  <!-- 特性 -->
+  <section class="section">
+    <div class="sec-head"><h2>为什么选它</h2><span class="en">Why EventBus</span></div>
+    <div class="feat-grid">
+      <div class="card feat"><div class="ic">⚡</div><b>Command + Query</b><p>命令分发与查询回传一套 API 搞定，进程内简易 CQRS，不需要消息队列的重量。</p></div>
+      <div class="card feat"><div class="ic">🧩</div><b>多 IOC 集成</b><p>Microsoft.DI / AspNetCore / DryIoc / Prism 开箱集成，还提供容器无关抽象。</p></div>
+      <div class="card feat"><div class="ic">🖥️</div><b>UI 框架无关</b><p>WPF、WinForms、Avalonia、ASP.NET Core、控制台通用，桌面与服务的公共层。</p></div>
+      <div class="card feat"><div class="ic">🚀</div><b>NativeAOT 友好</b><p>内置 AOT 验证工程，发布为原生单文件不踩反射的坑。</p></div>
+      <div class="card feat"><div class="ic">🪶</div><b>轻量可裁剪</b><p>核心包零第三方依赖，按需引入集成包，体积与依赖树都干净。</p></div>
+      <div class="card feat"><div class="ic">🔗</div><b>可升级到 IPC</b><p>需要跨进程时无缝升级到 <b>EventBus.Socket</b>（TCP 事件总线），API 风格一致。</p></div>
+    </div>
+  </section>
+
+  <!-- 包列表 -->
+  <section class="section">
+    <div class="sec-head"><h2>包列表</h2><span class="en">Packages</span><p>按需安装，版本与核心包保持同步发布</p></div>
+    <div class="card" style="padding:6px 4px">
+      <table class="pkgs">
+        <tr><th>包名</th><th>说明</th><th>版本</th><th></th></tr>
+        <tr>
+          <td class="pkts">CodeWF.EventBus</td><td>核心：命令分发与查询回传</td>
+          <td><span class="pill">v3.4.5.27</span></td>
+          <td style="text-align:right"><button class="cp">⧉ 复制安装命令</button></td>
+        </tr>
+        <tr>
+          <td class="pkts">CodeWF.AspNetCore.EventBus</td><td>ASP.NET Core 服务注册与请求管道集成</td>
+          <td><span class="pill">v3.4.5.27</span></td>
+          <td style="text-align:right"><button class="cp">⧉ 复制安装命令</button></td>
+        </tr>
+        <tr>
+          <td class="pkts">CodeWF.DryIoc.EventBus</td><td>DryIoc / Prism 容器集成</td>
+          <td><span class="pill">v3.4.5.27</span></td>
+          <td style="text-align:right"><button class="cp">⧉ 复制安装命令</button></td>
+        </tr>
+        <tr>
+          <td class="pkts">CodeWF.IOC.EventBus</td><td>容器无关抽象，接入任意 IOC</td>
+          <td><span class="pill">v3.4.5.27</span></td>
+          <td style="text-align:right"><button class="cp">⧉ 复制安装命令</button></td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- 架构图 -->
+  <section class="section">
+    <div class="sec-head"><h2>架构一览</h2><span class="en">Architecture</span><a class="more" href="doc.html">设计文档 →</a></div>
+    <div class="arch">📐 架构图占位<br>实施时嵌入仓库 docs/assets/codewf-eventbus-architecture.svg（支持亮暗主题反色）</div>
+  </section>
+
+  <!-- 文档入口 -->
+  <section class="section">
+    <div class="sec-head"><h2>文档</h2><span class="en">Documentation</span></div>
+    <div class="doc-cards">
+      <a class="card doc-card" href="doc.html"><b>🚀 快速上手</b><p>五分钟跑通第一个命令与查询。</p><span class="go">阅读 →</span></a>
+      <a class="card doc-card" href="doc.html"><b>🧩 IOC 集成指南</b><p>MS.DI / DryIoc / Prism / 任意容器。</p><span class="go">阅读 →</span></a>
+      <a class="card doc-card" href="doc.html"><b>📐 设计文档</b><p>架构原理与源码导读（来自仓库 docs/）。</p><span class="go">阅读 →</span></a>
+      <a class="card doc-card" href="#"><b>📖 API 参考</b><p>公开类型与扩展方法一览。</p><span class="go">阅读 →</span></a>
+    </div>
+  </section>
+
+  <!-- 谁在使用 -->
+  <section class="section">
+    <div class="sec-head"><h2>谁在使用</h2><span class="en">Used By</span><p>码坊自家的应用都在用它，问题反馈与修复路径最短</p></div>
+    <div class="eco-row">
+      <a class="card eco" href="app.html"><span class="plogo sm" data-l="V"><img src="../../Vex/logo.svg" alt="" onerror="this.remove()"></span><div><b>维刻 Vex</b><span>Markdown 编辑器</span></div></a>
+      <a class="card eco" href="#"><span class="plogo sm" data-l="枝"><img src="../../Zhijian/logo.svg" alt="" onerror="this.remove()"></span><div><b>枝见 Zhijian</b><span>脑图编辑器</span></div></a>
+      <a class="card eco" href="#"><span class="plogo sm" data-l="Q"><img src="../../QuickApp/logo.svg" alt="" onerror="this.remove()"></span><div><b>QuickApp</b><span>快捷应用启动器</span></div></a>
+      <a class="card eco" href="#"><span class="plogo sm" data-l="S"><img src="../../../libs/CodeWF.EventBus.Socket/logo.svg" alt="" onerror="this.remove()"></span><div><b>EventBus.Socket</b><span>跨进程升级版</span></div></a>
+    </div>
+  </section>
+
+  <!-- 更新日志摘要 -->
+  <section class="section">
+    <div class="sec-head"><h2>最近更新</h2><span class="en">Changelog</span><a class="more" href="#">查看完整日志 →</a></div>
+    <div class="card log-list">
+      <div class="log-item"><span class="ver">v3.4.5.27</span><span class="what">net11.0 目标框架支持；AOT 验证工程更新至最新 SDK</span><time>2026-09-20</time></div>
+      <div class="log-item"><span class="ver">v3.4.4</span><span class="what">Query 并发处理优化；修复 DryIoc 集成包在 Prism 9 下的注册顺序问题</span><time>2026-08-30</time></div>
+      <div class="log-item"><span class="ver">v3.4.0</span><span class="what">新增 IOC 抽象包，支持接入任意第三方容器</span><time>2026-08-12</time></div>
+    </div>
+  </section>
+
+  <!-- 评论区 -->
+  <section class="section">
+    <div class="giscus-ph">💬 评论区（giscus，基于 GitHub Discussions）<br>实施时在此加载，读者可用 GitHub 账号反馈文档问题</div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-inner">
+      <span>© 2026 CodeWF 码坊 · <a href="index.html">开源矩阵</a> · <a href="https://codewf.com" target="_blank">博客</a></span>
+      <span>本页为设计原型 · 对应线上地址 /libs/codewf-eventbus/</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const root = document.documentElement;
+const saved = localStorage.getItem('doc-theme');
+if (saved) root.dataset.theme = saved;
+else if (matchMedia('(prefers-color-scheme: dark)').matches) root.dataset.theme = 'dark';
+const syncBtn = () => document.getElementById('themeBtn').textContent = root.dataset.theme === 'dark' ? '☀' : '☾';
+syncBtn();
+document.getElementById('themeBtn').onclick = () => {
+  root.dataset.theme = root.dataset.theme === 'dark' ? '' : 'dark';
+  if (!root.dataset.theme) delete root.dataset.theme;
+  localStorage.setItem('doc-theme', root.dataset.theme || 'light');
+  syncBtn();
+};
+// 安装命令 tab 切换
+document.querySelectorAll('#pkgTabs .tab').forEach(t => t.onclick = () => {
+  document.querySelectorAll('#pkgTabs .tab').forEach(x => x.classList.remove('on'));
+  t.classList.add('on');
+  document.getElementById('tabCmd').textContent = 'dotnet add package ' + t.dataset.pkg;
+});
+// 复制
+function bindCopy(btnId, textId){
+  const btn = document.getElementById(btnId);
+  btn.onclick = () => {
+    navigator.clipboard.writeText(document.getElementById(textId).textContent.trim());
+    const old = btn.textContent; btn.textContent = '✓ 已复制';
+    setTimeout(() => btn.textContent = old, 1200);
+  };
+}
+bindCopy('copyBtn','cmdText'); bindCopy('tabCopy','tabCmd');
+document.querySelectorAll('.pkgs .cp').forEach(btn => btn.onclick = () => {
+  navigator.clipboard.writeText('dotnet add package ' + btn.closest('tr').querySelector('.pkts').textContent.trim());
+  const old = btn.textContent; btn.textContent = '✓ 已复制';
+  setTimeout(() => btn.textContent = old, 1200);
+});
+</script>
+</body>
+</html>

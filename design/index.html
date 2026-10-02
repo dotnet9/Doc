@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 原型说明：本页对应线上 URL /（站点首页）。
+     产品矩阵 + 最近更新动态。数据均为示意，实施时由构建脚本从各仓库/NuGet/GitHub API 拉取。 -->
+<title>码坊 CodeWF · 开源应用与组件库</title>
+<meta name="description" content="码坊 CodeWF 出品的开源桌面应用与 .NET 组件库：下载、文档与更新动态。">
+<style>
+:root{
+  --brand:#512bd4; --brand-deep:#3a1f9e; --brand-soft:rgba(81,43,212,.08);
+  --brand-line:rgba(81,43,212,.35); --brand-glow:rgba(81,43,212,.24);
+  --blue:#0078d4; --violet:#8b5cf6; --teal:#038387; --amber:#b25f00;
+  --bg:#ffffff; --bg-2:#faf9f8; --panel:#ffffff;
+  --text:#1b1b1f; --muted:#47474f; --text-3:#7c7c85;
+  --line:rgba(32,31,30,.12); --glass:rgba(32,31,30,.04);
+  --ink-panel:#1e1b2e; --soft:rgba(81,43,212,.06);
+  --shadow:0 8px 28px rgba(32,31,30,.08); --shadow-hover:0 18px 48px rgba(32,31,30,.14);
+  --radius:10px;
+  --mono:"Cascadia Code","JetBrains Mono",Consolas,"Courier New",monospace;
+  --sans:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+}
+[data-theme="dark"]{
+  --bg:#161322; --bg-2:#1a1730; --panel:#201c36;
+  --text:#edeaf8; --muted:#b6b0d4; --text-3:#837da6;
+  --line:rgba(255,255,255,.12); --glass:rgba(255,255,255,.05);
+  --brand-soft:rgba(129,90,240,.14); --soft:rgba(129,90,240,.1);
+  --shadow:0 8px 28px rgba(0,0,0,.35); --shadow-hover:0 18px 48px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.7;
+  background:
+    radial-gradient(900px 460px at 88% -140px, rgba(81,43,212,.10), transparent 65%),
+    radial-gradient(700px 400px at 6% -100px, rgba(0,120,212,.07), transparent 60%),
+    var(--bg);
+  position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(32,31,30,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(32,31,30,.025) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 35%,transparent 100%);
+}
+[data-theme="dark"] body::before{
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+}
+a{color:inherit;text-decoration:none}
+a,button{transition:all 220ms cubic-bezier(.22,1,.36,1)}
+img{display:block}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+/* ── 页头 ─────────────────────────── */
+.site-head{
+  position:sticky;top:0;z-index:50;
+  background:color-mix(in srgb,var(--bg) 82%,transparent);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.head-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:62px;display:flex;align-items:center;gap:22px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15.5px;white-space:nowrap}
+.brand .plogo{width:30px;height:30px}
+.brand small{color:var(--text-3);font-weight:500;font-size:12px;margin-left:2px}
+.nav{display:flex;gap:4px;margin-left:8px}
+.nav a{padding:7px 13px;border-radius:8px;color:var(--muted);font-size:13.5px}
+.nav a:hover{color:var(--text);background:var(--glass)}
+.nav a.active{color:var(--brand);background:var(--brand-soft);font-weight:600}
+.head-tools{margin-left:auto;display:flex;align-items:center;gap:10px}
+.search{
+  display:flex;align-items:center;gap:8px;min-width:200px;height:34px;padding:0 12px;
+  border:1px solid var(--line);border-radius:8px;background:var(--glass);color:var(--text-3);font-size:12.5px;cursor:pointer;
+}
+.search:hover{border-color:var(--brand-line)}
+.search kbd{
+  margin-left:auto;font-family:var(--mono);font-size:10.5px;padding:1px 6px;
+  border:1px solid var(--line);border-radius:5px;background:var(--bg-2);
+}
+.icon-btn{
+  width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);
+  border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;font-size:15px;
+}
+.icon-btn:hover{border-color:var(--brand-line);color:var(--brand)}
+.gh-link{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);padding:6px 10px;border-radius:8px}
+.gh-link:hover{color:var(--text);background:var(--glass)}
+
+/* ── 通用元素 ─────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 18px;border-radius:8px;
+  font-size:13.5px;font-weight:600;border:1px solid transparent;cursor:pointer;
+}
+.btn-primary{background:var(--brand);color:#fff;box-shadow:0 4px 16px var(--brand-glow)}
+.btn-primary:hover{background:var(--brand-deep);transform:translateY(-1px)}
+.btn-ghost{border-color:var(--line);color:var(--text);background:var(--panel)}
+.btn-ghost:hover{border-color:var(--brand-line);color:var(--brand)}
+.btn-sm{height:30px;padding:0 12px;font-size:12.5px;border-radius:7px}
+.pill{
+  display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 10px;border-radius:999px;
+  font-size:11.5px;font-weight:600;background:var(--brand-soft);color:var(--brand);
+}
+.pill.blue{background:rgba(0,120,212,.1);color:var(--blue)}
+.pill.muted{background:var(--glass);color:var(--text-3);font-weight:500}
+.tag{
+  display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;
+  background:var(--glass);color:var(--text-3);border:1px solid var(--line);
+}
+.plogo{
+  position:relative;display:grid;place-items:center;flex:none;
+  width:44px;height:44px;border-radius:9px;color:#fff;font-weight:800;font-size:18px;
+  background:linear-gradient(135deg,var(--brand),var(--violet));
+  box-shadow:0 4px 14px var(--brand-glow);
+}
+.plogo::before{content:attr(data-l)}
+.plogo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:10%}
+.plogo.lg{width:56px;height:56px;border-radius:12px;font-size:22px}
+.plogo.sm{width:34px;height:34px;border-radius:8px;font-size:14px}
+
+/* ── Hero ─────────────────────────── */
+.hero{padding:78px 0 54px;text-align:center}
+.hero .pill{margin-bottom:20px}
+.hero h1{
+  margin:0 0 16px;font-size:46px;line-height:1.22;font-weight:800;letter-spacing:-.5px;
+}
+.hero h1 .grad{
+  background:linear-gradient(100deg,var(--brand) 10%,var(--violet) 55%,var(--blue) 95%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p{max-width:640px;margin:0 auto 30px;color:var(--muted);font-size:15.5px}
+.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.hero-cta .btn{height:42px;padding:0 22px;font-size:14px}
+.stats{display:flex;gap:0;justify-content:center;margin-top:46px;flex-wrap:wrap}
+.stat{padding:0 34px;text-align:center;position:relative}
+.stat+.stat::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:1px;background:var(--line)}
+.stat b{display:block;font-size:24px;font-weight:800;color:var(--brand)}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+/* ── 区块 ─────────────────────────── */
+.section{padding:56px 0}
+.sec-head{display:flex;align-items:flex-end;gap:16px;margin-bottom:24px}
+.sec-head h2{margin:0;font-size:26px;font-weight:800;letter-spacing:-.3px}
+.sec-head .en{color:var(--text-3);font-size:13px;font-weight:500;font-family:var(--mono)}
+.sec-head p{margin:4px 0 0;color:var(--text-3);font-size:13px;flex:1}
+.sec-head .more{font-size:13px;color:var(--brand);font-weight:600;white-space:nowrap}
+.sec-head .more:hover{text-decoration:underline}
+
+/* 应用卡片 */
+.app-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.card{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px;display:flex;flex-direction:column;gap:12px;position:relative;
+}
+.card:hover{box-shadow:var(--shadow-hover);transform:translateY(-3px);border-color:var(--brand-line)}
+.card-top{display:flex;align-items:center;gap:14px}
+.card-top .nm{font-size:16.5px;font-weight:700;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.card-top .ds{color:var(--text-3);font-size:12.5px;margin-top:1px}
+.card p.desc{margin:0;color:var(--muted);font-size:13px;flex:1}
+.meta-row{display:flex;gap:6px;flex-wrap:wrap}
+.card-foot{display:flex;align-items:center;gap:9px;margin-top:2px}
+.card-foot .spacer{flex:1}
+.gh-mini{font-size:12.5px;color:var(--text-3);display:inline-flex;gap:5px;align-items:center}
+.gh-mini:hover{color:var(--brand)}
+
+/* 组件库卡片 */
+.chip-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.chip{
+  height:30px;padding:0 14px;border-radius:999px;border:1px solid var(--line);
+  background:var(--panel);color:var(--muted);font-size:12.5px;cursor:pointer;
+}
+.chip:hover{border-color:var(--brand-line);color:var(--brand)}
+.chip.on{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600}
+.lib-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.lib-card{padding:18px;gap:10px}
+.lib-card .nm{font-size:14.5px;font-weight:700;font-family:var(--mono)}
+.lib-card .one{color:var(--text-3);font-size:12.5px;min-height:38px}
+.pkg-line{
+  display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11.5px;
+  background:var(--glass);border:1px solid var(--line);border-radius:7px;padding:5px 9px;color:var(--muted);
+}
+.pkg-line .cp{margin-left:auto;border:none;background:none;color:var(--text-3);cursor:pointer;font-size:12px;padding:0 2px}
+.pkg-line .cp:hover{color:var(--brand)}
+.lib-card .foot{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.fw{
+  font-family:var(--mono);font-size:10px;padding:1px 6px;border-radius:5px;
+  border:1px solid var(--line);color:var(--text-3);
+}
+.lib-card.add{
+  border-style:dashed;align-items:center;justify-content:center;text-align:center;
+  color:var(--text-3);background:transparent;min-height:180px;
+}
+.lib-card.add b{font-size:14px;color:var(--muted)}
+.lib-card.add span{font-size:12px}
+
+/* 更新动态 */
+.upd-wrap{background:var(--bg-2);border:1px solid var(--line);border-radius:14px;padding:26px 28px}
+.timeline{list-style:none;margin:0;padding:0}
+.tl-item{display:flex;gap:16px;padding:13px 0;position:relative}
+.tl-item+.tl-item{border-top:1px dashed var(--line)}
+.tl-body{flex:1;min-width:0}
+.tl-title{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:13.5px;font-weight:600}
+.tl-title .ver{font-family:var(--mono);font-size:11px;padding:1px 8px;border-radius:999px;background:var(--brand-soft);color:var(--brand);font-weight:600}
+.tl-title time{color:var(--text-3);font-size:11.5px;font-weight:400;margin-left:auto;white-space:nowrap}
+.tl-digest{color:var(--text-3);font-size:12.5px;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tl-link{font-size:12px;color:var(--brand);font-weight:600;white-space:nowrap;align-self:center}
+.tl-link:hover{text-decoration:underline}
+
+/* 页脚 */
+footer{border-top:1px solid var(--line);margin-top:40px;padding:40px 0 34px;background:var(--bg-2)}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:28px}
+.foot-grid h4{margin:0 0 12px;font-size:13px;font-weight:700}
+.foot-grid p{margin:0 0 8px;color:var(--text-3);font-size:12.5px}
+.foot-grid a{display:block;color:var(--text-3);font-size:12.5px;padding:3px 0}
+.foot-grid a:hover{color:var(--brand)}
+.foot-bottom{
+  max-width:1180px;margin:30px auto 0;padding:18px 24px 0;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:12px;color:var(--text-3);font-size:12px;flex-wrap:wrap;
+}
+
+@media (max-width:960px){
+  .nav{display:none}
+  .search{min-width:0;width:34px;padding:0;justify-content:center}
+  .search span,.search kbd{display:none}
+  .app-grid{grid-template-columns:1fr}
+  .lib-grid{grid-template-columns:1fr 1fr}
+  .hero h1{font-size:34px}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  .lib-grid{grid-template-columns:1fr}
+  .stat{padding:0 18px}
+  .stats{gap:14px 0}
+}
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="head-inner">
+    <a class="brand" href="index.html">
+      <span class="plogo" data-l="码"><img src="../../CodeWF/logo.svg" alt="" onerror="this.remove()"></span>
+      码坊 <small>CodeWF</small>
+    </a>
+    <nav class="nav">
+      <a class="active" href="index.html">首页</a>
+      <a href="#apps">应用</a>
+      <a href="#libs">组件库</a>
+      <a href="download.html">下载</a>
+      <a href="https://codewf.com" target="_blank">博客 ↗</a>
+    </nav>
+    <div class="head-tools">
+      <div class="search" title="站内搜索（Pagefind）">⌕ <span>搜索文档…</span><kbd>Ctrl K</kbd></div>
+      <button class="icon-btn" id="themeBtn" title="切换亮/暗主题">☾</button>
+      <a class="gh-link" href="https://github.com/dotnet9" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        dotnet9
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <!-- Hero -->
+    <section class="hero">
+      <span class="pill">开源 · 免费 · 跨平台</span>
+      <h1>桌面应用与 .NET 组件库<br><span class="grad">一站式文档中心</span></h1>
+      <p>4 款 Avalonia 跨平台桌面应用 + 7 个 NuGet 组件库，全部开源。这里有下载入口、使用文档与更新动态，帮你把每一个项目用好。</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#apps">浏览应用</a>
+        <a class="btn btn-ghost" href="#libs">浏览组件库</a>
+        <a class="btn btn-ghost" href="https://codewf.com" target="_blank">访问博客 ↗</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>11</b><span>开源项目</span></div>
+        <div class="stat"><b>20+</b><span>NuGet 包</span></div>
+        <div class="stat"><b>3</b><span>桌面平台</span></div>
+        <div class="stat"><b>100%</b><span>中文文档</span></div>
+      </div>
+    </section>
+
+    <!-- 应用 -->
+    <section class="section" id="apps">
+      <div class="sec-head">
+        <h2>应用</h2><span class="en">Applications</span>
+        <p>开箱即用的跨平台桌面软件，均内置自动更新</p>
+      </div>
+      <div class="app-grid">
+
+        <div class="card">
+          <div class="card-top">
+            <span class="plogo" data-l="Q"><img src="../../QuickApp/logo.svg" alt="" onerror="this.remove()"></span>
+            <div>
+              <div class="nm">QuickApp <span class="pill muted">v0.3.0</span></div>
+              <div class="ds">快捷应用启动器</div>
+            </div>
+          </div>
+          <p class="desc">停靠屏幕四边的快捷应用 Dock：一排图标、搜索即达。支持拼音/首字母搜索、全局热键、多显示器与便携模式。</p>
+          <div class="meta-row"><span class="tag">启动器</span><span class="tag">效率工具</span><span class="tag">Avalonia</span></div>
+          <div class="card-foot">
+            <span class="pill blue">Windows</span><span class="pill blue">macOS</span><span class="pill blue">Linux</span>
+            <span class="spacer"></span>
+            <a class="btn btn-ghost btn-sm" href="download.html">下载</a>
+            <a class="btn btn-ghost btn-sm" href="#">详情</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-top">
+            <span class="plogo" data-l="C"><img src="../../ClearC/logo.svg" alt="" onerror="this.remove()"></span>
+            <div>
+              <div class="nm">ClearC <span class="pill muted">v0.2.1</span></div>
+              <div class="ds">C 盘空间分析与安全清理</div>
+            </div>
+          </div>
+          <p class="desc">约 120 个清理目标，风险分级、失败原因透明。展示清楚容量、风险与失败原因，而不是闷头多删。</p>
+          <div class="meta-row"><span class="tag">磁盘清理</span><span class="tag">系统工具</span><span class="tag">Avalonia</span></div>
+          <div class="card-foot">
+            <span class="pill blue">Windows</span>
+            <span class="spacer"></span>
+            <a class="btn btn-ghost btn-sm" href="download.html">下载</a>
+            <a class="btn btn-ghost btn-sm" href="#">详情</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-top">
+            <span class="plogo" data-l="枝"><img src="../../Zhijian/logo.svg" alt="" onerror="this.remove()"></span>
+            <div>
+              <div class="nm">枝见 Zhijian <span class="pill muted">v12.1.0.5</span></div>
+              <div class="ds">Markdown-first 脑图编辑器</div>
+            </div>
+          </div>
+          <p class="desc">大纲、Markdown 与脑图三视图共享同一文档模型，实时同步。支持 XMind/OPML 导入导出与四语言界面。</p>
+          <div class="meta-row"><span class="tag">脑图</span><span class="tag">知识管理</span><span class="tag">Markdown</span></div>
+          <div class="card-foot">
+            <span class="pill blue">Windows</span><span class="pill blue">macOS</span>
+            <span class="spacer"></span>
+            <a class="btn btn-ghost btn-sm" href="download.html">下载</a>
+            <a class="btn btn-ghost btn-sm" href="#">详情</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-top">
+            <span class="plogo" data-l="V"><img src="../../Vex/logo.svg" alt="" onerror="this.remove()"></span>
+            <div>
+              <div class="nm">维刻 Vex <span class="pill muted">v1.2.0</span></div>
+              <div class="ds">Markdown 编辑器</div>
+            </div>
+          </div>
+          <p class="desc">为写作与排版而生：实时预览、多格式导出、一键复制公众号/知乎/掘金富文本，内置 AI MCP Server。</p>
+          <div class="meta-row"><span class="tag">Markdown</span><span class="tag">写作排版</span><span class="tag">MCP</span></div>
+          <div class="card-foot">
+            <span class="pill blue">Windows</span><span class="pill blue">macOS</span>
+            <span class="spacer"></span>
+            <a class="btn btn-ghost btn-sm" href="download.html">下载</a>
+            <a class="btn btn-primary btn-sm" href="app.html">详情</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 组件库 -->
+    <section class="section" id="libs">
+      <div class="sec-head">
+        <h2>组件库</h2><span class="en">Libraries</span>
+        <p>NuGet 直接安装，目标框架 net8.0 / net10.0 / net11.0，AOT 友好</p>
+      </div>
+      <div class="chip-row">
+        <button class="chip on" data-cat="all">全部</button>
+        <button class="chip" data-cat="ui">UI · 界面</button>
+        <button class="chip" data-cat="net">通信 · 集成</button>
+        <button class="chip" data-cat="base">基础 · 工具</button>
+      </div>
+      <div class="lib-grid" id="libGrid">
+
+        <div class="card lib-card" data-cat="ui">
+          <div class="card-top">
+            <span class="plogo sm" data-l="L"><img src="../../../libs/Lang.Avalonia/logo.svg" alt="" onerror="this.remove()"></span>
+            <div>
+              <div class="nm">Lang.Avalonia</div>
+              <div class="ds">Avalonia 插件化多语言 i18n</div>
+            </div>
+          </div>
+          <div class="one">XAML 标记扩展 + 运行时切换语言，JSON/XML/RESX 资源插件，源生成器强类型 Key。</div>
+          <div class="pkg-line">dotnet add package Lang.Avalonia<button class="cp" title="复制">⧉</button></div>
+          <div class="foot"><span class="pill">v12.1.2.14</span><span class="fw">net8.0</span><span class="fw">net10.0</span><span class="fw">net11.0</span></div>
+        </div>
+
+        <div class="card lib-card" data-cat="ui">
+          <div class="card-top">
+            <span class="plogo sm" data-l="M"><img src="../../../libs/CodeWF.Markdown/logo.svg" alt="" onerror="this.remove()"></span>
+            <div>
+              <div class="nm">CodeWF.Markdown</div>
+              <div class="ds">Markdown 渲染控件</div>
+            </div>
+          </div>
+          <div class="one">代码高亮、数学公式、增量渲染，17 套排版主题，PNG/PDF/Word 一行导出。</div>
+          <div class="pkg-line">dotnet add package CodeWF.Markdown<button class="cp" title="复制">⧉</button></div>
+          <div class="foot"><span class="pill">v12.1.2.13</span><span class="fw">net8.0</span><span class="fw">net10.0</span><span class="fw">net11.0</span></div>
+        </div>
+
+        <div class="card lib-card" data-cat="base">
+          <div class="card-top">
+            <span class="plogo sm" data-l="T"><img src="../../../libs/CodeWF.Tools/logo.svg" alt="" onerror="this.remove()"></span>
+            <div>
+              <div class="nm">CodeWF.Tools</div>
+              <div class="ds">C# 开发者通用工具库</div>
+            </div>
+          </div>
+          <div class="one">字符串/日期扩展、文件操作、JSON/YAML 转换、图片处理，Core 包零第三方依赖。</div>
+          <div class="pkg-line">dotnet add package CodeWF.Tools<button class="cp" title="复制">⧉</button></div>
+          <div class="foot"><span class="pill">v1.3.14.10</span><span class="fw">net8.0</span><span class="fw">net10.0</span><span class="fw">net11.0</span></div>
+        </div>
+
+        <div class="card lib-card" data-cat="net">
+          <div class="card-top">
+            <span class="plogo sm" data-l="N"><img src="../../../libs/CodeWF.NetWeaver/logo.svg" alt="" onerror="this.remove()"></span>
+            <div>
+              <div class="nm">CodeWF.NetWeaver</div>
+              <div class="ds">网络二进制序列化 + Socket</div>
+            </div>
+          </div>
+          <div class="one">AOT 友好的数据包序列化，TCP/UDP 封装与远程文件传输扩展（断点续传）。</div>
+          <div class="pkg-line">dotnet add package CodeWF.NetWeaver<button class="cp" title="复制">⧉</button></div>
+          <div class="foot"><span class="pill">v4.0.0.10</span><span class="fw">net8.0</span><span class="fw">net10.0</span><span class="fw">net11.0</span></div>
+        </div>
+
+        <div class="card lib-card" data-cat="base">
+          <div class="card-top">
+            <span class="plogo sm" data-l="L"><img src="../../../libs/CodeWF.LogViewer/logo.svg" alt="" onerror="this.remove()"></span>
+            <div>
+              <div class="nm">CodeWF.LogViewer</div>
+              <div class="ds">轻量日志组件</div>
+            </div>
+          </div>
+          <div class="one">核心/MEL 适配/Avalonia 控件三包拆分，文件轮转，可与 Serilog 共存。</div>
+          <div class="pkg-line">dotnet add package CodeWF.Log.Core<button class="cp" title="复制">⧉</button></div>
+          <div class="foot"><span class="pill">v12.1.3.12</span><span class="fw">net8.0</span><span class="fw">net10.0</span><span class="fw">net11.0</span></div>
+        </div>
+
+        <div class="card lib-card" data-cat="net">
+          <div class="card-top">
+            <span class="plogo sm" data-l="E"><img src="../../../libs/CodeWF.EventBus/logo.svg" alt="" onerror="this.remove()"></span>
+            <div>
+              <div class="nm">CodeWF.EventBus</div>
+              <div class="ds">进程内事件总线</div>
+            </div>
+          </div>
+          <div class="one">Command 分发 + Query 查询回传，多 IOC 集成，更轻的 MediatR 替代。</div>
+          <div class="pkg-line">dotnet add package CodeWF.EventBus<button class="cp" title="复制">⧉</button></div>
+          <div class="foot">
+            <span class="pill">v3.4.5.27</span><span class="fw">net8.0</span><span class="fw">net10.0</span><span class="fw">net11.0</span>
+            <a class="gh-mini" href="lib.html" style="margin-left:auto">详情 →</a>
+          </div>
+        </div>
+
+        <div class="card lib-card" data-cat="net">
+          <div class="card-top">
+            <span class="plogo sm" data-l="S"><img src="../../../libs/CodeWF.EventBus.Socket/logo.svg" alt="" onerror="this.remove()"></span>
+            <div>
+              <div class="nm">CodeWF.EventBus.Socket</div>
+              <div class="ds">跨进程 TCP 事件总线</div>
+            </div>
+          </div>
+          <div class="one">进程间发布/订阅与请求响应，替代 RabbitMQ/Kafka 的本地 IPC 方案。</div>
+          <div class="pkg-line">dotnet add package CodeWF.EventBus.Socket<button class="cp" title="复制">⧉</button></div>
+          <div class="foot"><span class="pill">v1.5.0</span><span class="fw">net8.0</span><span class="fw">net10.0</span><span class="fw">net11.0</span></div>
+        </div>
+
+        <div class="card lib-card add">
+          <b>＋ 更多组件</b>
+          <span>持续加入中，敬请期待</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 最近更新 -->
+    <section class="section" id="updates">
+      <div class="sec-head">
+        <h2>最近更新</h2><span class="en">Changelog Feed</span>
+        <p>由各仓库 CHANGELOG 自动聚合（示意数据）</p>
+      </div>
+      <div class="upd-wrap">
+        <ul class="timeline">
+          <li class="tl-item">
+            <span class="plogo sm" data-l="V"><img src="../../Vex/logo.svg" alt="" onerror="this.remove()"></span>
+            <div class="tl-body">
+              <div class="tl-title">维刻 Vex <span class="ver">v1.2.0</span><time>2026-10-02</time></div>
+              <div class="tl-digest">UI 全面改版对齐设计原型；MCP 确认记忆机制；AOT 修复</div>
+            </div>
+            <a class="tl-link" href="app.html">更新日志 →</a>
+          </li>
+          <li class="tl-item">
+            <span class="plogo sm" data-l="Q"><img src="../../QuickApp/logo.svg" alt="" onerror="this.remove()"></span>
+            <div class="tl-body">
+              <div class="tl-title">QuickApp <span class="ver">v0.3.0</span><time>2026-10-01</time></div>
+              <div class="tl-digest">新增自动更新检查；图标库扩充；拼音搜索增强</div>
+            </div>
+            <a class="tl-link" href="#">更新日志 →</a>
+          </li>
+          <li class="tl-item">
+            <span class="plogo sm" data-l="C"><img src="../../ClearC/logo.svg" alt="" onerror="this.remove()"></span>
+            <div class="tl-body">
+              <div class="tl-title">ClearC <span class="ver">v0.2.1</span><time>2026-10-01</time></div>
+              <div class="tl-digest">新增自动更新；清理目标扩充至约 120 项</div>
+            </div>
+            <a class="tl-link" href="#">更新日志 →</a>
+          </li>
+          <li class="tl-item">
+            <span class="plogo sm" data-l="枝"><img src="../../Zhijian/logo.svg" alt="" onerror="this.remove()"></span>
+            <div class="tl-body">
+              <div class="tl-title">枝见 Zhijian <span class="ver">v12.1.0.5</span><time>2026-10-01</time></div>
+              <div class="tl-digest">macOS 资源目录修复；关于窗口新增自动更新入口</div>
+            </div>
+            <a class="tl-link" href="#">更新日志 →</a>
+          </li>
+          <li class="tl-item">
+            <span class="plogo sm" data-l="L"><img src="../../../libs/CodeWF.LogViewer/logo.svg" alt="" onerror="this.remove()"></span>
+            <div class="tl-body">
+              <div class="tl-title">CodeWF.LogViewer <span class="ver">v12.1.3.12</span><time>2026-09-28</time></div>
+              <div class="tl-digest">Avalonia 控件适配更新；AOT 冒烟测试通过</div>
+            </div>
+            <a class="tl-link" href="#">更新日志 →</a>
+          </li>
+          <li class="tl-item">
+            <span class="plogo sm" data-l="L"><img src="../../../libs/Lang.Avalonia/logo.svg" alt="" onerror="this.remove()"></span>
+            <div class="tl-body">
+              <div class="tl-title">Lang.Avalonia <span class="ver">v12.1.2.14</span><time>2026-09-25</time></div>
+              <div class="tl-digest">源生成器改进；浏览器 Demo 支持</div>
+            </div>
+            <a class="tl-link" href="#">更新日志 →</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>码坊 CodeWF</h4>
+        <p>独立开发者的开源实验室：跨平台桌面应用与 .NET 组件库，全部开源免费。</p>
+      </div>
+      <div>
+        <h4>本站</h4>
+        <a href="#apps">应用</a><a href="#libs">组件库</a><a href="download.html">下载中心</a><a href="#updates">更新动态</a>
+      </div>
+      <div>
+        <h4>主站</h4>
+        <a href="https://codewf.com" target="_blank">博客</a><a href="https://codewf.com/tool" target="_blank">在线工具</a><a href="https://codewf.com/album" target="_blank">专辑</a>
+      </div>
+      <div>
+        <h4>开源</h4>
+        <a href="https://github.com/dotnet9" target="_blank">GitHub @dotnet9</a><a href="#">RSS 订阅</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 CodeWF 码坊 · 用心做好每一个开源项目</span>
+    <span>本页为设计原型 · 正式站点由 Astro + Starlight 构建</span>
+  </div>
+</footer>
+
+<script>
+// 主题切换（默认跟随系统）
+const root = document.documentElement;
+const saved = localStorage.getItem('doc-theme');
+if (saved) root.dataset.theme = saved;
+else if (matchMedia('(prefers-color-scheme: dark)').matches) root.dataset.theme = 'dark';
+const syncBtn = () => document.getElementById('themeBtn').textContent = root.dataset.theme === 'dark' ? '☀' : '☾';
+syncBtn();
+document.getElementById('themeBtn').onclick = () => {
+  root.dataset.theme = root.dataset.theme === 'dark' ? '' : 'dark';
+  if (!root.dataset.theme) delete root.dataset.theme;
+  localStorage.setItem('doc-theme', root.dataset.theme || 'light');
+  syncBtn();
+};
+// 组件库分类筛选
+document.querySelectorAll('.chip').forEach(ch => ch.onclick = () => {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+  ch.classList.add('on');
+  const cat = ch.dataset.cat;
+  document.querySelectorAll('#libGrid .lib-card').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+  });
+});
+// 复制安装命令
+document.querySelectorAll('.pkg-line .cp').forEach(btn => btn.onclick = () => {
+  navigator.clipboard.writeText(btn.parentElement.textContent.replace('⧉','').trim());
+  const old = btn.textContent; btn.textContent = '✓';
+  setTimeout(() => btn.textContent = old, 1200);
+});
+</script>
+</body>
+</html>
