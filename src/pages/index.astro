@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import ProjectGrid from '../components/ProjectGrid.astro';
 import ProjectLogo from '../components/ProjectLogo.astro';
 import MindMap from '../components/MindMap.astro';
+import Giscus from '../components/Giscus.astro';
 import { projects, byType, recentUpdates, baseOf, hasAsset } from '../lib/projects';
 
 const apps = byType('app');
@@ -66,6 +67,10 @@ const visuals = apps.map((p) => ({
           }
         </ul>
       </div>
+    </section>
+
+    <section class="section">
+      <Giscus />
     </section>
   </div>
 </Base>

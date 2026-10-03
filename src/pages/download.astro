@@ -1,4 +1,5 @@
 ---
+import Giscus from '../components/Giscus.astro';
 import Base from '../layouts/Base.astro';
 import ProjectLogo from '../components/ProjectLogo.astro';
 import { byType, loadMetrics, categories, countText, platformLabels, mmLabel } from '../lib/projects';
@@ -118,6 +119,11 @@ const grouped = Object.entries(categories).map(([key, c]) => ({
         <a href="https://github.com/dotnet9" target="_blank" rel="noopener" style="color:var(--brand)">GitHub @dotnet9</a>
         同步发布，CI 采用 Trusted Publishing 签名。
       </div>
+    </section>
+  </div>
+  <div class="wrap">
+    <section class="section">
+      <Giscus />
     </section>
   </div>
 </Base>

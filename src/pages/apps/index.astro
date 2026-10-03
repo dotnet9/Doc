@@ -1,4 +1,5 @@
 ---
+import Giscus from '../../components/Giscus.astro';
 import Base from '../../layouts/Base.astro';
 import ProjectGrid from '../../components/ProjectGrid.astro';
 
@@ -17,6 +18,11 @@ const crumbs = undefined;
     </section>
     <section class="section" style="padding-top: 26px;">
       <ProjectGrid type="app" />
+    </section>
+  </div>
+  <div class="wrap">
+    <section class="section">
+      <Giscus />
     </section>
   </div>
 </Base>
