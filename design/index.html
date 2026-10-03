@@ -260,6 +260,43 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:40px 0 34px;back
 .feat { padding: 16px; }
 .proj-hero .desc, .card p.desc { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .lib-card .card-top .ds { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; }
+
+/* ── 首页思维导图（产品全景图，导图即首屏） ───────── */
+.mm-hero { padding: 30px 0 4px; }
+.mm-headline { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 4px; flex-wrap: wrap; }
+.mm-tip { color: var(--text-3); font-size: 12.5px; }
+.mm-scroll { overflow-x: auto; scrollbar-width: thin; padding: 4px 0; }
+.mm-stage { position: relative; height: 560px; min-width: 1020px; max-width: 1120px; margin: 0 auto; }
+.mm-links { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mm-links path { fill: none; stroke: var(--brand-line); stroke-width: 2; }
+[data-theme="dark"] .mm-links path { stroke: rgba(139, 92, 246, .4); }
+.mm-node {
+  position: absolute; display: flex; align-items: center; gap: 9px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 999px;
+  padding: 8px 16px 8px 9px; font-size: 13.5px; font-weight: 600; color: var(--text);
+  box-shadow: var(--shadow); white-space: nowrap; cursor: pointer; z-index: 1;
+  opacity: 0; animation: mmIn .55s cubic-bezier(.22, 1, .36, 1) forwards;
+  transition: left .35s cubic-bezier(.22, 1, .36, 1), top .35s cubic-bezier(.22, 1, .36, 1), border-color .2s, box-shadow .2s;
+}
+.mm-node:hover { border-color: var(--brand-line); box-shadow: var(--shadow-hover); color: var(--brand); }
+.mm-node img { width: 26px; height: 26px; object-fit: contain; }
+.mm-node.mm-app { padding: 10px 18px 10px 11px; font-size: 14.5px; }
+.mm-node.mm-app img { width: 30px; height: 30px; }
+.mm-node.mm-group { font-size: 12.5px; color: var(--brand); background: var(--brand-soft); border-color: var(--brand-line); gap: 7px; padding: 7px 12px 7px 14px; }
+.mm-node.mm-group .chev { font-size: 10px; opacity: .7; transition: transform .25s; }
+.mm-node.mm-group.collapsed .chev { transform: rotate(-90deg); }
+.mm-node.mm-root {
+  background: linear-gradient(135deg, var(--brand), var(--violet)); color: #fff; border: none;
+  font-size: 17px; padding: 14px 22px; box-shadow: 0 10px 34px var(--brand-glow); cursor: default;
+}
+.mm-node.mm-root img { width: 34px; height: 34px; }
+.mm-node.mm-lib { font-family: var(--mono); font-size: 12px; padding: 6px 12px 6px 7px; }
+.mm-node.mm-lib img { width: 22px; height: 22px; }
+.mm-stats { display: flex; justify-content: center; align-items: center; gap: 16px; color: var(--text-3); font-size: 13px; flex-wrap: wrap; margin-top: 4px; }
+.mm-stats b { color: var(--brand); font-weight: 800; font-size: 15px; margin-right: 3px; }
+.mm-stats i { width: 1px; height: 12px; background: var(--line); display: inline-block; }
+@keyframes mmIn { from { opacity: 0; transform: scale(.8); } to { opacity: 1; transform: scale(1); } }
+@media (max-width: 960px) { .mm-stage { height: 520px; } .mm-scroll::after { content: "← 左右滑动查看 →"; position: sticky; display: block; text-align: center; color: var(--text-3); font-size: 11.5px; margin-top: 4px; } }
 </style>
 </head>
 <body>
@@ -292,39 +329,21 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:40px 0 34px;back
   <div class="wrap">
 
     <!-- Hero -->
-    <section class="hero">
-      <span class="pill">开源 · 免费 · 跨平台</span>
-      <h1>桌面应用与 .NET 组件库<br><span class="grad">一站式文档中心</span></h1>
-      <p>4 款桌面应用 + 7 个组件库（24+ 个 NuGet 包），点图即达。</p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="#apps">浏览应用</a>
-        <a class="btn btn-ghost" href="#libs">浏览组件库</a>
+    <section class="mm-hero">
+      <div class="mm-headline">
+        <span class="pill">码坊 CodeWF · 开源全景图</span>
+        <span class="mm-tip">点击节点，直达项目</span>
       </div>
-
-      <div class="visual-strip">
-        <a class="visual-card" href="app.html">
-          <img src="../public/assets/quickapp/gifs/settings.gif" alt="QuickApp 搜索">
-          <span class="vc-brand"><span class="plogo" data-l="Q"><img src="../../QuickApp/logo.svg" alt="" onerror="this.remove()"></span>QuickApp</span>
-        </a>
-        <a class="visual-card no-shot" href="#">
-          <span class="plogo" data-l="C"><img src="../../ClearC/logo.svg" alt="" onerror="this.remove()"></span>
-          <span class="vc-brand">ClearC</span>
-        </a>
-        <a class="visual-card" href="#">
-          <img src="../public/assets/zhijian/media/zhijian-mind-drag.gif" alt="枝见脑图">
-          <span class="vc-brand"><span class="plogo" data-l="枝"><img src="../../Zhijian/logo.svg" alt="" onerror="this.remove()"></span>枝见</span>
-        </a>
-        <a class="visual-card" href="app.html">
-          <img src="../public/assets/vex/typora/2_typora_文件列表.png" alt="维刻编辑器">
-          <span class="vc-brand"><span class="plogo" data-l="V"><img src="../../Vex/logo.svg" alt="" onerror="this.remove()"></span>维刻</span>
-        </a>
+      <div class="mm-scroll">
+        <div class="mm-stage" id="mmStage">
+          <svg class="mm-links" id="mmLinks" aria-hidden="true"></svg>
+        </div>
       </div>
-      <div class="visual-caption">▲ 点卡片进入项目 · 动图为真实运行画面</div>
-      <div class="stats">
-        <div class="stat"><b>11</b><span>开源项目</span></div>
-        <div class="stat"><b>24+</b><span>NuGet 包</span></div>
-        <div class="stat"><b>3</b><span>桌面平台</span></div>
-        <div class="stat"><b>100%</b><span>中文文档</span></div>
+      <div class="mm-stats">
+        <span><b>11</b> 开源项目</span><i></i>
+        <span><b>24+</b> NuGet 包</span><i></i>
+        <span><b>3</b> 桌面平台</span><i></i>
+        <span><b>100%</b> 中文文档</span>
       </div>
     </section>
 
@@ -623,6 +642,145 @@ document.querySelectorAll('.pkg-line .cp').forEach(btn => btn.onclick = () => {
   const old = btn.textContent; btn.textContent = '✓';
   setTimeout(() => btn.textContent = old, 1200);
 });
+</script>
+
+<script>
+// ── 首页思维导图：布局 + 连线 + 折叠（零依赖） ──
+(function () {
+  const stage = document.getElementById('mmStage');
+  if (!stage) return;
+  const svg = document.getElementById('mmLinks');
+  const NS = 'http://www.w3.org/2000/svg';
+
+  const data = {
+    left: [
+      { name: 'QuickApp', logo: '../../QuickApp/logo.svg', href: '#' },
+      { name: 'ClearC', logo: '../../ClearC/logo.svg', href: '#' },
+      { name: '枝见 Zhijian', logo: '../../Zhijian/logo.svg', href: '#' },
+      { name: '维刻 Vex', logo: '../../Vex/logo.svg', href: 'app.html' },
+    ],
+    right: [
+      { group: 'UI · 界面', children: [
+        { name: 'Lang.Avalonia', logo: '../../../libs/Lang.Avalonia/logo.svg', href: '#' },
+        { name: 'CodeWF.Markdown', logo: '../../../libs/CodeWF.Markdown/logo.svg', href: '#' },
+      ]},
+      { group: '通信 · 集成', children: [
+        { name: 'CodeWF.NetWeaver', logo: '../../../libs/CodeWF.NetWeaver/logo.svg', href: '#' },
+        { name: 'CodeWF.EventBus', logo: '../../../libs/CodeWF.EventBus/logo.svg', href: 'lib.html' },
+        { name: 'CodeWF.EventBus.Socket', logo: '../../../libs/CodeWF.EventBus.Socket/logo.svg', href: '#' },
+      ]},
+      { group: '基础 · 工具', children: [
+        { name: 'CodeWF.Tools', logo: '../../../libs/CodeWF.Tools/logo.svg', href: '#' },
+        { name: 'CodeWF.LogViewer', logo: '../../../libs/CodeWF.LogViewer/logo.svg', href: '#' },
+      ]},
+    ],
+  };
+
+  const root = document.createElement('div');
+  root.className = 'mm-node mm-root';
+  root.innerHTML = '<img src="../../CodeWF/logo.svg" alt="" onerror="this.remove()"><span>码坊 CodeWF</span>';
+  stage.appendChild(root);
+
+  const apps = [], groups = [];
+  const collapsed = new Set();
+
+  function bind(el, href) {
+    if (href && href !== '#') el.href = href;
+    else el.addEventListener('click', (e) => e.preventDefault());
+  }
+
+  data.left.forEach((it, i) => {
+    const el = document.createElement('a');
+    el.className = 'mm-node mm-app';
+    el.title = it.name;
+    el.innerHTML = '<img src="' + it.logo + '" alt="" onerror="this.remove()"><span>' + it.name + '</span>';
+    el.style.animationDelay = (0.08 + i * 0.08) + 's';
+    stage.appendChild(el);
+    bind(el, it.href);
+    apps.push(el);
+  });
+
+  data.right.forEach((g, gi) => {
+    const gel = document.createElement('a');
+    gel.className = 'mm-node mm-group';
+    gel.innerHTML = '<span>' + g.group + '</span><span class="chev">▾</span>';
+    gel.style.animationDelay = (0.16 + gi * 0.08) + 's';
+    gel.addEventListener('click', () => {
+      gel.classList.toggle('collapsed');
+      const has = collapsed.has(gi);
+      has ? collapsed.delete(gi) : collapsed.add(gi);
+      layout();
+    });
+    stage.appendChild(gel);
+    const kids = g.children.map((c, ci) => {
+      const el = document.createElement('a');
+      el.className = 'mm-node mm-lib';
+      el.title = c.name;
+      el.innerHTML = '<img src="' + c.logo + '" alt="" onerror="this.remove()"><span>' + c.name + '</span>';
+      el.style.animationDelay = (0.28 + gi * 0.1 + ci * 0.06) + 's';
+      stage.appendChild(el);
+      bind(el, c.href);
+      return el;
+    });
+    groups.push({ el: gel, kids });
+  });
+
+  function layout() {
+    const W = stage.clientWidth, H = stage.clientHeight;
+    const cx = W / 2, cy = H / 2;
+    root.style.left = (cx - root.offsetWidth / 2) + 'px';
+    root.style.top = (cy - root.offsetHeight / 2) + 'px';
+
+    // 左列：应用（右缘对齐中心左侧 150px）
+    const lTotal = apps.reduce((t, e) => t + e.offsetHeight, 0) + (apps.length - 1) * 18;
+    let y = cy - lTotal / 2;
+    apps.forEach((e) => {
+      e.style.left = (cx - 150 - e.offsetWidth) + 'px';
+      e.style.top = y + 'px';
+      y += e.offsetHeight + 18;
+    });
+
+    // 右列：分组（可折叠）+ 库
+    groups.forEach((g, gi) => g.kids.forEach((k) => (k.style.display = collapsed.has(gi) ? 'none' : '')));
+    const items = [];
+    groups.forEach((g, gi) => {
+      items.push(g.el);
+      if (!collapsed.has(gi)) items.push(...g.kids);
+    });
+    const rTotal = items.reduce((t, e) => t + e.offsetHeight, 0) + (items.length - 1) * 10;
+    let ry = cy - rTotal / 2;
+    items.forEach((e) => {
+      e.style.left = (e.classList.contains('mm-group') ? cx + 150 : cx + 340) + 'px';
+      e.style.top = ry + 'px';
+      ry += e.offsetHeight + 10;
+    });
+    draw();
+  }
+
+  function draw() {
+    svg.innerHTML = '';
+    const rLeft = root.offsetLeft, rRight = root.offsetLeft + root.offsetWidth;
+    const rcy = root.offsetTop + root.offsetHeight / 2;
+    const curve = (x1, y1, x2, y2) => {
+      const p = document.createElementNS(NS, 'path');
+      const mx = (x1 + x2) / 2;
+      p.setAttribute('d', 'M ' + x1 + ' ' + y1 + ' C ' + mx + ' ' + y1 + ', ' + mx + ' ' + y2 + ', ' + x2 + ' ' + y2);
+      svg.appendChild(p);
+    };
+    apps.forEach((e) => curve(rLeft, rcy, e.offsetLeft + e.offsetWidth, e.offsetTop + e.offsetHeight / 2));
+    groups.forEach((g, gi) => {
+      curve(rRight, rcy, g.el.offsetLeft, g.el.offsetTop + g.el.offsetHeight / 2);
+      if (!collapsed.has(gi)) {
+        g.kids.forEach((k) => curve(g.el.offsetLeft + g.el.offsetWidth, g.el.offsetTop + g.el.offsetHeight / 2, k.offsetLeft, k.offsetTop + k.offsetHeight / 2));
+      }
+    });
+  }
+
+  requestAnimationFrame(layout);
+  setTimeout(layout, 400);   // 图片加载后宽度变化重排
+  setTimeout(layout, 1000);
+  window.addEventListener('resize', layout);
+})();
 </script>
 </body>
 </html>
