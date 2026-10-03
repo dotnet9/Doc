@@ -166,6 +166,8 @@ img { display: block; max-width: 100%; }
   display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 12.5px; color: var(--text-3);
 }
 .side-stats .ss b { color: var(--text); font-size: 13.5px; font-family: var(--mono); }
+.side-stats a.ss:hover { border-color: var(--brand-line); box-shadow: var(--shadow); }
+.side-stats a.ss:hover b { color: var(--brand); }
 
 .shot { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); background: var(--ink-panel); }
 .shot img { width: 100%; height: 100%; object-fit: cover; }

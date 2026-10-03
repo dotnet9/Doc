@@ -115,16 +115,16 @@ const projBar = [
         </div>
       </div>
       <div class="side-stats">
-        <div class="ss">GitHub Star <b>★ {starText(metrics.stars[p.slug])}</b></div>
+        <a class="ss" href={p.repo} target="_blank" rel="noopener" title="在 GitHub 查看源码">GitHub Star <b>★ {starText(metrics.stars[p.slug])}</b></a>
         {
           isApp ? (
             <>
-              <div class="ss">最近发布 <b>{lastDate ?? '—'}</b></div>
+              <a class="ss" href={releaseUrl} target="_blank" rel="noopener" title="查看最新发布">最近发布 <b>{lastDate ?? '—'}</b></a>
               <div class="ss">内置 <b>自动更新</b></div>
             </>
           ) : (
             <>
-              <div class="ss">NuGet 下载 <b>{countText(nugetTotal)}</b></div>
+              <a class="ss" href={pkg ? `https://www.nuget.org/packages/${pkg}` : 'https://www.nuget.org/profiles/CodeWF'} target="_blank" rel="noopener" title="在 NuGet 查看主包">NuGet 下载 <b>{countText(nugetTotal)}</b></a>
               <div class="ss">子包数量 <b>{p.nuget?.length ?? 0}</b></div>
             </>
           )
