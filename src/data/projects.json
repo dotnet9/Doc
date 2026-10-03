@@ -173,8 +173,20 @@
           "desc": "新版自动提醒，单实例与关闭保护。"
         }
       ],
-      "screenshots": [],
-      "docs": null,
+      "screenshots": [
+        {
+          "src": "media/confirm-clean.png",
+          "caption": "确认清理：25 项 · 可释放 16.79 GB"
+        }
+      ],
+      "docs": {
+        "sources": [
+          "docs"
+        ],
+        "strip": [
+          "docs"
+        ]
+      },
       "changelog": [],
       "builtWith": [
         "codewf-logviewer"
@@ -194,7 +206,7 @@
           "desc": "中风险项手动确认后执行，失败原因逐条可查。"
         }
       ],
-      "heroShot": null
+      "heroShot": "media/confirm-clean.png"
     },
     {
       "slug": "zhijian",

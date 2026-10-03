@@ -297,6 +297,15 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:40px 0 34px;back
 .mm-stats i { width: 1px; height: 12px; background: var(--line); display: inline-block; }
 @keyframes mmIn { from { opacity: 0; transform: scale(.8); } to { opacity: 1; transform: scale(1); } }
 @media (max-width: 960px) { .mm-stage { height: 520px; } .mm-scroll::after { content: "← 左右滑动查看 →"; position: sticky; display: block; text-align: center; color: var(--text-3); font-size: 11.5px; margin-top: 4px; } }
+
+/* ── 暗色可读性修复 ───────── */
+[data-theme="dark"] { --text-3: #a5a0c4; --muted: #c3bede; }
+[data-theme="dark"] .mm-node.mm-group { color: #b9a3ff; background: rgba(139, 92, 246, .18); border-color: rgba(139, 92, 246, .45); }
+[data-theme="dark"] .mm-stats b { color: #a78bfa; }
+[data-theme="dark"] .mm-tip { color: #a5a0c4; }
+[data-theme="dark"] .pill.blue { background: rgba(92, 176, 239, .16); color: #5cb0ef; }
+[data-theme="dark"] .pill { background: rgba(139, 92, 246, .2); color: #c3b5ff; }
+[data-theme="dark"] .tag { color: #a5a0c4; }
 </style>
 </head>
 <body>
@@ -370,7 +379,7 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:40px 0 34px;back
         </a>
 
         <a class="card hoverable app-card" href="#">
-          <span class="app-shot"><span class="app-shot-fallback"><span class="plogo" data-l="C"><img src="../../ClearC/logo.svg" alt="" onerror="this.remove()"></span></span></span>
+          <span class="app-shot"><img src="../public/assets/clearc/confirm-clean.png" alt="ClearC"></span>
           <span class="app-card-body">
             <span class="card-top">
               <span class="plogo sm" data-l="C"><img src="../../ClearC/logo.svg" alt="" onerror="this.remove()"></span>
@@ -654,24 +663,24 @@ document.querySelectorAll('.pkg-line .cp').forEach(btn => btn.onclick = () => {
 
   const data = {
     left: [
-      { name: 'QuickApp', logo: '../../QuickApp/logo.svg', href: '#' },
-      { name: 'ClearC', logo: '../../ClearC/logo.svg', href: '#' },
-      { name: '枝见 Zhijian', logo: '../../Zhijian/logo.svg', href: '#' },
-      { name: '维刻 Vex', logo: '../../Vex/logo.svg', href: 'app.html' },
+      { name: 'QuickApp', tip: '停靠屏幕四边的快捷应用启动器', logo: '../../QuickApp/logo.svg', href: '#' },
+      { name: 'ClearC', tip: 'C 盘空间分析与安全清理工具', logo: '../../ClearC/logo.svg', href: '#' },
+      { name: '枝见 Zhijian', tip: 'Markdown-first 脑图编辑器', logo: '../../Zhijian/logo.svg', href: '#' },
+      { name: '维刻 Vex', tip: '为写作与排版而生的 Markdown 编辑器', logo: '../../Vex/logo.svg', href: 'app.html' },
     ],
     right: [
       { group: 'UI · 界面', children: [
-        { name: 'Lang.Avalonia', logo: '../../../libs/Lang.Avalonia/logo.svg', href: '#' },
-        { name: 'CodeWF.Markdown', logo: '../../../libs/CodeWF.Markdown/logo.svg', href: '#' },
+        { name: 'Lang.Avalonia', tip: 'Avalonia 插件化多语言（i18n）库', logo: '../../../libs/Lang.Avalonia/logo.svg', href: '#' },
+        { name: 'CodeWF.Markdown', tip: 'Avalonia Markdown 渲染控件', logo: '../../../libs/CodeWF.Markdown/logo.svg', href: '#' },
       ]},
       { group: '通信 · 集成', children: [
-        { name: 'CodeWF.NetWeaver', logo: '../../../libs/CodeWF.NetWeaver/logo.svg', href: '#' },
-        { name: 'CodeWF.EventBus', logo: '../../../libs/CodeWF.EventBus/logo.svg', href: 'lib.html' },
-        { name: 'CodeWF.EventBus.Socket', logo: '../../../libs/CodeWF.EventBus.Socket/logo.svg', href: '#' },
+        { name: 'CodeWF.NetWeaver', tip: 'AOT 友好的网络通信库', logo: '../../../libs/CodeWF.NetWeaver/logo.svg', href: '#' },
+        { name: 'CodeWF.EventBus', tip: '轻量进程内事件总线', logo: '../../../libs/CodeWF.EventBus/logo.svg', href: 'lib.html' },
+        { name: 'CodeWF.EventBus.Socket', tip: '跨进程 TCP 事件总线（IPC）', logo: '../../../libs/CodeWF.EventBus.Socket/logo.svg', href: '#' },
       ]},
       { group: '基础 · 工具', children: [
-        { name: 'CodeWF.Tools', logo: '../../../libs/CodeWF.Tools/logo.svg', href: '#' },
-        { name: 'CodeWF.LogViewer', logo: '../../../libs/CodeWF.LogViewer/logo.svg', href: '#' },
+        { name: 'CodeWF.Tools', tip: 'C# 开发者通用工具库', logo: '../../../libs/CodeWF.Tools/logo.svg', href: '#' },
+        { name: 'CodeWF.LogViewer', tip: '轻量日志组件', logo: '../../../libs/CodeWF.LogViewer/logo.svg', href: '#' },
       ]},
     ],
   };
@@ -692,7 +701,7 @@ document.querySelectorAll('.pkg-line .cp').forEach(btn => btn.onclick = () => {
   data.left.forEach((it, i) => {
     const el = document.createElement('a');
     el.className = 'mm-node mm-app';
-    el.title = it.name;
+    el.title = it.tip;
     el.innerHTML = '<img src="' + it.logo + '" alt="" onerror="this.remove()"><span>' + it.name + '</span>';
     el.style.animationDelay = (0.08 + i * 0.08) + 's';
     stage.appendChild(el);
@@ -703,6 +712,7 @@ document.querySelectorAll('.pkg-line .cp').forEach(btn => btn.onclick = () => {
   data.right.forEach((g, gi) => {
     const gel = document.createElement('a');
     gel.className = 'mm-node mm-group';
+    gel.title = '点击折叠 / 展开该分类';
     gel.innerHTML = '<span>' + g.group + '</span><span class="chev">▾</span>';
     gel.style.animationDelay = (0.16 + gi * 0.08) + 's';
     gel.addEventListener('click', () => {
@@ -717,7 +727,7 @@ document.querySelectorAll('.pkg-line .cp').forEach(btn => btn.onclick = () => {
     const kids = g.children.map((c, ci) => {
       const el = document.createElement('a');
       el.className = 'mm-node mm-lib';
-      el.title = c.name;
+      el.title = c.tip;
       el.innerHTML = '<img src="' + c.logo + '" alt="" onerror="this.remove()"><span>' + c.name + '</span>';
       el.style.animationDelay = (0.28 + gi * 0.1 + ci * 0.06) + 's';
       stage.appendChild(el);
