@@ -12,6 +12,7 @@ import {
   orderedDocs,
   starText,
   countText,
+  mmLabel,
   hasAsset,
   platformLabels,
   type Project,
@@ -54,7 +55,7 @@ const projBar = [
 ---
 
 <Base
-  title={`${p.name} · ${p.tagline} - 码坊开源`}
+  title={`${mmLabel(p)} · ${p.tagline} - 码坊开源`}
   description={p.description}
   brand={{ name: p.name, logo: p.slug, href: base, mono: !isApp }}
   crumb={[
@@ -72,7 +73,7 @@ const projBar = [
       <ProjectLogo slug={p.slug} name={p.name} size="xl" />
       <div class="info">
         <h1 class:list={[{ mono: !isApp }]}>
-          {p.name}
+          {mmLabel(p)}
           {release?.version && <span class="pill muted">v{release.version}</span>}
         </h1>
         <div class="slogan">{p.tagline}</div>

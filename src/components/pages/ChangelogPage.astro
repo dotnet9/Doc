@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import ProjectLogo from '../ProjectLogo.astro';
 import Giscus from '../Giscus.astro';
-import { baseOf, loadChangelog, loadMetrics, type Project } from '../../lib/projects';
+import { baseOf, loadChangelog, loadMetrics, mmLabel, type Project } from '../../lib/projects';
 
 interface Props {
   p: Project;
@@ -40,7 +40,7 @@ const projBar = [
       <ProjectLogo slug={p.slug} name={p.name} size="lg" />
       <div class="info">
         <h1 style="font-size: 30px;">更新日志</h1>
-        <div class="slogan">{p.name} · {p.tagline}</div>
+        <div class="slogan">{mmLabel(p)} · {p.tagline}</div>
         <p class="desc" style="margin-bottom: 0;">
           {
             cl.source ? (

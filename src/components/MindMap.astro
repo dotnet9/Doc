@@ -1,6 +1,6 @@
 ---
 import ProjectLogo from './ProjectLogo.astro';
-import { byType, categories, logoSrc, baseOf } from '../lib/projects';
+import { byType, categories, logoSrc, baseOf, mmLabel } from '../lib/projects';
 
 /**
  * 首屏产品思维导图：中心「码坊」，左侧应用、右侧组件库按分类分组（可折叠）。
@@ -12,10 +12,10 @@ const groups = Object.entries(categories).map(([key, c]) => ({
   group: c.label,
   children: libs
     .filter((p) => p.category === key)
-    .map((p) => ({ name: p.name, tip: p.tagline, logo: logoSrc(p.slug), href: baseOf(p) })),
+    .map((p) => ({ name: mmLabel(p), tip: p.tagline, logo: logoSrc(p.slug), href: baseOf(p) })),
 }));
 const data = {
-  left: apps.map((p) => ({ name: p.name, tip: p.tagline, logo: logoSrc(p.slug), href: baseOf(p) })),
+  left: apps.map((p) => ({ name: mmLabel(p), tip: p.tagline, logo: logoSrc(p.slug), href: baseOf(p) })),
   right: groups,
 };
 ---

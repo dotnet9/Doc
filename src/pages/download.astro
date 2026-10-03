@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import ProjectLogo from '../components/ProjectLogo.astro';
-import { byType, loadMetrics, categories, countText, platformLabels } from '../lib/projects';
+import { byType, loadMetrics, categories, countText, platformLabels, mmLabel } from '../lib/projects';
 
 const apps = byType('app');
 const libs = byType('lib');
@@ -16,6 +16,7 @@ const grouped = Object.entries(categories).map(([key, c]) => ({
   title="下载中心 - 码坊 CodeWF"
   description="码坊开源应用下载中心：QuickApp、ClearC、枝见、维刻 全平台安装包与 .NET 组件库 NuGet 安装。"
   active="download"
+  simpleFooter
 >
   <div class="wrap">
     <section class="hero" style="padding: 56px 0 8px;">
@@ -42,7 +43,7 @@ const grouped = Object.entries(categories).map(([key, c]) => ({
                   <ProjectLogo slug={p.slug} name={p.name} size="lg" />
                   <div>
                     <div class="nm">
-                      {p.name} {rel?.version && <span class="pill muted">v{rel.version}</span>}
+                      {mmLabel(p)} {rel?.version && <span class="pill muted">v{rel.version}</span>}
                     </div>
                     <div class="ds">{p.tagline}</div>
                   </div>

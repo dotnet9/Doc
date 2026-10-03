@@ -305,7 +305,8 @@
           "desc": "大纲、Markdown、脑图随意切换，导出 OPML/XMind 分享。"
         }
       ],
-      "heroShot": "media/zhijian-mind-drag.gif"
+      "heroShot": "media/zhijian-mind-drag.gif",
+      "enName": "Zhijian"
     },
     {
       "slug": "vex",
@@ -407,7 +408,8 @@
           "desc": "导出 PDF/长图/Word，或一键复制公众号、知乎、掘金富文本。"
         }
       ],
-      "heroShot": "typora/2_typora_文件列表.png"
+      "heroShot": "typora/2_typora_文件列表.png",
+      "enName": "Vex"
     },
     {
       "slug": "lang-avalonia",

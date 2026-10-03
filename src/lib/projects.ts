@@ -10,6 +10,7 @@ export interface Project {
   slug: string;
   type: 'app' | 'lib';
   name: string;
+  enName?: string;
   tagline: string;
   description: string;
   repo: string;
@@ -41,6 +42,9 @@ export const bySlug = (slug: string) => projects.find((p) => p.slug === slug);
 export const byType = (type: 'app' | 'lib') => projects.filter((p) => p.type === type);
 export const sectionOf = (p: Project) => (p.type === 'app' ? 'apps' : 'libs');
 export const baseOf = (p: Project) => `/${sectionOf(p)}/${p.slug}/`;
+
+/** 展示名：中文名应用带英文名（枝见 Zhijian），英文应用原样 */
+export const mmLabel = (p: Project) => (p.enName ? `${p.name} ${p.enName}` : p.name);
 
 export const categoryLabel = (p: Project) =>
   p.category ? (categories[p.category]?.label ?? p.category) : '';

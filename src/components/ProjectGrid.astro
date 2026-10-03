@@ -1,6 +1,6 @@
 ---
 import ProjectLogo from '../components/ProjectLogo.astro';
-import { byType, starText, loadMetrics, categories, platformLabels, hasAsset, type Project } from '../lib/projects';
+import { byType, starText, loadMetrics, categories, platformLabels, hasAsset, mmLabel, type Project } from '../lib/projects';
 
 interface Props {
   type: 'app' | 'lib';
@@ -31,7 +31,7 @@ const shotSrc = (p: Project) => (p.heroShot && hasAsset(`${p.slug}/${p.heroShot}
                 <ProjectLogo slug={p.slug} name={p.name} size="sm" />
                 <span>
                   <span class="nm">
-                    {p.name}
+                    {mmLabel(p)}
                     {metrics.releases[p.slug]?.version && <span class="pill muted">v{metrics.releases[p.slug]!.version}</span>}
                   </span>
                   <span class="ds">{p.tagline}</span>
