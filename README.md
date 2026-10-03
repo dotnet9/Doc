@@ -70,6 +70,14 @@ Doc 仓库 deploy workflow 触发条件：
   └─ rsync dist/ → 服务器
 ```
 
+## 更新日志统一规范（各仓库约定）
+
+- **文件**：仓库根目录 `UpdateLog.md`（唯一日志文件，不要另建 RELEASES/CHANGELOG 复本）
+- **格式**：`# 更新日志` 标题 + `## 版本号 (YYYY-MM-DD)` 分节 + `- ` 要点列表，最新版本在最上
+- **同步**：push 后由 notify workflow 自动通知文档站；文档站解析该文件生成更新日志页与首页动态
+- **应用内读取**：枝见、维刻的帮助窗口运行时读取此文件（csproj 打包），格式变更需同步应用解析逻辑
+- 说明：QuickApp / ClearC 的历史日志已自 GitHub Releases 整理入库
+
 ## 新项目接入（一分钟）
 
 1. 在 `src/data/projects.json` 加一条记录（slug、类型、简介、特性、NuGet 包、文档来源等，字段见现有条目）；

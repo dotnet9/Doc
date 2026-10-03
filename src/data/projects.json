@@ -102,7 +102,9 @@
           "docs"
         ]
       },
-      "changelog": [],
+      "changelog": [
+        "UpdateLog.md"
+      ],
       "builtWith": [],
       "usedBy": [],
       "quickStart": [
@@ -187,7 +189,9 @@
           "docs"
         ]
       },
-      "changelog": [],
+      "changelog": [
+        "UpdateLog.md"
+      ],
       "builtWith": [
         "codewf-logviewer"
       ],
@@ -384,7 +388,6 @@
         ]
       },
       "changelog": [
-        "RELEASES.md",
         "UpdateLog.md"
       ],
       "builtWith": [
