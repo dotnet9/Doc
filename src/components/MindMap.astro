@@ -1,0 +1,193 @@
+---
+import ProjectLogo from './ProjectLogo.astro';
+import { byType, categories, logoSrc, baseOf } from '../lib/projects';
+
+/**
+ * 首屏产品思维导图：中心「码坊」，左侧应用、右侧组件库按分类分组（可折叠）。
+ * 数据全部来自 projects.json——新项目接入清单后导图自动长出节点。
+ */
+const apps = byType('app');
+const libs = byType('lib');
+const groups = Object.entries(categories).map(([key, c]) => ({
+  group: c.label,
+  children: libs
+    .filter((p) => p.category === key)
+    .map((p) => ({ name: p.name, tip: p.tagline, logo: logoSrc(p.slug), href: baseOf(p) })),
+}));
+const data = {
+  left: apps.map((p) => ({ name: p.name, tip: p.tagline, logo: logoSrc(p.slug), href: baseOf(p) })),
+  right: groups,
+};
+---
+
+<section class="mm-hero">
+  <h1 class="sr-only">码坊 CodeWF · 开源桌面应用与 .NET 组件库文档中心</h1>
+  <div class="mm-headline">
+    <span class="pill">码坊 CodeWF · 开源全景图</span>
+    <span class="mm-tip">点击节点，直达项目</span>
+  </div>
+  <div class="mm-scroll">
+    <div class="mm-stage" id="mmStage">
+      <svg class="mm-links" id="mmLinks" aria-hidden="true"></svg>
+    </div>
+  </div>
+  <div class="mm-stats">
+    <span><b>{apps.length + libs.length}</b> 开源项目</span><i></i>
+    <span><b>24+</b> NuGet 包</span><i></i>
+    <span><b>3</b> 桌面平台</span><i></i>
+    <span><b>100%</b> 中文文档</span>
+  </div>
+</section>
+
+<script type="application/json" id="mmData" set:html={JSON.stringify(data)} />
+
+<script>
+  // ── 思维导图：块布局 + 贝塞尔连线 + 分组折叠（零依赖） ──
+  (function () {
+    const stage = document.getElementById('mmStage');
+    const dataEl = document.getElementById('mmData');
+    if (!stage || !dataEl) return;
+    const svg = document.getElementById('mmLinks')!;
+    const NS = 'http://www.w3.org/2000/svg';
+    const data = JSON.parse(dataEl.textContent!) as {
+      left: { name: string; tip: string; logo: string; href: string }[];
+      right: { group: string; children: { name: string; tip: string; logo: string; href: string }[] }[];
+    };
+
+    const root = document.createElement('div');
+    root.className = 'mm-node mm-root';
+    root.innerHTML = '<img src="/logo.svg" alt="" onerror="this.remove()"><span>码坊 CodeWF</span>';
+    stage.appendChild(root);
+
+    const apps: HTMLAnchorElement[] = [];
+    const groups: { el: HTMLAnchorElement; kids: HTMLAnchorElement[] }[] = [];
+    const collapsed = new Set<number>();
+
+    const bind = (el: HTMLAnchorElement, href: string) => {
+      el.href = href;
+    };
+
+    data.left.forEach((it, i) => {
+      const el = document.createElement('a');
+      el.className = 'mm-node mm-app';
+      el.title = it.tip;
+      el.innerHTML = `<img src="${it.logo}" alt="" onerror="this.remove()"><span>${it.name}</span>`;
+      el.style.animationDelay = `${0.08 + i * 0.08}s`;
+      stage.appendChild(el);
+      bind(el, it.href);
+      apps.push(el);
+    });
+
+    data.right.forEach((g, gi) => {
+      const gel = document.createElement('a');
+      gel.className = 'mm-node mm-group';
+      gel.title = '点击折叠 / 展开该分类';
+      gel.innerHTML = `<span>${g.group}</span><span class="chev">▾</span>`;
+      gel.style.animationDelay = `${0.16 + gi * 0.08}s`;
+      gel.addEventListener('click', () => {
+        gel.classList.toggle('collapsed');
+        const has = collapsed.has(gi);
+        if (has) collapsed.delete(gi);
+        else collapsed.add(gi);
+        layout();
+        // 节点位移过渡结束后再补一次连线重绘，保证线贴合节点终位
+        setTimeout(layout, 420);
+      });
+      stage.appendChild(gel);
+      const kids = g.children.map((c, ci) => {
+        const el = document.createElement('a');
+        el.className = 'mm-node mm-lib';
+        el.title = c.tip;
+        el.innerHTML = `<img src="${c.logo}" alt="" onerror="this.remove()"><span>${c.name}</span>`;
+        el.style.animationDelay = `${0.28 + gi * 0.1 + ci * 0.06}s`;
+        stage.appendChild(el);
+        bind(el, c.href);
+        return el;
+      });
+      groups.push({ el: gel, kids });
+    });
+
+    function layout() {
+      const W = stage.clientWidth;
+      const H = stage.clientHeight;
+      if (!W || !H) return;
+      const cx = W / 2;
+      const cy = H / 2;
+      root.style.left = `${cx - root.offsetWidth / 2}px`;
+      root.style.top = `${cy - root.offsetHeight / 2}px`;
+
+      // 左列：应用（右缘对齐中心左侧 150px）
+      const lTotal = apps.reduce((t, e) => t + e.offsetHeight, 0) + (apps.length - 1) * 18;
+      let y = cy - lTotal / 2;
+      apps.forEach((e) => {
+        e.style.left = `${cx - 150 - e.offsetWidth}px`;
+        e.style.top = `${y}px`;
+        y += e.offsetHeight + 18;
+      });
+
+      // 右列：块布局——组节点垂直对齐自己的子节点群中心
+      groups.forEach((g, gi) =>
+        g.kids.forEach((k) => (k.style.display = collapsed.has(gi) ? 'none' : '')),
+      );
+      const blocks = groups.map((g, gi) => {
+        if (collapsed.has(gi)) return { gi, el: g.el, kids: [] as HTMLAnchorElement[], h: g.el.offsetHeight };
+        const h = g.kids.reduce((t, k) => t + k.offsetHeight, 0) + (g.kids.length - 1) * 8;
+        return { gi, el: g.el, kids: g.kids, h };
+      });
+      const BLOCK_GAP = 24;
+      const rTotal = blocks.reduce((t, b) => t + b.h, 0) + (blocks.length - 1) * BLOCK_GAP;
+      let by = cy - rTotal / 2;
+      blocks.forEach((b) => {
+        const gx = cx + 150;
+        const lx = cx + 340;
+        if (!b.kids.length) {
+          b.el.style.left = `${gx}px`;
+          b.el.style.top = `${by}px`;
+        } else {
+          let ky = by;
+          b.kids.forEach((k) => {
+            k.style.left = `${lx}px`;
+            k.style.top = `${ky}px`;
+            ky += k.offsetHeight + 8;
+          });
+          b.el.style.left = `${gx}px`;
+          b.el.style.top = `${by + (b.h - b.el.offsetHeight) / 2}px`;
+        }
+        by += b.h + BLOCK_GAP;
+      });
+      draw();
+    }
+
+    function draw() {
+      svg.innerHTML = '';
+      const rLeft = root.offsetLeft;
+      const rRight = root.offsetLeft + root.offsetWidth;
+      const rcy = root.offsetTop + root.offsetHeight / 2;
+      const curve = (x1: number, y1: number, x2: number, y2: number) => {
+        const p = document.createElementNS(NS, 'path');
+        const mx = (x1 + x2) / 2;
+        p.setAttribute('d', `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`);
+        svg.appendChild(p);
+      };
+      apps.forEach((e) => curve(rLeft, rcy, e.offsetLeft + e.offsetWidth, e.offsetTop + e.offsetHeight / 2));
+      groups.forEach((g, gi) => {
+        curve(rRight, rcy, g.el.offsetLeft, g.el.offsetTop + g.el.offsetHeight / 2);
+        if (!collapsed.has(gi)) {
+          g.kids.forEach((k) =>
+            curve(
+              g.el.offsetLeft + g.el.offsetWidth,
+              g.el.offsetTop + g.el.offsetHeight / 2,
+              k.offsetLeft,
+              k.offsetTop + k.offsetHeight / 2,
+            ),
+          );
+        }
+      });
+    }
+
+    requestAnimationFrame(layout);
+    setTimeout(layout, 400); // 图片加载后宽度变化重排
+    setTimeout(layout, 1000);
+    window.addEventListener('resize', layout);
+  })();
+</script>

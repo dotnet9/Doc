@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import ProjectGrid from '../components/ProjectGrid.astro';
 import ProjectLogo from '../components/ProjectLogo.astro';
-import ProjectLogo from '../components/ProjectLogo.astro';
+import MindMap from '../components/MindMap.astro';
 import { projects, byType, recentUpdates, baseOf, hasAsset } from '../lib/projects';
 
 const apps = byType('app');
@@ -17,36 +17,8 @@ const visuals = apps.map((p) => ({
 
 <Base title="码坊 CodeWF · 开源应用与组件库" active="home">
   <div class="wrap">
-    <section class="hero">
-      <span class="pill">全部开源 · 全部免费</span>
-      <h1>桌面应用与 .NET 组件库<br /><span class="grad">一站式文档中心</span></h1>
-      <p>{apps.length} 款桌面应用 + {libs.length} 个组件库（{pkgCount} 个 NuGet 包），点图即达。</p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="/apps/">浏览应用</a>
-        <a class="btn btn-ghost" href="/libs/">浏览组件库</a>
-      </div>
-
-      <div class="visual-strip">
-        {visuals.map(({ p, shot }) => (
-          <a class="visual-card" class:list={{ 'no-shot': !shot }} href={baseOf(p)} title={p.tagline}>
-            {shot && <img src={shot} alt={`${p.name} 界面预览`} loading="eager" />}
-            {!shot && <ProjectLogo slug={p.slug} name={p.name} />}
-            <span class="vc-brand">
-              {shot && <ProjectLogo slug={p.slug} name={p.name} size="sm" />}
-              {p.name}
-            </span>
-          </a>
-        ))}
-      </div>
-      <div class="visual-caption">▲ 点卡片进入项目 · 动图为真实运行画面</div>
-
-      <div class="stats">
-        <div class="stat"><b>{projects.length}</b><span>开源项目</span></div>
-        <div class="stat"><b>{pkgCount}+</b><span>NuGet 包</span></div>
-        <div class="stat"><b>3</b><span>桌面平台</span></div>
-        <div class="stat"><b>100%</b><span>中文文档</span></div>
-      </div>
-    </section>
+    <MindMap />
+  
 
     <section class="section" id="apps">
       <div class="sec-head">
