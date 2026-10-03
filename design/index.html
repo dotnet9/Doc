@@ -710,6 +710,8 @@ document.querySelectorAll('.pkg-line .cp').forEach(btn => btn.onclick = () => {
       const has = collapsed.has(gi);
       has ? collapsed.delete(gi) : collapsed.add(gi);
       layout();
+      // 节点位移过渡结束后再补一次连线重绘，保证线贴合节点终位
+      setTimeout(layout, 420);
     });
     stage.appendChild(gel);
     const kids = g.children.map((c, ci) => {
@@ -740,19 +742,36 @@ document.querySelectorAll('.pkg-line .cp').forEach(btn => btn.onclick = () => {
       y += e.offsetHeight + 18;
     });
 
-    // 右列：分组（可折叠）+ 库
+    // 右列：按「组块」布局——每个组的子节点群为一个块，组节点垂直对齐块中心
     groups.forEach((g, gi) => g.kids.forEach((k) => (k.style.display = collapsed.has(gi) ? 'none' : '')));
-    const items = [];
-    groups.forEach((g, gi) => {
-      items.push(g.el);
-      if (!collapsed.has(gi)) items.push(...g.kids);
+    const blocks = groups.map((g, gi) => {
+      if (collapsed.has(gi)) {
+        return { gi, el: g.el, kids: [], h: g.el.offsetHeight };
+      }
+      const h = g.kids.reduce((t, k) => t + k.offsetHeight, 0) + (g.kids.length - 1) * 8;
+      return { gi, el: g.el, kids: g.kids, h };
     });
-    const rTotal = items.reduce((t, e) => t + e.offsetHeight, 0) + (items.length - 1) * 10;
-    let ry = cy - rTotal / 2;
-    items.forEach((e) => {
-      e.style.left = (e.classList.contains('mm-group') ? cx + 150 : cx + 340) + 'px';
-      e.style.top = ry + 'px';
-      ry += e.offsetHeight + 10;
+    const BLOCK_GAP = 24;
+    const rTotal = blocks.reduce((t, b) => t + b.h, 0) + (blocks.length - 1) * BLOCK_GAP;
+    let by = cy - rTotal / 2;
+    blocks.forEach((b) => {
+      const gx = cx + 150, lx = cx + 340;
+      if (!b.kids.length) {
+        // 折叠块：组节点自身占位
+        b.el.style.left = gx + 'px';
+        b.el.style.top = by + 'px';
+      } else {
+        // 子节点群从块顶排布；组节点对齐块中心
+        let ky = by;
+        b.kids.forEach((k) => {
+          k.style.left = lx + 'px';
+          k.style.top = ky + 'px';
+          ky += k.offsetHeight + 8;
+        });
+        b.el.style.left = gx + 'px';
+        b.el.style.top = (by + (b.h - b.el.offsetHeight) / 2) + 'px';
+      }
+      by += b.h + BLOCK_GAP;
     });
     draw();
   }
