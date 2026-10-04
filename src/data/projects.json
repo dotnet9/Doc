@@ -501,7 +501,8 @@
       "builtWith": [],
       "usedBy": [
         "zhijian",
-        "vex"
+        "vex",
+        "codewf-toolbox"
       ]
     },
     {
@@ -584,7 +585,8 @@
       "builtWith": [],
       "usedBy": [
         "zhijian",
-        "vex"
+        "vex",
+        "codewf-toolbox"
       ]
     },
     {
@@ -653,7 +655,8 @@
       "builtWith": [],
       "usedBy": [
         "zhijian",
-        "vex"
+        "vex",
+        "codewf-toolbox"
       ]
     },
     {
@@ -812,7 +815,8 @@
       "usedBy": [
         "clearc",
         "zhijian",
-        "vex"
+        "vex",
+        "codewf-toolbox"
       ]
     },
     {
@@ -896,7 +900,8 @@
       "builtWith": [],
       "usedBy": [
         "zhijian",
-        "vex"
+        "vex",
+        "codewf-toolbox"
       ]
     },
     {
@@ -980,6 +985,87 @@
         "UpdateLog.md"
       ],
       "builtWith": [],
+      "usedBy": []
+    },
+    {
+      "slug": "codewf-toolbox",
+      "type": "app",
+      "name": "码匠工具箱",
+      "enName": "Toolbox",
+      "tagline": "模块化开发者桌面工具箱",
+      "description": "基于 Avalonia + Prism 的模块化桌面工具箱：格式转换、日志查看、开发辅助、Web 辅助、安全工具、XML 翻译管理等模块，简/繁/英/日四语言。主程序与功能模块解耦，工具页持续扩展。",
+      "repo": "https://github.com/dotnet9/CodeWF.Toolbox",
+      "repoPath": "../CodeWF.Toolbox",
+      "category": null,
+      "tags": [
+        "工具箱",
+        "开发者效率",
+        "Avalonia"
+      ],
+      "platforms": [
+        "windows"
+      ],
+      "frameworks": [
+        "net11.0"
+      ],
+      "features": [
+        {
+          "icon": "🧰",
+          "title": "模块化工具箱",
+          "desc": "Prism 模块化架构，工具页即插即用，主程序与功能模块解耦。"
+        },
+        {
+          "icon": "🔄",
+          "title": "格式转换",
+          "desc": "JSON/YAML 等常用格式互转，开发日常一站式处理。"
+        },
+        {
+          "icon": "📊",
+          "title": "日志查看",
+          "desc": "内置日志查看器，配合码坊日志组件无缝分析。"
+        },
+        {
+          "icon": "🛠️",
+          "title": "开发辅助",
+          "desc": "时间戳、正则、编码等高频开发辅助工具页。"
+        },
+        {
+          "icon": "🌐",
+          "title": "Web 辅助",
+          "desc": "Web 开发常用小工具，随开随用。"
+        },
+        {
+          "icon": "🌍",
+          "title": "四语言界面",
+          "desc": "简中、繁中、英、日，XML 资源国际化。"
+        }
+      ],
+      "heroShot": "screen.png",
+      "screenshots": [
+        {
+          "src": "screen.png",
+          "caption": "码匠工具箱主界面"
+        }
+      ],
+      "archImage": "assets/architecture.svg",
+      "docs": {
+        "sources": [
+          "docs"
+        ],
+        "strip": [
+          "docs"
+        ]
+      },
+      "changelog": [
+        "UpdateLog.md"
+      ],
+      "builtWith": [
+        "codewf-eventbus",
+        "codewf-logviewer",
+        "codewf-tools",
+        "lang-avalonia",
+        "codewf-markdown"
+      ],
       "usedBy": []
     }
   ]
