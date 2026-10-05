@@ -1,1072 +1,1581 @@
 {
-  "categories": {
-    "ui": {
-      "label": "UI · 界面"
-    },
-    "net": {
-      "label": "通信 · 集成"
-    },
-    "base": {
-      "label": "基础 · 工具"
-    }
+ "categories": {
+  "ui": {
+   "label": "UI · 界面"
   },
-  "platforms": {
-    "windows": {
-      "label": "Windows"
-    },
-    "macos": {
-      "label": "macOS"
-    },
-    "linux": {
-      "label": "Linux"
-    }
+  "net": {
+   "label": "通信 · 集成"
   },
-  "projects": [
+  "base": {
+   "label": "基础 · 工具"
+  }
+ },
+ "platforms": {
+  "windows": {
+   "label": "Windows"
+  },
+  "macos": {
+   "label": "macOS"
+  },
+  "linux": {
+   "label": "Linux"
+  }
+ },
+ "projects": [
+  {
+   "slug": "quickapp",
+   "type": "app",
+   "name": "QuickApp",
+   "tagline": "停靠屏幕四边的快捷应用启动器",
+   "description": "跨平台快捷应用 Dock：停靠屏幕四边、一排图标、搜索即达。支持中文名/拼音全拼/首字母搜索（含开始菜单与商店应用）、全局热键、触边唤出、多显示器定位、配置导入导出与便携模式。",
+   "repo": "https://github.com/dotnet9/QuickApp",
+   "repoPath": "../QuickApp",
+   "category": null,
+   "tags": [
+    "启动器",
+    "效率工具",
+    "Avalonia"
+   ],
+   "platforms": [
+    "windows",
+    "macos",
+    "linux"
+   ],
+   "frameworks": [
+    "net10.0"
+   ],
+   "features": [
     {
-      "slug": "quickapp",
-      "type": "app",
-      "name": "QuickApp",
-      "tagline": "停靠屏幕四边的快捷应用启动器",
-      "description": "跨平台快捷应用 Dock：停靠屏幕四边、一排图标、搜索即达。支持中文名/拼音全拼/首字母搜索（含开始菜单与商店应用）、全局热键、触边唤出、多显示器定位、配置导入导出与便携模式。",
-      "repo": "https://github.com/dotnet9/QuickApp",
-      "repoPath": "../QuickApp",
-      "category": null,
-      "tags": [
-        "启动器",
-        "效率工具",
-        "Avalonia"
-      ],
-      "platforms": [
-        "windows",
-        "macos",
-        "linux"
-      ],
-      "frameworks": [
-        "net10.0"
-      ],
-      "features": [
-        {
-          "icon": "📌",
-          "title": "四边停靠",
-          "desc": "停靠屏幕任意一边，悬停放大、触边唤出，多显示器智能定位。"
-        },
-        {
-          "icon": "🔍",
-          "title": "拼音搜索",
-          "desc": "中文名、全拼、首字母即搜即达，覆盖开始菜单与商店应用。"
-        },
-        {
-          "icon": "✋",
-          "title": "拖动排序",
-          "desc": "编辑模式下拖动排序、就地改名，图标库自由更换。"
-        },
-        {
-          "icon": "⌨️",
-          "title": "全局热键",
-          "desc": "任意界面一键唤出/隐藏，键盘党的效率入口。"
-        },
-        {
-          "icon": "💾",
-          "title": "便携模式",
-          "desc": "配置导入导出（.qa 格式含图标库），换机迁移零成本。"
-        },
-        {
-          "icon": "🔄",
-          "title": "自动更新",
-          "desc": "带限流退避的自动更新检查，始终用最新版。"
-        }
-      ],
-      "screenshots": [
-        {
-          "src": "gifs/dock-menu.gif",
-          "caption": "Dock 菜单：悬停即达"
-        },
-        {
-          "src": "gifs/settings.gif",
-          "caption": "设置与便携模式"
-        },
-        {
-          "src": "gifs/search.gif",
-          "caption": "拼音搜索即达"
-        },
-        {
-          "src": "gifs/edit.gif",
-          "caption": "编辑模式：拖动排序"
-        }
-      ],
-      "docs": {
-        "sources": [
-          "docs"
-        ],
-        "strip": [
-          "docs"
-        ]
-      },
-      "changelog": [
-        "UpdateLog.md"
-      ],
-      "builtWith": [],
-      "usedBy": [],
-      "quickStart": [
-        {
-          "title": "下载安装",
-          "desc": "获取对应平台安装包，首次启动选择停靠边与主题。"
-        },
-        {
-          "title": "添加常用项",
-          "desc": "编辑模式下拖入应用、网址或命令，拖动排序、就地改名。"
-        },
-        {
-          "title": "搜索即达",
-          "desc": "触边或热键唤出，拼音/首字母搜索，回车直接启动。"
-        }
-      ],
-      "heroShot": "gifs/dock-menu.gif"
+     "icon": "📌",
+     "title": "四边停靠",
+     "desc": "停靠屏幕任意一边，悬停放大、触边唤出，多显示器智能定位。"
     },
     {
-      "slug": "clearc",
-      "type": "app",
-      "name": "ClearC",
-      "tagline": "C 盘空间分析与安全清理",
-      "description": "面向 Windows 的 C 盘空间分析与安全清理工具，约 120 个清理目标（系统缓存/日志转储/升级残留/遥测/显卡游戏缓存/浏览器/开发缓存），强调「展示清楚容量、风险与失败原因」而非多删。",
-      "repo": "https://github.com/dotnet9/ClearC",
-      "repoPath": "../ClearC",
-      "category": null,
-      "tags": [
-        "磁盘清理",
-        "系统工具",
-        "Avalonia"
-      ],
-      "platforms": [
-        "windows"
-      ],
-      "frameworks": [
-        "net10.0"
-      ],
-      "features": [
-        {
-          "icon": "🧹",
-          "title": "约 120 个清理目标",
-          "desc": "系统缓存、日志转储、升级残留、显卡游戏缓存、开发缓存一网打尽。"
-        },
-        {
-          "icon": "🚦",
-          "title": "风险分级",
-          "desc": "低风险默认勾选、中风险手动确认，删什么心里有数。"
-        },
-        {
-          "icon": "⚡",
-          "title": "两档并行扫描",
-          "desc": "快档 4 并发先行展示，慢档后台补齐，不卡界面。"
-        },
-        {
-          "icon": "🔎",
-          "title": "真实路径探测",
-          "desc": "按环境变量、注册表与 CLI 探测真实路径，不猜路径。"
-        },
-        {
-          "icon": "🛡️",
-          "title": "失败原因透明",
-          "desc": "日志脱敏面板，每个失败项都能看清为什么。"
-        },
-        {
-          "icon": "🔄",
-          "title": "自动更新",
-          "desc": "新版自动提醒，单实例与关闭保护。"
-        }
-      ],
-      "screenshots": [
-        {
-          "src": "media/confirm-clean.png",
-          "caption": "确认清理：25 项 · 可释放 16.79 GB"
-        }
-      ],
-      "docs": {
-        "sources": [
-          "docs"
-        ],
-        "strip": [
-          "docs"
-        ]
-      },
-      "changelog": [
-        "UpdateLog.md"
-      ],
-      "builtWith": [
-        "codewf-logviewer"
-      ],
-      "usedBy": [],
-      "quickStart": [
-        {
-          "title": "下载安装",
-          "desc": "Windows 安装包或便携版，按需以管理员身份运行。"
-        },
-        {
-          "title": "扫描分析",
-          "desc": "快档先行展示，慢档后台补齐，看清每项容量与风险等级。"
-        },
-        {
-          "title": "确认清理",
-          "desc": "中风险项手动确认后执行，失败原因逐条可查。"
-        }
-      ],
-      "heroShot": "media/confirm-clean.png"
+     "icon": "🔍",
+     "title": "拼音搜索",
+     "desc": "中文名、全拼、首字母即搜即达，覆盖开始菜单与商店应用。"
     },
     {
-      "slug": "zhijian",
-      "type": "app",
-      "name": "枝见",
-      "tagline": "Markdown-first 脑图编辑器",
-      "description": "本地优先的脑图编辑器：大纲、Markdown 文本与图形脑图三视图共享同一文档模型，实时同步。支持模板新建、拖拽缩放、小地图导航、Markdown/OPML/XMind 导入导出与四语言界面。",
-      "repo": "https://github.com/dotnet9/Zhijian",
-      "repoPath": "../Zhijian",
-      "category": null,
-      "tags": [
-        "脑图",
-        "知识管理",
-        "Markdown"
-      ],
-      "platforms": [
-        "windows",
-        "macos"
-      ],
-      "frameworks": [
-        "net11.0"
-      ],
-      "features": [
-        {
-          "icon": "🌳",
-          "title": "三视图一体",
-          "desc": "大纲、Markdown、脑图共享同一棵节点树，改动实时同步。"
-        },
-        {
-          "icon": "📋",
-          "title": "模板快速新建",
-          "desc": "产品方案、会议纪要、学习笔记等模板开箱即用。"
-        },
-        {
-          "icon": "🖱️",
-          "title": "顺手的画布",
-          "desc": "拖拽、缩放、平移、小地图导航，大图不迷路。"
-        },
-        {
-          "icon": "🔄",
-          "title": "多格式导入导出",
-          "desc": "Markdown / OPML / XMind 互转，融进你现有的工作流。"
-        },
-        {
-          "icon": "🌐",
-          "title": "四语言界面",
-          "desc": "简中、繁中、英、日一键切换，首次启动有新手引导。"
-        },
-        {
-          "icon": "🔄",
-          "title": "自动更新",
-          "desc": "关于窗口内检查并更新，macOS 适配持续跟进。"
-        }
-      ],
-      "screenshots": [
-        {
-          "src": "media/zhijian-canvas-panned.png",
-          "caption": "脑图画布与小地图"
-        },
-        {
-          "src": "media/zhijian-copy-markdown.gif",
-          "caption": "一键复制为 Markdown"
-        }
-      ],
-      "docs": {
-        "sources": [
-          "docs",
-          "使用手册.md"
-        ],
-        "strip": [
-          "docs"
-        ]
-      },
-      "changelog": [
-        "UpdateLog.md"
-      ],
-      "builtWith": [
-        "codewf-eventbus",
-        "codewf-logviewer",
-        "codewf-markdown",
-        "codewf-tools",
-        "lang-avalonia"
-      ],
-      "usedBy": [],
-      "quickStart": [
-        {
-          "title": "下载安装",
-          "desc": "Windows / macOS 安装包，首次启动有新手引导。"
-        },
-        {
-          "title": "模板新建",
-          "desc": "产品方案、会议纪要、学习笔记模板一键起步。"
-        },
-        {
-          "title": "三视图编辑",
-          "desc": "大纲、Markdown、脑图随意切换，导出 OPML/XMind 分享。"
-        }
-      ],
-      "heroShot": "media/zhijian-mind-drag.gif",
-      "enName": "Zhijian"
+     "icon": "✋",
+     "title": "拖动排序",
+     "desc": "编辑模式下拖动排序、就地改名，图标库自由更换。"
     },
     {
-      "slug": "vex",
-      "type": "app",
-      "name": "维刻",
-      "tagline": "极简之力，妙笔成章",
-      "description": "跨平台 Markdown 编辑器，为写作、技术文档与自媒体排版而生：实时预览、大纲导航、多格式导出（HTML/PDF/PNG 长图/Word）、一键复制微信公众号/知乎/掘金富文本，内置本机 AI MCP Server。",
-      "repo": "https://github.com/dotnet9/Vex",
-      "repoPath": "../Vex",
-      "category": null,
-      "tags": [
-        "Markdown",
-        "写作排版",
-        "MCP"
-      ],
-      "platforms": [
-        "windows",
-        "macos"
-      ],
-      "frameworks": [
-        "net11.0"
-      ],
-      "features": [
-        {
-          "icon": "📝",
-          "title": "编辑 + 实时预览",
-          "desc": "AvaloniaEdit 源码编辑，左侧写右侧看，大纲导航与文档统计随手可得。"
-        },
-        {
-          "icon": "📤",
-          "title": "多格式导出",
-          "desc": "HTML / PDF / PNG 长图 / Word 一键导出，分享不再折腾格式。"
-        },
-        {
-          "icon": "📋",
-          "title": "社交平台排版",
-          "desc": "复制为微信公众号、知乎、掘金富 HTML，多套排版主题直接带走。"
-        },
-        {
-          "icon": "📂",
-          "title": "文件夹工作流",
-          "desc": "打开目录即列出文档，外部变更自动检测，长篇项目好管理。"
-        },
-        {
-          "icon": "🎨",
-          "title": "明暗与排版主题",
-          "desc": "浅色深色界面 + 多套排版主题，写作环境与成稿风格都能定制。"
-        },
-        {
-          "icon": "🤖",
-          "title": "内置 MCP Server",
-          "desc": "本机 MCP 服务（Bearer Token 鉴权）让 AI 客户端读写、预览当前文档。"
-        }
-      ],
-      "screenshots": [
-        {
-          "src": "typora/2_typora_文件列表.png",
-          "caption": "文件夹工作流"
-        },
-        {
-          "src": "typora/5_typora_编辑.png",
-          "caption": "编辑与实时预览"
-        },
-        {
-          "src": "typora/3_typora_大纲.png",
-          "caption": "大纲导航"
-        }
-      ],
-      "docs": {
-        "sources": [
-          "docs"
-        ],
-        "strip": [
-          "docs"
-        ]
-      },
-      "changelog": [
-        "UpdateLog.md"
-      ],
-      "builtWith": [
-        "codewf-markdown",
-        "codewf-eventbus",
-        "codewf-tools",
-        "lang-avalonia"
-      ],
-      "usedBy": [],
-      "quickStart": [
-        {
-          "title": "下载安装",
-          "desc": "获取安装包，内置自动更新，装完即用。"
-        },
-        {
-          "title": "打开或新建",
-          "desc": "打开单个 Markdown 或整个文件夹，左侧编辑右侧预览。"
-        },
-        {
-          "title": "导出分享",
-          "desc": "导出 PDF/长图/Word，或一键复制公众号、知乎、掘金富文本。"
-        }
-      ],
-      "heroShot": "typora/2_typora_文件列表.png",
-      "enName": "Vex"
+     "icon": "⌨️",
+     "title": "全局热键",
+     "desc": "任意界面一键唤出/隐藏，键盘党的效率入口。"
     },
     {
-      "slug": "lang-avalonia",
-      "type": "lib",
-      "name": "Lang.Avalonia",
-      "tagline": "Avalonia 插件化多语言（i18n）库",
-      "description": "XAML 标记扩展 + C# 统一入口，运行时切换语言；JSON/XML/RESX 三种资源插件，父文化/默认文化回退，源生成器编译期生成强类型资源 Key。",
-      "repo": "https://github.com/dotnet9/Lang.Avalonia",
-      "repoPath": "../../libs/Lang.Avalonia",
-      "category": "ui",
-      "tags": [
-        "i18n",
-        "Avalonia",
-        "源生成器"
-      ],
-      "platforms": [],
-      "frameworks": [
-        "net8.0",
-        "net10.0",
-        "net11.0"
-      ],
-      "nuget": [
-        "Lang.Avalonia",
-        "Lang.Avalonia.Json",
-        "Lang.Avalonia.Xml",
-        "Lang.Avalonia.Resx",
-        "Lang.Avalonia.Analysis"
-      ],
-      "primaryPackage": "Lang.Avalonia",
-      "features": [
-        {
-          "icon": "🏷️",
-          "title": "XAML 标记扩展",
-          "desc": "{c:I18n …} 直接绑定资源 Key，XAML 里完成多语言。"
-        },
-        {
-          "icon": "🔄",
-          "title": "运行时切换",
-          "desc": "I18nManager.Instance.Culture 一行切换，全站即时生效。"
-        },
-        {
-          "icon": "🧩",
-          "title": "三种资源插件",
-          "desc": "JSON / XML / RESX 按喜好选择，ILangPlugin 还能自己扩展。"
-        },
-        {
-          "icon": "🪜",
-          "title": "文化回退链",
-          "desc": "父文化 → 默认文化 → 原始 Key，缺翻译也不开天窗。"
-        },
-        {
-          "icon": "🛠️",
-          "title": "源生成器",
-          "desc": "Lang.Avalonia.Analysis 编译期生成强类型 Key，拼写错误编译就报。"
-        },
-        {
-          "icon": "🌐",
-          "title": "浏览器可用",
-          "desc": "Browser Demo 验证，Avalonia Web 跑多语言没问题。"
-        }
-      ],
-      "archImage": "assets/zh-CN/architecture.svg",
-      "samples": [
-        {
-          "title": "注册 JSON 资源并切换语言",
-          "lang": "csharp",
-          "code": "using Lang.Avalonia;\nusing Lang.Avalonia.Json;\nusing System.Globalization;\n\nI18nManager.Instance.Register(new JsonLangPlugin(), new CultureInfo(\"en-US\"), out var error);\nif (!string.IsNullOrWhiteSpace(error))\n{\n    // 记录或展示初始化错误。\n}"
-        },
-        {
-          "title": "XAML 标记扩展",
-          "lang": "xml",
-          "code": "xmlns:c=\"https://codewf.com\"\nxmlns:mainLangs=\"clr-namespace:Localization.Main\"\n\n<SelectableTextBlock Text=\"{c:I18n {x:Static mainLangs:MainView.Title}}\" />\n<SelectableTextBlock Text=\"{c:I18n {x:Static mainLangs:MainView.Title}, CultureName=ja-JP}\" />"
-        }
-      ],
-      "docs": {
-        "sources": [
-          "docs"
-        ],
-        "strip": [
-          "docs"
-        ]
-      },
-      "changelog": [
-        "UpdateLog.md"
-      ],
-      "builtWith": [],
-      "usedBy": [
-        "zhijian",
-        "vex",
-        "codewf-toolbox"
-      ]
+     "icon": "💾",
+     "title": "便携模式",
+     "desc": "配置导入导出（.qa 格式含图标库），换机迁移零成本。"
     },
     {
-      "slug": "codewf-markdown",
-      "type": "lib",
-      "name": "CodeWF.Markdown",
-      "tagline": "Avalonia Markdown 渲染控件",
-      "description": "基于 Avalonia 的 Markdown 渲染控件：代码高亮、数学公式、图片预览、增量渲染，17 套排版主题；Lite 版轻量无重依赖；一行代码导出 PNG/PDF/Word 与社交平台富 HTML。",
-      "repo": "https://github.com/dotnet9/CodeWF.Markdown",
-      "repoPath": "../../libs/CodeWF.Markdown",
-      "category": "ui",
-      "tags": [
-        "Markdown",
-        "Avalonia",
-        "渲染控件"
-      ],
-      "platforms": [],
-      "frameworks": [
-        "net8.0",
-        "net10.0",
-        "net11.0"
-      ],
-      "nuget": [
-        "CodeWF.Markdown",
-        "CodeWF.Markdown.Themes",
-        "CodeWF.Markdown.Lite",
-        "CodeWF.Markdown.Lite.Themes"
-      ],
-      "primaryPackage": "CodeWF.Markdown",
-      "features": [
-        {
-          "icon": "🖼️",
-          "title": "完整渲染",
-          "desc": "代码高亮、SVG/GIF 预览、数学公式、增量渲染，Full 版全覆盖。"
-        },
-        {
-          "icon": "🎨",
-          "title": "17 套排版主题",
-          "desc": "微信、极客黑等多套主题，成稿风格一键切换。"
-        },
-        {
-          "icon": "📤",
-          "title": "一行导出",
-          "desc": "MarkdownDocumentExporter 导出 PNG / PDF / Word。"
-        },
-        {
-          "icon": "📋",
-          "title": "社交剪贴板",
-          "desc": "TrySetMarkdownHtmlAsync 直接产出公众号/知乎可用富 HTML。"
-        },
-        {
-          "icon": "🪶",
-          "title": "Lite 版本",
-          "desc": "去除重依赖的轻量 Viewer，嵌入更干净。"
-        },
-        {
-          "icon": "🌐",
-          "title": "图片来源齐全",
-          "desc": "data:/本地/file:///HTTP 图片加载，32MiB 上限保护。"
-        }
-      ],
-      "samples": [
-        {
-          "title": "一行代码导出多种格式",
-          "lang": "csharp",
-          "code": "MarkdownDocumentExporter.ExportMarkdown(\n    markdown,\n    ExportKind.Pdf,\n    \"Simple\",\n    \"article.pdf\");\n\nMarkdownDocumentExporter.ExportFile(\n    @\"C:\\docs\\article.md\",\n    ExportKind.Word,\n    MarkdownTypographyThemes.Simple,\n    \"article.docx\");"
-        }
-      ],
-      "docs": {
-        "sources": [
-          "docs"
-        ],
-        "strip": [
-          "docs"
-        ]
-      },
-      "changelog": [
-        "UpdateLog.md"
-      ],
-      "builtWith": [],
-      "usedBy": [
-        "zhijian",
-        "vex",
-        "codewf-toolbox"
-      ]
-    },
-    {
-      "slug": "codewf-tools",
-      "type": "lib",
-      "name": "CodeWF.Tools",
-      "tagline": "C# 开发者通用工具库",
-      "description": "让 C# 编码更简单：字符串/日期时间扩展、文件操作、JSON/YAML 转换、图片处理；Core 包零第三方依赖，按需引入功能包。",
-      "repo": "https://github.com/dotnet9/CodeWF.Tools",
-      "repoPath": "../../libs/CodeWF.Tools",
-      "category": "base",
-      "tags": [
-        "工具库",
-        "扩展方法",
-        "零依赖"
-      ],
-      "platforms": [],
-      "frameworks": [
-        "net8.0",
-        "net10.0",
-        "net11.0"
-      ],
-      "nuget": [
-        "CodeWF.Tools",
-        "CodeWF.Tools.Core",
-        "CodeWF.Tools.Files",
-        "CodeWF.Tools.Image"
-      ],
-      "primaryPackage": "CodeWF.Tools",
-      "features": [
-        {
-          "icon": "🔤",
-          "title": "常用扩展方法",
-          "desc": "字符串、日期时间高频操作，语义化 API 少写样板代码。"
-        },
-        {
-          "icon": "📁",
-          "title": "文件操作",
-          "desc": "Files 包收敛常见文件/目录处理，路径操作不再繁琐。"
-        },
-        {
-          "icon": "🔀",
-          "title": "JSON / YAML 互转",
-          "desc": "配置格式转换开箱即用。"
-        },
-        {
-          "icon": "🏞️",
-          "title": "图片处理",
-          "desc": "Image 包覆盖常见图片处理需求。"
-        },
-        {
-          "icon": "🪶",
-          "title": "零依赖核心",
-          "desc": "Core 包零第三方依赖，引用无负担。"
-        },
-        {
-          "icon": "🚀",
-          "title": "CI 自动发布",
-          "desc": "Trusted Publishing 签名发布，版本追溯清晰。"
-        }
-      ],
-      "docs": null,
-      "changelog": [
-        "UpdateLog.md"
-      ],
-      "builtWith": [],
-      "usedBy": [
-        "zhijian",
-        "vex",
-        "codewf-toolbox"
-      ]
-    },
-    {
-      "slug": "codewf-netweaver",
-      "type": "lib",
-      "name": "CodeWF.NetWeaver",
-      "tagline": "AOT 友好的网络通信库",
-      "description": "三层包线覆盖网络通信全链路：二进制序列化核心（NativeAOT 友好）、TCP/UDP 通用封装（命令分发、心跳）、远程文件系统扩展（上传/下载、断点续传）。",
-      "repo": "https://github.com/dotnet9/CodeWF.NetWeaver",
-      "repoPath": "../../libs/CodeWF.NetWeaver",
-      "category": "net",
-      "tags": [
-        "网络",
-        "序列化",
-        "AOT"
-      ],
-      "platforms": [],
-      "frameworks": [
-        "net8.0",
-        "net10.0",
-        "net11.0"
-      ],
-      "nuget": [
-        "CodeWF.NetWeaver",
-        "CodeWF.NetWrapper",
-        "CodeWF.NetWrapper.FileSystem"
-      ],
-      "primaryPackage": "CodeWF.NetWeaver",
-      "features": [
-        {
-          "icon": "📦",
-          "title": "二进制序列化",
-          "desc": "数据包紧凑编解码，带宽占用小，协议清晰。"
-        },
-        {
-          "icon": "🚀",
-          "title": "NativeAOT 友好",
-          "desc": "内置 AOTTest 工程，原生发布不踩反射的坑。"
-        },
-        {
-          "icon": "🔌",
-          "title": "TCP / UDP 封装",
-          "desc": "通用客户端/服务端、命令分发、心跳保活。"
-        },
-        {
-          "icon": "📁",
-          "title": "远程文件系统",
-          "desc": "FileSystem 扩展：远程管理、上传下载、断点续传。"
-        },
-        {
-          "icon": "🧱",
-          "title": "分层可裁剪",
-          "desc": "核心/封装/扩展三层包线，按需引用。"
-        },
-        {
-          "icon": "🧪",
-          "title": "示例齐全",
-          "desc": "Avalonia 示例客户端/服务端可跑通参考。"
-        }
-      ],
-      "docs": {
-        "sources": [
-          "docs",
-          "文件服务简单流程.md"
-        ],
-        "strip": [
-          "docs"
-        ]
-      },
-      "changelog": [
-        "UpdateLog.md"
-      ],
-      "builtWith": [],
-      "usedBy": [
-        "codewf-eventbus-socket"
-      ]
-    },
-    {
-      "slug": "codewf-logviewer",
-      "type": "lib",
-      "name": "CodeWF.LogViewer",
-      "tagline": "轻量日志组件（核心 / MEL 适配 / Avalonia）",
-      "description": "按「核心 / Microsoft.Extensions.Logging 适配 / Avalonia UI」三包拆分的轻量日志组件：静态 Logger、控制台输出、文件日志与轮转；AddCodeWF() 一行接入 MEL；Avalonia LogView 控件与重要日志弹窗通知。",
-      "repo": "https://github.com/dotnet9/CodeWF.LogViewer",
-      "repoPath": "../../libs/CodeWF.LogViewer",
-      "category": "base",
-      "tags": [
-        "日志",
-        "MEL",
-        "Avalonia"
-      ],
-      "platforms": [],
-      "frameworks": [
-        "net8.0",
-        "net10.0",
-        "net11.0"
-      ],
-      "nuget": [
-        "CodeWF.Log.Core",
-        "CodeWF.Log.Extensions.Logging",
-        "CodeWF.Log.Avalonia"
-      ],
-      "primaryPackage": "CodeWF.Log.Core",
-      "features": [
-        {
-          "icon": "🧱",
-          "title": "三包拆分",
-          "desc": "核心、MEL 适配、Avalonia 控件各取所需。"
-        },
-        {
-          "icon": "📝",
-          "title": "文件日志与轮转",
-          "desc": "输出模板可定制，按大小/日期轮转。"
-        },
-        {
-          "icon": "🔗",
-          "title": "MEL 一行接入",
-          "desc": "builder.Logging.AddCodeWF() 与 Host/Web API 无缝集成。"
-        },
-        {
-          "icon": "🤝",
-          "title": "与 Serilog 共存",
-          "desc": "作为 Provider 编排进现有日志管线，互不冲突。"
-        },
-        {
-          "icon": "🖥️",
-          "title": "Avalonia LogView",
-          "desc": "应用内实时日志控件 + 重要日志弹窗通知。"
-        },
-        {
-          "icon": "🚀",
-          "title": "AOT 冒烟验证",
-          "desc": "AOT 发布场景持续验证。"
-        }
-      ],
-      "demoImage": "imgs/log.gif",
-      "samples": [
-        {
-          "title": "MEL 编排接入（可定制文件输出）",
-          "lang": "csharp",
-          "code": "builder.Logging.AddCodeWF();\n\nbuilder.Logging.AddCodeWF(options =>\n{\n    options.File.Enabled = true;\n    options.File.DirectoryPath = \"Log\";\n    options.File.OutputTemplate =\n        \"{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] ({Category}) {Message} {Properties}{NewLine}{Exception}\";\n});"
-        }
-      ],
-      "docs": {
-        "sources": [
-          "doc"
-        ],
-        "strip": [
-          "doc"
-        ]
-      },
-      "changelog": [
-        "UpdateLog.md"
-      ],
-      "builtWith": [],
-      "usedBy": [
-        "clearc",
-        "zhijian",
-        "vex",
-        "codewf-toolbox"
-      ]
-    },
-    {
-      "slug": "codewf-eventbus",
-      "type": "lib",
-      "name": "CodeWF.EventBus",
-      "tagline": "轻量进程内事件总线",
-      "description": "模块解耦的进程内事件总线：Command 命令分发、Query 查询回传（简易 CQRS），多 IOC 容器集成（MS.DI / AspNetCore / DryIoc / Prism / 任意容器），WPF、WinForms、Avalonia、ASP.NET Core、控制台通用，NativeAOT 友好——更轻的 MediatR 替代。",
-      "repo": "https://github.com/dotnet9/CodeWF.EventBus",
-      "repoPath": "../../libs/CodeWF.EventBus",
-      "category": "net",
-      "tags": [
-        "事件总线",
-        "CQRS",
-        "MediatR 替代"
-      ],
-      "platforms": [],
-      "frameworks": [
-        "net8.0",
-        "net10.0",
-        "net11.0"
-      ],
-      "nuget": [
-        "CodeWF.EventBus",
-        "CodeWF.AspNetCore.EventBus",
-        "CodeWF.DryIoc.EventBus",
-        "CodeWF.IOC.EventBus"
-      ],
-      "primaryPackage": "CodeWF.EventBus",
-      "features": [
-        {
-          "icon": "⚡",
-          "title": "Command + Query",
-          "desc": "命令分发与查询回传一套 API，进程内简易 CQRS。"
-        },
-        {
-          "icon": "🧩",
-          "title": "多 IOC 集成",
-          "desc": "MS.DI / AspNetCore / DryIoc / Prism 开箱集成，另有容器无关抽象。"
-        },
-        {
-          "icon": "🖥️",
-          "title": "UI 框架无关",
-          "desc": "WPF、WinForms、Avalonia、ASP.NET Core、控制台通用。"
-        },
-        {
-          "icon": "🚀",
-          "title": "NativeAOT 友好",
-          "desc": "AvaAOT / ConsoleAOT 验证工程随仓库维护。"
-        },
-        {
-          "icon": "🪶",
-          "title": "零依赖核心",
-          "desc": "核心包无第三方依赖，集成包按需引入。"
-        },
-        {
-          "icon": "🔗",
-          "title": "可升级到 IPC",
-          "desc": "跨进程场景无缝升级 EventBus.Socket，API 风格一致。"
-        }
-      ],
-      "archImage": "assets/codewf-eventbus-architecture.svg",
-      "samples": [
-        {
-          "title": "定义命令与查询",
-          "lang": "csharp",
-          "code": "public abstract class Command\n{\n}\n\npublic abstract class Query<TResponse> : Command\n{\n    public abstract TResponse Result { get; set; }\n}\n\npublic sealed class CreateProductCommand : Command\n{\n    public string Name { get; set; } = string.Empty;\n    public decimal Price { get; set; }\n}\n\npublic sealed class ProductQuery : Query<ProductItemDto?>\n{\n    public Guid ProductId { get; set; }\n    public override ProductItemDto? Result { get; set; }\n}"
-        }
-      ],
-      "docs": {
-        "sources": [
-          "docs"
-        ],
-        "strip": [
-          "docs"
-        ]
-      },
-      "changelog": [
-        "UpdateLog.md"
-      ],
-      "builtWith": [],
-      "usedBy": [
-        "zhijian",
-        "vex",
-        "codewf-toolbox"
-      ]
-    },
-    {
-      "slug": "codewf-eventbus-socket",
-      "type": "lib",
-      "name": "CodeWF.EventBus.Socket",
-      "tagline": "跨进程 TCP 事件总线（IPC）",
-      "description": "面向 C# 进程间通信的轻量 TCP 事件总线：跨进程 Publish/Subscribe、同主题 Query/Response、按 TaskId 关联并发查询；零外部 MQ 依赖，替代 RabbitMQ/Kafka/Redis 的本地 IPC 方案。",
-      "repo": "https://github.com/dotnet9/CodeWF.EventBus.Socket",
-      "repoPath": "../../libs/CodeWF.EventBus.Socket",
-      "category": "net",
-      "tags": [
-        "IPC",
-        "TCP",
-        "事件总线"
-      ],
-      "platforms": [],
-      "frameworks": [
-        "net8.0",
-        "net10.0",
-        "net11.0"
-      ],
-      "nuget": [
-        "CodeWF.EventBus.Socket"
-      ],
-      "primaryPackage": "CodeWF.EventBus.Socket",
-      "features": [
-        {
-          "icon": "📨",
-          "title": "跨进程发布订阅",
-          "desc": "同机进程间 Publish/Subscribe，语义与进程内总线一致。"
-        },
-        {
-          "icon": "🔁",
-          "title": "请求响应",
-          "desc": "同主题 Query/Response，按 TaskId 关联支持并发查询。"
-        },
-        {
-          "icon": "🧱",
-          "title": "复用 NetWrapper",
-          "desc": "TcpServer/Client、命令处理器与心跳，久经考验。"
-        },
-        {
-          "icon": "🪶",
-          "title": "零 MQ 依赖",
-          "desc": "不装 RabbitMQ/Kafka/Redis，单机 IPC 轻装上阵。"
-        },
-        {
-          "icon": "🚀",
-          "title": "net8/10/11",
-          "desc": "多目标框架，服务端与桌面端同库。"
-        },
-        {
-          "icon": "📐",
-          "title": "设计文档齐全",
-          "desc": "架构图、命令与查询时序图随仓库维护。"
-        }
-      ],
-      "archImage": "imgs/architecture.svg",
-      "samples": [
-        {
-          "title": "服务端启动监听",
-          "lang": "csharp",
-          "code": "using CodeWF.EventBus.Socket;\n\nIEventServer eventServer = new EventServer();\nawait eventServer.StartAsync(\"127.0.0.1\", 9100);"
-        },
-        {
-          "title": "客户端连接",
-          "lang": "csharp",
-          "code": "using CodeWF.EventBus.Socket;\n\nIEventClient eventClient = new EventClient();\nawait eventClient.ConnectAsync(\"127.0.0.1\", 9100);"
-        }
-      ],
-      "docs": {
-        "sources": [
-          "docs"
-        ],
-        "strip": [
-          "docs"
-        ]
-      },
-      "changelog": [
-        "UpdateLog.md"
-      ],
-      "builtWith": [],
-      "usedBy": []
-    },
-    {
-      "slug": "codewf-toolbox",
-      "type": "app",
-      "name": "码匠工具箱",
-      "enName": "Toolbox",
-      "tagline": "模块化开发者桌面工具箱",
-      "description": "基于 Avalonia + Prism 的模块化桌面工具箱：格式转换、日志查看、开发辅助、Web 辅助、安全工具、XML 翻译管理等模块，简/繁/英/日四语言。主程序与功能模块解耦，工具页持续扩展。",
-      "repo": "https://github.com/dotnet9/CodeWF.Toolbox",
-      "repoPath": "../CodeWF.Toolbox",
-      "category": null,
-      "tags": [
-        "工具箱",
-        "开发者效率",
-        "Avalonia"
-      ],
-      "platforms": [
-        "windows"
-      ],
-      "frameworks": [
-        "net11.0"
-      ],
-      "features": [
-        {
-          "icon": "🧰",
-          "title": "模块化工具箱",
-          "desc": "Prism 模块化架构，工具页即插即用，主程序与功能模块解耦。"
-        },
-        {
-          "icon": "🔄",
-          "title": "格式转换",
-          "desc": "JSON/YAML 等常用格式互转，开发日常一站式处理。"
-        },
-        {
-          "icon": "📊",
-          "title": "日志查看",
-          "desc": "内置日志查看器，配合码坊日志组件无缝分析。"
-        },
-        {
-          "icon": "🛠️",
-          "title": "开发辅助",
-          "desc": "时间戳、正则、编码等高频开发辅助工具页。"
-        },
-        {
-          "icon": "🌐",
-          "title": "Web 辅助",
-          "desc": "Web 开发常用小工具，随开随用。"
-        },
-        {
-          "icon": "🌍",
-          "title": "四语言界面",
-          "desc": "简中、繁中、英、日，XML 资源国际化。"
-        }
-      ],
-      "heroShot": "screen.png",
-      "screenshots": [
-        {
-          "src": "screen.png",
-          "caption": "码匠工具箱主界面"
-        }
-      ],
-      "archImage": "assets/architecture.svg",
-      "docs": {
-        "sources": [
-          "docs"
-        ],
-        "strip": [
-          "docs"
-        ]
-      },
-      "changelog": [
-        "UpdateLog.md"
-      ],
-      "builtWith": [
-        "codewf-eventbus",
-        "codewf-logviewer",
-        "codewf-tools",
-        "lang-avalonia",
-        "codewf-markdown"
-      ],
-      "usedBy": []
+     "icon": "🔄",
+     "title": "自动更新",
+     "desc": "带限流退避的自动更新检查，始终用最新版。"
     }
-  ]
+   ],
+   "screenshots": [
+    {
+     "src": "gifs/dock-menu.gif",
+     "caption": "Dock 菜单：悬停即达"
+    },
+    {
+     "src": "gifs/settings.gif",
+     "caption": "设置与便携模式"
+    },
+    {
+     "src": "gifs/search.gif",
+     "caption": "拼音搜索即达"
+    },
+    {
+     "src": "gifs/edit.gif",
+     "caption": "编辑模式：拖动排序"
+    }
+   ],
+   "docs": {
+    "sources": [
+     "docs"
+    ],
+    "strip": [
+     "docs"
+    ]
+   },
+   "changelog": [
+    "UpdateLog.md"
+   ],
+   "builtWith": [],
+   "usedBy": [],
+   "quickStart": [
+    {
+     "title": "下载安装",
+     "desc": "获取对应平台安装包，首次启动选择停靠边与主题。"
+    },
+    {
+     "title": "添加常用项",
+     "desc": "编辑模式下拖入应用、网址或命令，拖动排序、就地改名。"
+    },
+    {
+     "title": "搜索即达",
+     "desc": "触边或热键唤出，拼音/首字母搜索，回车直接启动。"
+    }
+   ],
+   "heroShot": "gifs/dock-menu.gif"
+  },
+  {
+   "slug": "clearc",
+   "type": "app",
+   "name": "ClearC",
+   "tagline": "C 盘空间分析与安全清理",
+   "description": "面向 Windows 的 C 盘空间分析与安全清理工具，约 120 个清理目标（系统缓存/日志转储/升级残留/遥测/显卡游戏缓存/浏览器/开发缓存），强调「展示清楚容量、风险与失败原因」而非多删。",
+   "repo": "https://github.com/dotnet9/ClearC",
+   "repoPath": "../ClearC",
+   "category": null,
+   "tags": [
+    "磁盘清理",
+    "系统工具",
+    "Avalonia"
+   ],
+   "platforms": [
+    "windows"
+   ],
+   "frameworks": [
+    "net10.0"
+   ],
+   "features": [
+    {
+     "icon": "🧹",
+     "title": "约 120 个清理目标",
+     "desc": "系统缓存、日志转储、升级残留、显卡游戏缓存、开发缓存一网打尽。"
+    },
+    {
+     "icon": "🚦",
+     "title": "风险分级",
+     "desc": "低风险默认勾选、中风险手动确认，删什么心里有数。"
+    },
+    {
+     "icon": "⚡",
+     "title": "两档并行扫描",
+     "desc": "快档 4 并发先行展示，慢档后台补齐，不卡界面。"
+    },
+    {
+     "icon": "🔎",
+     "title": "真实路径探测",
+     "desc": "按环境变量、注册表与 CLI 探测真实路径，不猜路径。"
+    },
+    {
+     "icon": "🛡️",
+     "title": "失败原因透明",
+     "desc": "日志脱敏面板，每个失败项都能看清为什么。"
+    },
+    {
+     "icon": "🔄",
+     "title": "自动更新",
+     "desc": "新版自动提醒，单实例与关闭保护。"
+    }
+   ],
+   "screenshots": [
+    {
+     "src": "media/confirm-clean.png",
+     "caption": "确认清理：25 项 · 可释放 16.79 GB"
+    }
+   ],
+   "docs": {
+    "sources": [
+     "docs"
+    ],
+    "strip": [
+     "docs"
+    ]
+   },
+   "changelog": [
+    "UpdateLog.md"
+   ],
+   "builtWith": [
+    "codewf-logviewer"
+   ],
+   "usedBy": [],
+   "quickStart": [
+    {
+     "title": "下载安装",
+     "desc": "Windows 安装包或便携版，按需以管理员身份运行。"
+    },
+    {
+     "title": "扫描分析",
+     "desc": "快档先行展示，慢档后台补齐，看清每项容量与风险等级。"
+    },
+    {
+     "title": "确认清理",
+     "desc": "中风险项手动确认后执行，失败原因逐条可查。"
+    }
+   ],
+   "heroShot": "media/confirm-clean.png"
+  },
+  {
+   "slug": "zhijian",
+   "type": "app",
+   "name": "枝见",
+   "tagline": "Markdown-first 脑图编辑器",
+   "description": "本地优先的脑图编辑器：大纲、Markdown 文本与图形脑图三视图共享同一文档模型，实时同步。支持模板新建、拖拽缩放、小地图导航、Markdown/OPML/XMind 导入导出与四语言界面。",
+   "repo": "https://github.com/dotnet9/Zhijian",
+   "repoPath": "../Zhijian",
+   "category": null,
+   "tags": [
+    "脑图",
+    "知识管理",
+    "Markdown"
+   ],
+   "platforms": [
+    "windows",
+    "macos"
+   ],
+   "frameworks": [
+    "net11.0"
+   ],
+   "features": [
+    {
+     "icon": "🌳",
+     "title": "三视图一体",
+     "desc": "大纲、Markdown、脑图共享同一棵节点树，改动实时同步。"
+    },
+    {
+     "icon": "📋",
+     "title": "模板快速新建",
+     "desc": "产品方案、会议纪要、学习笔记等模板开箱即用。"
+    },
+    {
+     "icon": "🖱️",
+     "title": "顺手的画布",
+     "desc": "拖拽、缩放、平移、小地图导航，大图不迷路。"
+    },
+    {
+     "icon": "🔄",
+     "title": "多格式导入导出",
+     "desc": "Markdown / OPML / XMind 互转，融进你现有的工作流。"
+    },
+    {
+     "icon": "🌐",
+     "title": "四语言界面",
+     "desc": "简中、繁中、英、日一键切换，首次启动有新手引导。"
+    },
+    {
+     "icon": "🔄",
+     "title": "自动更新",
+     "desc": "关于窗口内检查并更新，macOS 适配持续跟进。"
+    }
+   ],
+   "screenshots": [
+    {
+     "src": "media/zhijian-canvas-panned.png",
+     "caption": "脑图画布与小地图"
+    },
+    {
+     "src": "media/zhijian-copy-markdown.gif",
+     "caption": "一键复制为 Markdown"
+    }
+   ],
+   "docs": {
+    "sources": [
+     "docs",
+     "使用手册.md"
+    ],
+    "strip": [
+     "docs"
+    ]
+   },
+   "changelog": [
+    "UpdateLog.md"
+   ],
+   "builtWith": [
+    "codewf-eventbus",
+    "codewf-logviewer",
+    "codewf-markdown",
+    "codewf-tools",
+    "lang-avalonia"
+   ],
+   "usedBy": [],
+   "quickStart": [
+    {
+     "title": "下载安装",
+     "desc": "Windows / macOS 安装包，首次启动有新手引导。"
+    },
+    {
+     "title": "模板新建",
+     "desc": "产品方案、会议纪要、学习笔记模板一键起步。"
+    },
+    {
+     "title": "三视图编辑",
+     "desc": "大纲、Markdown、脑图随意切换，导出 OPML/XMind 分享。"
+    }
+   ],
+   "heroShot": "media/zhijian-mind-drag.gif",
+   "enName": "Zhijian"
+  },
+  {
+   "slug": "vex",
+   "type": "app",
+   "name": "维刻",
+   "tagline": "极简之力，妙笔成章",
+   "description": "跨平台 Markdown 编辑器，为写作、技术文档与自媒体排版而生：实时预览、大纲导航、多格式导出（HTML/PDF/PNG 长图/Word）、一键复制微信公众号/知乎/掘金富文本，内置本机 AI MCP Server。",
+   "repo": "https://github.com/dotnet9/Vex",
+   "repoPath": "../Vex",
+   "category": null,
+   "tags": [
+    "Markdown",
+    "写作排版",
+    "MCP"
+   ],
+   "platforms": [
+    "windows",
+    "macos"
+   ],
+   "frameworks": [
+    "net11.0"
+   ],
+   "features": [
+    {
+     "icon": "📝",
+     "title": "编辑 + 实时预览",
+     "desc": "AvaloniaEdit 源码编辑，左侧写右侧看，大纲导航与文档统计随手可得。"
+    },
+    {
+     "icon": "📤",
+     "title": "多格式导出",
+     "desc": "HTML / PDF / PNG 长图 / Word 一键导出，分享不再折腾格式。"
+    },
+    {
+     "icon": "📋",
+     "title": "社交平台排版",
+     "desc": "复制为微信公众号、知乎、掘金富 HTML，多套排版主题直接带走。"
+    },
+    {
+     "icon": "📂",
+     "title": "文件夹工作流",
+     "desc": "打开目录即列出文档，外部变更自动检测，长篇项目好管理。"
+    },
+    {
+     "icon": "🎨",
+     "title": "明暗与排版主题",
+     "desc": "浅色深色界面 + 多套排版主题，写作环境与成稿风格都能定制。"
+    },
+    {
+     "icon": "🤖",
+     "title": "内置 MCP Server",
+     "desc": "本机 MCP 服务（Bearer Token 鉴权）让 AI 客户端读写、预览当前文档。"
+    }
+   ],
+   "screenshots": [
+    {
+     "src": "typora/2_typora_文件列表.png",
+     "caption": "文件夹工作流"
+    },
+    {
+     "src": "typora/5_typora_编辑.png",
+     "caption": "编辑与实时预览"
+    },
+    {
+     "src": "typora/3_typora_大纲.png",
+     "caption": "大纲导航"
+    }
+   ],
+   "docs": {
+    "sources": [
+     "docs"
+    ],
+    "strip": [
+     "docs"
+    ]
+   },
+   "changelog": [
+    "UpdateLog.md"
+   ],
+   "builtWith": [
+    "codewf-markdown",
+    "codewf-eventbus",
+    "codewf-tools",
+    "lang-avalonia"
+   ],
+   "usedBy": [],
+   "quickStart": [
+    {
+     "title": "下载安装",
+     "desc": "获取安装包，内置自动更新，装完即用。"
+    },
+    {
+     "title": "打开或新建",
+     "desc": "打开单个 Markdown 或整个文件夹，左侧编辑右侧预览。"
+    },
+    {
+     "title": "导出分享",
+     "desc": "导出 PDF/长图/Word，或一键复制公众号、知乎、掘金富文本。"
+    }
+   ],
+   "heroShot": "typora/2_typora_文件列表.png",
+   "enName": "Vex"
+  },
+  {
+   "slug": "lang-avalonia",
+   "type": "lib",
+   "name": "Lang.Avalonia",
+   "tagline": "Avalonia 插件化多语言（i18n）库",
+   "description": "XAML 标记扩展 + C# 统一入口，运行时切换语言；JSON/XML/RESX 三种资源插件，父文化/默认文化回退，源生成器编译期生成强类型资源 Key。",
+   "repo": "https://github.com/dotnet9/Lang.Avalonia",
+   "repoPath": "../../libs/Lang.Avalonia",
+   "category": "ui",
+   "tags": [
+    "i18n",
+    "Avalonia",
+    "源生成器"
+   ],
+   "platforms": [],
+   "frameworks": [
+    "net8.0",
+    "net10.0",
+    "net11.0"
+   ],
+   "nuget": [
+    "Lang.Avalonia",
+    "Lang.Avalonia.Json",
+    "Lang.Avalonia.Xml",
+    "Lang.Avalonia.Resx",
+    "Lang.Avalonia.Analysis"
+   ],
+   "primaryPackage": "Lang.Avalonia",
+   "features": [
+    {
+     "icon": "🏷️",
+     "title": "XAML 标记扩展",
+     "desc": "{c:I18n …} 直接绑定资源 Key，XAML 里完成多语言。"
+    },
+    {
+     "icon": "🔄",
+     "title": "运行时切换",
+     "desc": "I18nManager.Instance.Culture 一行切换，全站即时生效。"
+    },
+    {
+     "icon": "🧩",
+     "title": "三种资源插件",
+     "desc": "JSON / XML / RESX 按喜好选择，ILangPlugin 还能自己扩展。"
+    },
+    {
+     "icon": "🪜",
+     "title": "文化回退链",
+     "desc": "父文化 → 默认文化 → 原始 Key，缺翻译也不开天窗。"
+    },
+    {
+     "icon": "🛠️",
+     "title": "源生成器",
+     "desc": "Lang.Avalonia.Analysis 编译期生成强类型 Key，拼写错误编译就报。"
+    },
+    {
+     "icon": "🌐",
+     "title": "浏览器可用",
+     "desc": "Browser Demo 验证，Avalonia Web 跑多语言没问题。"
+    }
+   ],
+   "archImage": "assets/zh-CN/architecture.svg",
+   "samples": [
+    {
+     "title": "注册 JSON 资源并切换语言",
+     "lang": "csharp",
+     "code": "using Lang.Avalonia;\nusing Lang.Avalonia.Json;\nusing System.Globalization;\n\nI18nManager.Instance.Register(new JsonLangPlugin(), new CultureInfo(\"en-US\"), out var error);\nif (!string.IsNullOrWhiteSpace(error))\n{\n    // 记录或展示初始化错误。\n}"
+    },
+    {
+     "title": "XAML 标记扩展",
+     "lang": "xml",
+     "code": "xmlns:c=\"https://codewf.com\"\nxmlns:mainLangs=\"clr-namespace:Localization.Main\"\n\n<SelectableTextBlock Text=\"{c:I18n {x:Static mainLangs:MainView.Title}}\" />\n<SelectableTextBlock Text=\"{c:I18n {x:Static mainLangs:MainView.Title}, CultureName=ja-JP}\" />"
+    }
+   ],
+   "docs": {
+    "sources": [
+     "docs"
+    ],
+    "strip": [
+     "docs"
+    ]
+   },
+   "changelog": [
+    "UpdateLog.md"
+   ],
+   "builtWith": [],
+   "usedBy": [
+    "zhijian",
+    "vex",
+    "codewf-toolbox"
+   ]
+  },
+  {
+   "slug": "codewf-markdown",
+   "type": "lib",
+   "name": "CodeWF.Markdown",
+   "tagline": "Avalonia Markdown 渲染控件",
+   "description": "基于 Avalonia 的 Markdown 渲染控件：代码高亮、数学公式、图片预览、增量渲染，17 套排版主题；Lite 版轻量无重依赖；一行代码导出 PNG/PDF/Word 与社交平台富 HTML。",
+   "repo": "https://github.com/dotnet9/CodeWF.Markdown",
+   "repoPath": "../../libs/CodeWF.Markdown",
+   "category": "ui",
+   "tags": [
+    "Markdown",
+    "Avalonia",
+    "渲染控件"
+   ],
+   "platforms": [],
+   "frameworks": [
+    "net8.0",
+    "net10.0",
+    "net11.0"
+   ],
+   "nuget": [
+    "CodeWF.Markdown",
+    "CodeWF.Markdown.Themes",
+    "CodeWF.Markdown.Lite",
+    "CodeWF.Markdown.Lite.Themes"
+   ],
+   "primaryPackage": "CodeWF.Markdown",
+   "features": [
+    {
+     "icon": "🖼️",
+     "title": "完整渲染",
+     "desc": "代码高亮、SVG/GIF 预览、数学公式、增量渲染，Full 版全覆盖。"
+    },
+    {
+     "icon": "🎨",
+     "title": "17 套排版主题",
+     "desc": "微信、极客黑等多套主题，成稿风格一键切换。"
+    },
+    {
+     "icon": "📤",
+     "title": "一行导出",
+     "desc": "MarkdownDocumentExporter 导出 PNG / PDF / Word。"
+    },
+    {
+     "icon": "📋",
+     "title": "社交剪贴板",
+     "desc": "TrySetMarkdownHtmlAsync 直接产出公众号/知乎可用富 HTML。"
+    },
+    {
+     "icon": "🪶",
+     "title": "Lite 版本",
+     "desc": "去除重依赖的轻量 Viewer，嵌入更干净。"
+    },
+    {
+     "icon": "🌐",
+     "title": "图片来源齐全",
+     "desc": "data:/本地/file:///HTTP 图片加载，32MiB 上限保护。"
+    }
+   ],
+   "samples": [
+    {
+     "title": "一行代码导出多种格式",
+     "lang": "csharp",
+     "code": "MarkdownDocumentExporter.ExportMarkdown(\n    markdown,\n    ExportKind.Pdf,\n    \"Simple\",\n    \"article.pdf\");\n\nMarkdownDocumentExporter.ExportFile(\n    @\"C:\\docs\\article.md\",\n    ExportKind.Word,\n    MarkdownTypographyThemes.Simple,\n    \"article.docx\");"
+    }
+   ],
+   "docs": {
+    "sources": [
+     "docs"
+    ],
+    "strip": [
+     "docs"
+    ]
+   },
+   "changelog": [
+    "UpdateLog.md"
+   ],
+   "builtWith": [],
+   "usedBy": [
+    "zhijian",
+    "vex",
+    "codewf-toolbox"
+   ]
+  },
+  {
+   "slug": "codewf-tools",
+   "type": "lib",
+   "name": "CodeWF.Tools",
+   "tagline": "C# 开发者通用工具库",
+   "description": "让 C# 编码更简单：字符串/日期时间扩展、文件操作、JSON/YAML 转换、图片处理；Core 包零第三方依赖，按需引入功能包。",
+   "repo": "https://github.com/dotnet9/CodeWF.Tools",
+   "repoPath": "../../libs/CodeWF.Tools",
+   "category": "base",
+   "tags": [
+    "工具库",
+    "扩展方法",
+    "零依赖"
+   ],
+   "platforms": [],
+   "frameworks": [
+    "net8.0",
+    "net10.0",
+    "net11.0"
+   ],
+   "nuget": [
+    "CodeWF.Tools",
+    "CodeWF.Tools.Core",
+    "CodeWF.Tools.Files",
+    "CodeWF.Tools.Image"
+   ],
+   "primaryPackage": "CodeWF.Tools",
+   "features": [
+    {
+     "icon": "🔤",
+     "title": "常用扩展方法",
+     "desc": "字符串、日期时间高频操作，语义化 API 少写样板代码。"
+    },
+    {
+     "icon": "📁",
+     "title": "文件操作",
+     "desc": "Files 包收敛常见文件/目录处理，路径操作不再繁琐。"
+    },
+    {
+     "icon": "🔀",
+     "title": "JSON / YAML 互转",
+     "desc": "配置格式转换开箱即用。"
+    },
+    {
+     "icon": "🏞️",
+     "title": "图片处理",
+     "desc": "Image 包覆盖常见图片处理需求。"
+    },
+    {
+     "icon": "🪶",
+     "title": "零依赖核心",
+     "desc": "Core 包零第三方依赖，引用无负担。"
+    },
+    {
+     "icon": "🚀",
+     "title": "CI 自动发布",
+     "desc": "Trusted Publishing 签名发布，版本追溯清晰。"
+    }
+   ],
+   "docs": null,
+   "changelog": [
+    "UpdateLog.md"
+   ],
+   "builtWith": [],
+   "usedBy": [
+    "zhijian",
+    "vex",
+    "codewf-toolbox"
+   ]
+  },
+  {
+   "slug": "codewf-netweaver",
+   "type": "lib",
+   "name": "CodeWF.NetWeaver",
+   "tagline": "AOT 友好的网络通信库",
+   "description": "三层包线覆盖网络通信全链路：二进制序列化核心（NativeAOT 友好）、TCP/UDP 通用封装（命令分发、心跳）、远程文件系统扩展（上传/下载、断点续传）。",
+   "repo": "https://github.com/dotnet9/CodeWF.NetWeaver",
+   "repoPath": "../../libs/CodeWF.NetWeaver",
+   "category": "net",
+   "tags": [
+    "网络",
+    "序列化",
+    "AOT"
+   ],
+   "platforms": [],
+   "frameworks": [
+    "net8.0",
+    "net10.0",
+    "net11.0"
+   ],
+   "nuget": [
+    "CodeWF.NetWeaver",
+    "CodeWF.NetWrapper",
+    "CodeWF.NetWrapper.FileSystem"
+   ],
+   "primaryPackage": "CodeWF.NetWeaver",
+   "features": [
+    {
+     "icon": "📦",
+     "title": "二进制序列化",
+     "desc": "数据包紧凑编解码，带宽占用小，协议清晰。"
+    },
+    {
+     "icon": "🚀",
+     "title": "NativeAOT 友好",
+     "desc": "内置 AOTTest 工程，原生发布不踩反射的坑。"
+    },
+    {
+     "icon": "🔌",
+     "title": "TCP / UDP 封装",
+     "desc": "通用客户端/服务端、命令分发、心跳保活。"
+    },
+    {
+     "icon": "📁",
+     "title": "远程文件系统",
+     "desc": "FileSystem 扩展：远程管理、上传下载、断点续传。"
+    },
+    {
+     "icon": "🧱",
+     "title": "分层可裁剪",
+     "desc": "核心/封装/扩展三层包线，按需引用。"
+    },
+    {
+     "icon": "🧪",
+     "title": "示例齐全",
+     "desc": "Avalonia 示例客户端/服务端可跑通参考。"
+    }
+   ],
+   "docs": {
+    "sources": [
+     "docs",
+     "文件服务简单流程.md"
+    ],
+    "strip": [
+     "docs"
+    ]
+   },
+   "changelog": [
+    "UpdateLog.md"
+   ],
+   "builtWith": [],
+   "usedBy": [
+    "codewf-eventbus-socket"
+   ]
+  },
+  {
+   "slug": "codewf-logviewer",
+   "type": "lib",
+   "name": "CodeWF.LogViewer",
+   "tagline": "轻量日志组件（核心 / MEL 适配 / Avalonia）",
+   "description": "按「核心 / Microsoft.Extensions.Logging 适配 / Avalonia UI」三包拆分的轻量日志组件：静态 Logger、控制台输出、文件日志与轮转；AddCodeWF() 一行接入 MEL；Avalonia LogView 控件与重要日志弹窗通知。",
+   "repo": "https://github.com/dotnet9/CodeWF.LogViewer",
+   "repoPath": "../../libs/CodeWF.LogViewer",
+   "category": "base",
+   "tags": [
+    "日志",
+    "MEL",
+    "Avalonia"
+   ],
+   "platforms": [],
+   "frameworks": [
+    "net8.0",
+    "net10.0",
+    "net11.0"
+   ],
+   "nuget": [
+    "CodeWF.Log.Core",
+    "CodeWF.Log.Extensions.Logging",
+    "CodeWF.Log.Avalonia"
+   ],
+   "primaryPackage": "CodeWF.Log.Core",
+   "features": [
+    {
+     "icon": "🧱",
+     "title": "三包拆分",
+     "desc": "核心、MEL 适配、Avalonia 控件各取所需。"
+    },
+    {
+     "icon": "📝",
+     "title": "文件日志与轮转",
+     "desc": "输出模板可定制，按大小/日期轮转。"
+    },
+    {
+     "icon": "🔗",
+     "title": "MEL 一行接入",
+     "desc": "builder.Logging.AddCodeWF() 与 Host/Web API 无缝集成。"
+    },
+    {
+     "icon": "🤝",
+     "title": "与 Serilog 共存",
+     "desc": "作为 Provider 编排进现有日志管线，互不冲突。"
+    },
+    {
+     "icon": "🖥️",
+     "title": "Avalonia LogView",
+     "desc": "应用内实时日志控件 + 重要日志弹窗通知。"
+    },
+    {
+     "icon": "🚀",
+     "title": "AOT 冒烟验证",
+     "desc": "AOT 发布场景持续验证。"
+    }
+   ],
+   "demoImage": "imgs/log.gif",
+   "samples": [
+    {
+     "title": "MEL 编排接入（可定制文件输出）",
+     "lang": "csharp",
+     "code": "builder.Logging.AddCodeWF();\n\nbuilder.Logging.AddCodeWF(options =>\n{\n    options.File.Enabled = true;\n    options.File.DirectoryPath = \"Log\";\n    options.File.OutputTemplate =\n        \"{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] ({Category}) {Message} {Properties}{NewLine}{Exception}\";\n});"
+    }
+   ],
+   "docs": {
+    "sources": [
+     "doc"
+    ],
+    "strip": [
+     "doc"
+    ]
+   },
+   "changelog": [
+    "UpdateLog.md"
+   ],
+   "builtWith": [],
+   "usedBy": [
+    "clearc",
+    "zhijian",
+    "vex",
+    "codewf-toolbox"
+   ]
+  },
+  {
+   "slug": "codewf-eventbus",
+   "type": "lib",
+   "name": "CodeWF.EventBus",
+   "tagline": "轻量进程内事件总线",
+   "description": "模块解耦的进程内事件总线：Command 命令分发、Query 查询回传（简易 CQRS），多 IOC 容器集成（MS.DI / AspNetCore / DryIoc / Prism / 任意容器），WPF、WinForms、Avalonia、ASP.NET Core、控制台通用，NativeAOT 友好——更轻的 MediatR 替代。",
+   "repo": "https://github.com/dotnet9/CodeWF.EventBus",
+   "repoPath": "../../libs/CodeWF.EventBus",
+   "category": "net",
+   "tags": [
+    "事件总线",
+    "CQRS",
+    "MediatR 替代"
+   ],
+   "platforms": [],
+   "frameworks": [
+    "net8.0",
+    "net10.0",
+    "net11.0"
+   ],
+   "nuget": [
+    "CodeWF.EventBus",
+    "CodeWF.AspNetCore.EventBus",
+    "CodeWF.DryIoc.EventBus",
+    "CodeWF.IOC.EventBus"
+   ],
+   "primaryPackage": "CodeWF.EventBus",
+   "features": [
+    {
+     "icon": "⚡",
+     "title": "Command + Query",
+     "desc": "命令分发与查询回传一套 API，进程内简易 CQRS。"
+    },
+    {
+     "icon": "🧩",
+     "title": "多 IOC 集成",
+     "desc": "MS.DI / AspNetCore / DryIoc / Prism 开箱集成，另有容器无关抽象。"
+    },
+    {
+     "icon": "🖥️",
+     "title": "UI 框架无关",
+     "desc": "WPF、WinForms、Avalonia、ASP.NET Core、控制台通用。"
+    },
+    {
+     "icon": "🚀",
+     "title": "NativeAOT 友好",
+     "desc": "AvaAOT / ConsoleAOT 验证工程随仓库维护。"
+    },
+    {
+     "icon": "🪶",
+     "title": "零依赖核心",
+     "desc": "核心包无第三方依赖，集成包按需引入。"
+    },
+    {
+     "icon": "🔗",
+     "title": "可升级到 IPC",
+     "desc": "跨进程场景无缝升级 EventBus.Socket，API 风格一致。"
+    }
+   ],
+   "archImage": "assets/codewf-eventbus-architecture.svg",
+   "samples": [
+    {
+     "title": "定义命令与查询",
+     "lang": "csharp",
+     "code": "public abstract class Command\n{\n}\n\npublic abstract class Query<TResponse> : Command\n{\n    public abstract TResponse Result { get; set; }\n}\n\npublic sealed class CreateProductCommand : Command\n{\n    public string Name { get; set; } = string.Empty;\n    public decimal Price { get; set; }\n}\n\npublic sealed class ProductQuery : Query<ProductItemDto?>\n{\n    public Guid ProductId { get; set; }\n    public override ProductItemDto? Result { get; set; }\n}"
+    }
+   ],
+   "docs": {
+    "sources": [
+     "docs"
+    ],
+    "strip": [
+     "docs"
+    ]
+   },
+   "changelog": [
+    "UpdateLog.md"
+   ],
+   "builtWith": [],
+   "usedBy": [
+    "zhijian",
+    "vex",
+    "codewf-toolbox"
+   ]
+  },
+  {
+   "slug": "codewf-eventbus-socket",
+   "type": "lib",
+   "name": "CodeWF.EventBus.Socket",
+   "tagline": "跨进程 TCP 事件总线（IPC）",
+   "description": "面向 C# 进程间通信的轻量 TCP 事件总线：跨进程 Publish/Subscribe、同主题 Query/Response、按 TaskId 关联并发查询；零外部 MQ 依赖，替代 RabbitMQ/Kafka/Redis 的本地 IPC 方案。",
+   "repo": "https://github.com/dotnet9/CodeWF.EventBus.Socket",
+   "repoPath": "../../libs/CodeWF.EventBus.Socket",
+   "category": "net",
+   "tags": [
+    "IPC",
+    "TCP",
+    "事件总线"
+   ],
+   "platforms": [],
+   "frameworks": [
+    "net8.0",
+    "net10.0",
+    "net11.0"
+   ],
+   "nuget": [
+    "CodeWF.EventBus.Socket"
+   ],
+   "primaryPackage": "CodeWF.EventBus.Socket",
+   "features": [
+    {
+     "icon": "📨",
+     "title": "跨进程发布订阅",
+     "desc": "同机进程间 Publish/Subscribe，语义与进程内总线一致。"
+    },
+    {
+     "icon": "🔁",
+     "title": "请求响应",
+     "desc": "同主题 Query/Response，按 TaskId 关联支持并发查询。"
+    },
+    {
+     "icon": "🧱",
+     "title": "复用 NetWrapper",
+     "desc": "TcpServer/Client、命令处理器与心跳，久经考验。"
+    },
+    {
+     "icon": "🪶",
+     "title": "零 MQ 依赖",
+     "desc": "不装 RabbitMQ/Kafka/Redis，单机 IPC 轻装上阵。"
+    },
+    {
+     "icon": "🚀",
+     "title": "net8/10/11",
+     "desc": "多目标框架，服务端与桌面端同库。"
+    },
+    {
+     "icon": "📐",
+     "title": "设计文档齐全",
+     "desc": "架构图、命令与查询时序图随仓库维护。"
+    }
+   ],
+   "archImage": "imgs/architecture.svg",
+   "samples": [
+    {
+     "title": "服务端启动监听",
+     "lang": "csharp",
+     "code": "using CodeWF.EventBus.Socket;\n\nIEventServer eventServer = new EventServer();\nawait eventServer.StartAsync(\"127.0.0.1\", 9100);"
+    },
+    {
+     "title": "客户端连接",
+     "lang": "csharp",
+     "code": "using CodeWF.EventBus.Socket;\n\nIEventClient eventClient = new EventClient();\nawait eventClient.ConnectAsync(\"127.0.0.1\", 9100);"
+    }
+   ],
+   "docs": {
+    "sources": [
+     "docs"
+    ],
+    "strip": [
+     "docs"
+    ]
+   },
+   "changelog": [
+    "UpdateLog.md"
+   ],
+   "builtWith": [],
+   "usedBy": []
+  },
+  {
+   "slug": "codewf-toolbox",
+   "type": "app",
+   "name": "码匠工具箱",
+   "enName": "Toolbox",
+   "tagline": "模块化开发者桌面工具箱",
+   "description": "基于 Avalonia + Prism 的模块化桌面工具箱：格式转换、日志查看、开发辅助、Web 辅助、安全工具、XML 翻译管理等模块，简/繁/英/日四语言。主程序与功能模块解耦，工具页持续扩展。",
+   "repo": "https://github.com/dotnet9/CodeWF.Toolbox",
+   "repoPath": "../CodeWF.Toolbox",
+   "category": null,
+   "tags": [
+    "工具箱",
+    "开发者效率",
+    "Avalonia"
+   ],
+   "platforms": [
+    "windows"
+   ],
+   "frameworks": [
+    "net11.0"
+   ],
+   "features": [
+    {
+     "icon": "🧰",
+     "title": "模块化工具箱",
+     "desc": "Prism 模块化架构，工具页即插即用，主程序与功能模块解耦。"
+    },
+    {
+     "icon": "🔄",
+     "title": "格式转换",
+     "desc": "JSON/YAML 等常用格式互转，开发日常一站式处理。"
+    },
+    {
+     "icon": "📊",
+     "title": "日志查看",
+     "desc": "内置日志查看器，配合码坊日志组件无缝分析。"
+    },
+    {
+     "icon": "🛠️",
+     "title": "开发辅助",
+     "desc": "时间戳、正则、编码等高频开发辅助工具页。"
+    },
+    {
+     "icon": "🌐",
+     "title": "Web 辅助",
+     "desc": "Web 开发常用小工具，随开随用。"
+    },
+    {
+     "icon": "🌍",
+     "title": "四语言界面",
+     "desc": "简中、繁中、英、日，XML 资源国际化。"
+    }
+   ],
+   "heroShot": "screen.png",
+   "screenshots": [
+    {
+     "src": "screen.png",
+     "caption": "码匠工具箱主界面"
+    }
+   ],
+   "archImage": "assets/architecture.svg",
+   "docs": {
+    "sources": [
+     "docs"
+    ],
+    "strip": [
+     "docs"
+    ]
+   },
+   "changelog": [
+    "UpdateLog.md"
+   ],
+   "builtWith": [
+    "codewf-eventbus",
+    "codewf-logviewer",
+    "codewf-tools",
+    "lang-avalonia",
+    "codewf-markdown"
+   ],
+   "usedBy": []
+  },
+  {
+   "slug": "kidwall",
+   "type": "app",
+   "name": "KidWall",
+   "tagline": "专为儿童设计的桌面壁纸：静态图片 + 动态视频",
+   "description": "儿童友好的桌面壁纸软件：内置卡通/插画/星空三个童趣分类共 12 张静态壁纸与 6 段动态视频壁纸，也支持本地图片/视频；一键设置、开机自启、内容过滤开关（默认开启），轻量纯净无广告。当前发布 Windows 版。",
+   "repo": "https://github.com/dotnet9/KidWall",
+   "repoPath": "../KidWall",
+   "category": null,
+   "tags": [
+    "壁纸美化",
+    "儿童/亲子",
+    "Avalonia"
+   ],
+   "platforms": [
+    "windows"
+   ],
+   "frameworks": [
+    "net10.0"
+   ],
+   "features": [
+    {
+     "icon": "🖼️",
+     "title": "静态壁纸",
+     "desc": "内置卡通、插画、星空三个童趣分类共 12 张，也可选择本地图片。"
+    },
+    {
+     "icon": "🎬",
+     "title": "动态壁纸",
+     "desc": "视频挂载 Windows 壁纸层，内置 6 段动态壁纸，卡片悬浮即可预览。"
+    },
+    {
+     "icon": "🚦",
+     "title": "内容过滤",
+     "desc": "家长控制性质的内容过滤开关，默认开启。"
+    },
+    {
+     "icon": "⭐",
+     "title": "开机自启",
+     "desc": "设置内一键开关，重启后壁纸如常。"
+    },
+    {
+     "icon": "🧸",
+     "title": "儿童友好",
+     "desc": "界面轻量纯净、无广告、无打扰。"
+    }
+   ],
+   "docs": {
+    "sources": [
+     "README.md"
+    ],
+    "strip": []
+   },
+   "changelog": [],
+   "builtWith": [],
+   "usedBy": [],
+   "quickStart": [
+    {
+     "title": "下载安装",
+     "desc": "GitHub Release 下载 KidWall 安装包（win-x64 / win-x86），安装即用。"
+    },
+    {
+     "title": "挑选壁纸",
+     "desc": "从童趣分类选一张静态壁纸，或挑一段动态视频，也可用本地图片/视频。"
+    },
+    {
+     "title": "一键设置",
+     "desc": "设为桌面壁纸，需要的话打开开机自启。"
+    }
+   ]
+  },
+  {
+   "slug": "nexusdash",
+   "type": "app",
+   "name": "NexusDash",
+   "tagline": "跨平台系统资源仪表盘与进程管理器",
+   "description": "面向开发者、运维与高级用户的系统监控工具：CPU/内存/磁盘/网络实时概览与曲线，进程列表/进程树/Treemap 热点图，进程网络连接查看，结束进程树，快照导出 JSON/CSV，附文件搜索与硬件信息工具页。5 平台 NativeAOT 发布，最小化自动暂停刷新。",
+   "repo": "https://github.com/dotnet9/NexusDash",
+   "repoPath": "../NexusDash",
+   "category": null,
+   "tags": [
+    "系统监控",
+    "进程管理",
+    "Avalonia"
+   ],
+   "platforms": [
+    "windows",
+    "macos",
+    "linux"
+   ],
+   "frameworks": [
+    "net10.0"
+   ],
+   "features": [
+    {
+     "icon": "📊",
+     "title": "系统概览",
+     "desc": "CPU、内存、磁盘、网络实时指标与轻量曲线绘制。"
+    },
+    {
+     "icon": "🧭",
+     "title": "进程管理",
+     "desc": "进程列表、进程树与 Treemap 热点图，多列指标、排序与搜索。"
+    },
+    {
+     "icon": "🔌",
+     "title": "网络连接",
+     "desc": "查看选中进程的 TCP/UDP 端点与连接状态。"
+    },
+    {
+     "icon": "⏹️",
+     "title": "进程处置",
+     "desc": "结束进程或结束进程树，带确认弹窗防误杀。"
+    },
+    {
+     "icon": "📤",
+     "title": "快照导出",
+     "desc": "进程列表与网络连接一键导出 JSON/CSV。"
+    },
+    {
+     "icon": "🛠️",
+     "title": "附属工具",
+     "desc": "文件搜索与硬件信息工具页。"
+    },
+    {
+     "icon": "🎨",
+     "title": "个性化",
+     "desc": "7 套主题、4 种语言，最小化自动暂停刷新省资源。"
+    }
+   ],
+   "docs": {
+    "sources": [
+     "README.md"
+    ],
+    "strip": []
+   },
+   "changelog": [
+    "UpdateLog.md"
+   ],
+   "builtWith": [],
+   "usedBy": [],
+   "quickStart": [
+    {
+     "title": "下载安装",
+     "desc": "GitHub Release 获取对应平台安装包（Windows exe / Linux deb / macOS dmg）。"
+    },
+    {
+     "title": "纵览全局",
+     "desc": "启动即见系统概览与进程列表，排序搜索定位异常进程。"
+    },
+    {
+     "title": "处置问题",
+     "desc": "点选进程查看详情与网络连接，确认后结束进程或整个进程树。"
+    }
+   ]
+  },
+  {
+   "slug": "avagithubdesktop",
+   "type": "app",
+   "name": "AvaGithubDesktop",
+   "tagline": "受 GitHub Desktop 启发的桌面 Git 客户端",
+   "description": "用 Avalonia 重写的桌面 Git 客户端：仓库管理、变更提交、历史浏览、统一/并排 diff、分支全家桶（新建/切换/合并/变基/压缩）、fetch/pull/push 同步、stash、标签与远程管理，GitHub 网页联动、6+ 主题与完整快捷键体系，5 平台 NativeAOT 发布。",
+   "repo": "https://github.com/dotnet9/AvaGithubDesktop",
+   "repoPath": "../AvaGithubDesktop",
+   "category": null,
+   "tags": [
+    "Git 客户端",
+    "开发者工具",
+    "Avalonia"
+   ],
+   "platforms": [
+    "windows",
+    "macos",
+    "linux"
+   ],
+   "frameworks": [
+    "net10.0"
+   ],
+   "features": [
+    {
+     "icon": "📦",
+     "title": "仓库管理",
+     "desc": "打开/克隆/新建本地仓库，仓库列表分组与最近使用。"
+    },
+    {
+     "icon": "📝",
+     "title": "变更提交",
+     "desc": "变更文件勾选与过滤、提交摘要与描述、丢弃更改确认。"
+    },
+    {
+     "icon": "🕘",
+     "title": "历史浏览",
+     "desc": "提交历史与单提交文件详情一览。"
+    },
+    {
+     "icon": "🔀",
+     "title": "Diff 查看",
+     "desc": "统一/并排双模式、隐藏空白、图片与二进制 diff。"
+    },
+    {
+     "icon": "🌿",
+     "title": "分支全家桶",
+     "desc": "新建/重命名/删除/切换/合并/压缩合并/变基/设置上游。"
+    },
+    {
+     "icon": "🔄",
+     "title": "同步协作",
+     "desc": "fetch/pull/push、领先落后徽章、stash、标签与远程管理。"
+    },
+    {
+     "icon": "🐙",
+     "title": "GitHub 联动",
+     "desc": "查看仓库/比较分支/创建 Issue 一键跳转浏览器，支持账号登录。"
+    },
+    {
+     "icon": "🎨",
+     "title": "主题与快捷键",
+     "desc": "6+ 套主题、中英双语、完整快捷键体系。"
+    }
+   ],
+   "screenshots": [
+    {
+     "src": "screenshots/changes-commit-panel.png",
+     "caption": "Changes 提交面板"
+    },
+    {
+     "src": "screenshots/history-tab.png",
+     "caption": "提交历史"
+    },
+    {
+     "src": "screenshots/branch-selector.png",
+     "caption": "分支选择器"
+    },
+    {
+     "src": "screenshots/diff-preview.png",
+     "caption": "Diff 预览"
+    },
+    {
+     "src": "screenshots/commit-area-themed-dark.png",
+     "caption": "深色主题"
+    }
+   ],
+   "docs": {
+    "sources": [
+     "README.md",
+     "docs/快捷键.md",
+     "docs/screenshots"
+    ],
+    "strip": [
+     "docs"
+    ]
+   },
+   "changelog": [
+    "docs/更新日志.md"
+   ],
+   "builtWith": [],
+   "usedBy": [],
+   "quickStart": [
+    {
+     "title": "下载安装",
+     "desc": "GitHub Release 获取对应平台安装包（Windows exe / Linux deb / macOS dmg）。"
+    },
+    {
+     "title": "添加仓库",
+     "desc": "打开本地仓库，或直接克隆远程 URL。"
+    },
+    {
+     "title": "提交推送",
+     "desc": "在 Changes 勾选文件、写摘要提交，Ctrl+P 即可推送。"
+    }
+   ],
+   "heroShot": "screenshots/changes-commit-panel.png"
+  },
+  {
+   "slug": "homeledger",
+   "type": "app",
+   "name": "家庭记账",
+   "tagline": "多成员家庭记账：独立账户、存款计息、全家总览",
+   "description": "Avalonia 桌面家庭记账工具：管理员与成员独立账号（首次登录强制改密），收支记录与自定义分类，自定义年利率的存款计息（单利按日、结算结转复利、部分支取续存），管理员全家总览图表，CSV/PNG/PDF/Word 四格式报表导出与一键数据库备份。",
+   "repo": "https://github.com/dotnet9/HomeLedger",
+   "repoPath": "../HomeLedger",
+   "category": null,
+   "tags": [
+    "家庭记账",
+    "财务管理",
+    "Avalonia"
+   ],
+   "platforms": [
+    "windows",
+    "macos",
+    "linux"
+   ],
+   "frameworks": [
+    "net10.0"
+   ],
+   "features": [
+    {
+     "icon": "👨‍👩‍👧",
+     "title": "多成员账号",
+     "desc": "管理员 + 成员独立账户，PBKDF2 密码哈希，首次登录强制改密，数据互相隔离。"
+    },
+    {
+     "icon": "💰",
+     "title": "收支记账",
+     "desc": "内置与自定义分类、备注、日期筛选、关键词搜索、月汇总与累计结余。"
+    },
+    {
+     "icon": "🏦",
+     "title": "存款计息",
+     "desc": "每笔自定义年利率、单利按日计息、结算结转复利、全额/部分支取续存、利息链可追溯。"
+    },
+    {
+     "icon": "📊",
+     "title": "全家总览",
+     "desc": "成员收支对比、月度趋势、分类占比图表，存款本息一目了然。"
+    },
+    {
+     "icon": "📄",
+     "title": "报表导出",
+     "desc": "CSV / PNG（图表）/ PDF / Word 四种格式。"
+    },
+    {
+     "icon": "💾",
+     "title": "一键备份",
+     "desc": "带时间戳的数据库副本，数据安心。"
+    }
+   ],
+   "docs": {
+    "sources": [
+     "README.md"
+    ],
+    "strip": []
+   },
+   "changelog": [],
+   "builtWith": [],
+   "usedBy": [],
+   "quickStart": [
+    {
+     "title": "下载安装",
+     "desc": "GitHub Release 获取安装包（Windows exe / Linux deb / macOS dmg），启动后用 admin/admin123 登录并修改密码。"
+    },
+    {
+     "title": "建立成员",
+     "desc": "在成员管理为家人创建独立账号。"
+    },
+    {
+     "title": "记账生息",
+     "desc": "成员记录收支、存钱计息；管理员随时查看全家总览并导出报表。"
+    }
+   ]
+  },
+  {
+   "slug": "zitie",
+   "type": "app",
+   "name": "Zitie 字帖",
+   "tagline": "桌面字帖生成器：描红临摹、拼音古诗，直接打印",
+   "description": "基于 .NET 10 + Avalonia + SkiaSharp 的字帖生成器：米字格/田字格/九宫格等多种格型，描红、临摹、空心双钩、拼音标注等练习模式；内置 200+ 样式模板、100+ 目录模板与小学到高中同步内容库；A4/A3/Letter 版式自定义，多页 PDF/PNG 导出或直接打印。",
+   "repo": "https://github.com/dotnet9/Zitie",
+   "repoPath": "../Zitie",
+   "category": null,
+   "tags": [
+    "教育学习",
+    "字帖打印",
+    "Avalonia"
+   ],
+   "platforms": [
+    "windows",
+    "macos",
+    "linux"
+   ],
+   "frameworks": [
+    "net10.0"
+   ],
+   "features": [
+    {
+     "icon": "📐",
+     "title": "多格型字帖",
+     "desc": "米字格、田字格、回宫格、方格、九宫格、英文四线三格、拼音四线格。"
+    },
+    {
+     "icon": "✍️",
+     "title": "多种练习",
+     "desc": "描红、临摹、空心双钩、按词分组、横排/竖排、拼音标注，内置笔顺数据。"
+    },
+    {
+     "icon": "📚",
+     "title": "同步内容库",
+     "desc": "语文/英语小学一年级到高中同步文本、古诗蒙学名言，按教材/年级/单元筛选。"
+    },
+    {
+     "icon": "🗂️",
+     "title": "模板库",
+     "desc": "200+ 样式模板与 100+ 可编辑目录模板，关键词搜索与分类筛选。"
+    },
+    {
+     "icon": "🖨️",
+     "title": "打印导出",
+     "desc": "多页 PDF、单页/批量 PNG、调用系统打印。"
+    },
+    {
+     "icon": "🎨",
+     "title": "版式自定义",
+     "desc": "A4/A3/Letter、页边距、纸张底纹、格线与文字颜色、装饰边框。"
+    }
+   ],
+   "docs": {
+    "sources": [
+     "README.md",
+     "docs/内容库.md",
+     "docs/字体与笔锋.md"
+    ],
+    "strip": [
+     "docs"
+    ]
+   },
+   "changelog": [],
+   "builtWith": [],
+   "usedBy": [],
+   "quickStart": [
+    {
+     "title": "下载安装",
+     "desc": "GitHub Release 获取安装包（Windows 中文安装包 / Linux deb / macOS dmg）。"
+    },
+    {
+     "title": "挑个模板",
+     "desc": "从模板库选一个样式或目录模板，进入编辑器。"
+    },
+    {
+     "title": "导出打印",
+     "desc": "左侧属性面板调整版式，导出 PDF/PNG 或直接打印。"
+    }
+   ]
+  },
+  {
+   "slug": "ieditor",
+   "type": "app",
+   "name": "IEditor",
+   "tagline": "桌面证件照处理：规格裁剪、一键换底、批量导出",
+   "description": "基于 Magick.NET 的桌面证件照工具：常用规格毫米级裁剪、纯白/标准蓝/中国红等背景替换、实时预览与原图对比；批量处理支持统一尺寸/背景、文件名模板与 ZIP 导出。五平台 NativeAOT 发布。",
+   "repo": "https://github.com/dotnet9/IEditor",
+   "repoPath": "../IEditor",
+   "category": null,
+   "tags": [
+    "图像处理",
+    "证件照",
+    "Avalonia"
+   ],
+   "platforms": [
+    "windows",
+    "macos",
+    "linux"
+   ],
+   "frameworks": [
+    "net10.0"
+   ],
+   "features": [
+    {
+     "icon": "📷",
+     "title": "常用规格",
+     "desc": "1 寸、小 2 寸、2 寸与自定义尺寸（毫米），规格即选即裁。"
+    },
+    {
+     "icon": "🎨",
+     "title": "背景替换",
+     "desc": "纯白、标准蓝、中国红、深灰、浅灰与自定义背景色。"
+    },
+    {
+     "icon": "👀",
+     "title": "实时预览",
+     "desc": "缩放偏移、旋转镜像、参考线（Ctrl+G）与按住看原图对比。"
+    },
+    {
+     "icon": "📦",
+     "title": "批量处理",
+     "desc": "队列 + 拖放导入、统一尺寸/背景、文件名模板、完成后打包 ZIP。"
+    },
+    {
+     "icon": "⚙️",
+     "title": "导出设置",
+     "desc": "JPG/PNG 格式、JPEG 质量与 DPI 可调。"
+    }
+   ],
+   "docs": {
+    "sources": [
+     "README.md",
+     "docs/architecture.md"
+    ],
+    "strip": [
+     "docs"
+    ]
+   },
+   "changelog": [],
+   "builtWith": [],
+   "usedBy": [],
+   "quickStart": [
+    {
+     "title": "下载安装",
+     "desc": "GitHub Release 获取对应平台安装包（Windows exe / Linux deb / macOS dmg）。"
+    },
+    {
+     "title": "选规格换底色",
+     "desc": "载入照片，选 1 寸/2 寸/自定义规格与背景色。"
+    },
+    {
+     "title": "预览导出",
+     "desc": "实时预览确认后导出单张图片或批量 ZIP。"
+    }
+   ]
+  }
+ ]
 }
