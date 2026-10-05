@@ -177,8 +177,8 @@
    ],
    "screenshots": [
     {
-     "src": "media/confirm-clean.png",
-     "caption": "确认清理：25 项 · 可释放 16.79 GB"
+     "src": "media/design-workflow.gif",
+     "caption": "清理工作流：分析 → 确认 → 清理"
     }
    ],
    "docs": {
@@ -210,7 +210,7 @@
      "desc": "中风险项手动确认后执行，失败原因逐条可查。"
     }
    ],
-   "heroShot": "media/confirm-clean.png"
+   "heroShot": "media/design-workflow.gif"
   },
   {
    "slug": "zhijian",
@@ -367,16 +367,12 @@
    ],
    "screenshots": [
     {
-     "src": "typora/2_typora_文件列表.png",
-     "caption": "文件夹工作流"
+     "src": "media/design-main.png",
+     "caption": "主窗口：笔记、编辑与预览三栏"
     },
     {
-     "src": "typora/5_typora_编辑.png",
-     "caption": "编辑与实时预览"
-    },
-    {
-     "src": "typora/3_typora_大纲.png",
-     "caption": "大纲导航"
+     "src": "media/design-tour.gif",
+     "caption": "查找替换等界面轮播"
     }
    ],
    "docs": {
@@ -411,7 +407,7 @@
      "desc": "导出 PDF/长图/Word，或一键复制公众号、知乎、掘金富文本。"
     }
    ],
-   "heroShot": "typora/2_typora_文件列表.png",
+   "heroShot": "media/design-main.png",
    "enName": "Vex"
   },
   {
@@ -1117,7 +1113,8 @@
    ],
    "docs": {
     "sources": [
-     "README.md"
+     "README.md",
+     "docs/media"
     ],
     "strip": []
    },
@@ -1137,7 +1134,14 @@
      "title": "一键设置",
      "desc": "设为桌面壁纸，需要的话打开开机自启。"
     }
-   ]
+   ],
+   "screenshots": [
+    {
+     "src": "media/design-home.png",
+     "caption": "壁纸库：童趣分类与动态壁纸"
+    }
+   ],
+   "heroShot": "media/design-home.png"
   },
   {
    "slug": "zitie",
@@ -1197,7 +1201,8 @@
     "sources": [
      "README.md",
      "docs/内容库.md",
-     "docs/字体与笔锋.md"
+     "docs/字体与笔锋.md",
+     "docs/media"
     ],
     "strip": [
      "docs"
@@ -1219,7 +1224,14 @@
      "title": "导出打印",
      "desc": "左侧属性面板调整版式，导出 PDF/PNG 或直接打印。"
     }
-   ]
+   ],
+   "screenshots": [
+    {
+     "src": "media/design-tour.gif",
+     "caption": "首页、编辑器与内容抽屉轮播"
+    }
+   ],
+   "heroShot": "media/design-tour.gif"
   }
  ]
 }
