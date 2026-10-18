@@ -1,0 +1,62 @@
+name: 构建并部署 Vex 站
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'vex/**'
+      - '.github/workflows/deploy-vex.yml'
+  pull_request:
+    paths:
+      - 'vex/**'
+      - '.github/workflows/deploy-vex.yml'
+  workflow_dispatch:
+  schedule:
+    # 每日 UTC 19:30（北京时间 03:30）兜底同步 Vex-Flutter 文档，与文档站错开
+    - cron: '30 19 * * *'
+  repository_dispatch:
+    # Vex-Flutter push 后发来的实时同步通知（event_type: vex-source-updated）
+    types: [vex-source-updated]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-deploy-vex
+  cancel-in-progress: false
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vex
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: vex/package-lock.json
+
+      - run: npm ci
+
+      - name: 同步 Vex-Flutter 内容（depth-1 克隆到 vex/.source/）
+        run: node scripts/sync-content.mjs --ci
+
+      - name: 构建（实时指标 + Astro + Pagefind 索引）
+        run: node scripts/build.mjs --no-sync
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 部署到自有服务器（rsync）
+        if: github.event_name != 'pull_request'
+        uses: easingthemes/ssh-deploy@v5
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.VEX_DEPLOY_SSH_KEY }}
+          ARGS: '-rlgoDz --delete'
+          SOURCE: 'vex/dist/'
+          REMOTE_HOST: ${{ secrets.VEX_DEPLOY_HOST }}
+          REMOTE_USER: ${{ secrets.VEX_DEPLOY_USER }}
+          TARGET: ${{ secrets.VEX_DEPLOY_PATH }}

@@ -1,13 +1,23 @@
 ---
 import ProjectLogo from '../components/ProjectLogo.astro';
-import { byType, starText, loadMetrics, categories, platformLabels, hasAsset, mmLabel, type Project } from '../lib/projects';
+import {
+  projects,
+  contentByType,
+  loadMetrics,
+  categories,
+  platformLabels,
+  hasAsset,
+  mmLabel,
+  type Project,
+} from '../lib/projects';
 
 interface Props {
   type: 'app' | 'lib';
   addCard?: boolean;
 }
 const { type, addCard = false } = Astro.props;
-const list = byType(type);
+// 应用卡片保留外链项目（维刻 Vex 官网），组件库只列本站承载内容的库
+const list = type === 'app' ? projects.filter((p) => p.type === 'app') : contentByType('lib');
 const metrics = loadMetrics();
 const shotSrc = (p: Project) => (p.heroShot && hasAsset(`${p.slug}/${p.heroShot}`) ? `/assets/${p.slug}/${p.heroShot.split('/').map(encodeURIComponent).join('/')}` : null);
 ---
@@ -18,7 +28,12 @@ const shotSrc = (p: Project) => (p.heroShot && hasAsset(`${p.slug}/${p.heroShot}
       {list.map((p: Project) => {
         const shot = shotSrc(p);
         return (
-          <a class="card hoverable app-card" href={`/${p.type}s/${p.slug}/`}>
+          <a
+            class="card hoverable app-card"
+            href={p.external ?? `/${p.type}s/${p.slug}/`}
+            target={p.external ? '_blank' : undefined}
+            rel={p.external ? 'noopener' : undefined}
+          >
             <span class="app-shot">
               {shot ? <img src={shot} alt={`${p.name} 界面预览`} loading="lazy" /> : (
                 <span class="app-shot-fallback">
@@ -42,7 +57,7 @@ const shotSrc = (p: Project) => (p.heroShot && hasAsset(`${p.slug}/${p.heroShot}
                   <span class="pill blue">{platformLabels[pl]?.label ?? pl}</span>
                 ))}
                 <span class="spacer" />
-                <span class="btn btn-ghost btn-sm">详情</span>
+                <span class="btn btn-ghost btn-sm">{p.external ? '访问官网 ↗' : '详情'}</span>
               </span>
             </span>
           </a>

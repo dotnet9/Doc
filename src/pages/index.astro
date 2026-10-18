@@ -4,16 +4,9 @@ import ProjectGrid from '../components/ProjectGrid.astro';
 import ProjectLogo from '../components/ProjectLogo.astro';
 import MindMap from '../components/MindMap.astro';
 import Giscus from '../components/Giscus.astro';
-import { projects, byType, recentUpdates, baseOf, hasAsset } from '../lib/projects';
+import { recentUpdates, baseOf } from '../lib/projects';
 
-const apps = byType('app');
-const libs = byType('lib');
 const updates = recentUpdates(8);
-const pkgCount = projects.reduce((n, p) => n + (p.nuget?.length ?? 0), 0);
-const visuals = apps.map((p) => ({
-  p,
-  shot: p.heroShot && hasAsset(`${p.slug}/${p.heroShot}`) ? `/assets/${p.slug}/${p.heroShot.split('/').map(encodeURIComponent).join('/')}` : null,
-}));
 ---
 
 <Base title="码坊 CodeWF · 开源应用与组件库" active="home">

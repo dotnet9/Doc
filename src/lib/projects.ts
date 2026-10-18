@@ -15,6 +15,8 @@ export interface Project {
   description: string;
   repo: string;
   repoPath: string;
+  /** 项目自有站点地址：填了表示本站不承载其内容（详情/文档/日志），卡片与入口一律外链 */
+  external?: string;
   category: string | null;
   tags: string[];
   platforms: string[];
@@ -40,8 +42,13 @@ export const platformLabels = manifest.platforms as Record<string, { label: stri
 
 export const bySlug = (slug: string) => projects.find((p) => p.slug === slug);
 export const byType = (type: 'app' | 'lib') => projects.filter((p) => p.type === type);
+/** 本站有内容页（详情/文档/日志）的项目：外链项目（如维刻 Vex）不生成页面 */
+export const contentProjects = projects.filter((p) => !p.external);
+export const contentByType = (type: 'app' | 'lib') => contentProjects.filter((p) => p.type === type);
 export const sectionOf = (p: Project) => (p.type === 'app' ? 'apps' : 'libs');
 export const baseOf = (p: Project) => `/${sectionOf(p)}/${p.slug}/`;
+/** 卡片与入口链接：外链项目直达其官网，其余走站内详情页 */
+export const entryHref = (p: Project) => p.external ?? baseOf(p);
 
 /** 展示名：中文名应用带英文名（枝见 Zhijian），英文应用原样 */
 export const mmLabel = (p: Project) => (p.enName ? `${p.name} ${p.enName}` : p.name);
@@ -111,10 +118,10 @@ export const loadChangelog = (slug: string): ChangelogData =>
     entries: [],
   });
 
-/** 跨项目更新动态（按日期倒序，取前 n 条） */
+/** 跨项目更新动态（按日期倒序，取前 n 条；外链项目由子站自行提供动态） */
 export function recentUpdates(n = 8) {
   const items: { project: Project; entry: ChangelogEntry }[] = [];
-  for (const p of projects) {
+  for (const p of contentProjects) {
     const cl = loadChangelog(p.slug);
     for (const e of cl.entries.slice(0, 3)) items.push({ project: p, entry: e });
   }

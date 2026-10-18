@@ -3,6 +3,10 @@ name: 构建并部署文档站
 on:
   push:
     branches: [main]
+    # Vex 子站（vex/**）由 deploy-vex.yml 独立构建部署
+    paths-ignore:
+      - 'vex/**'
+      - '.github/workflows/deploy-vex.yml'
   pull_request:
   workflow_dispatch:
   schedule:

@@ -6,6 +6,7 @@ import {
   bySlug,
   baseOf,
   docUrl,
+  entryHref,
   loadDocs,
   loadChangelog,
   loadMetrics,
@@ -356,7 +357,12 @@ const projBar = [
           </div>
           <div class="eco-row">
             {(isApp ? builtWith : usedBy).map((o) => (
-              <a class="card hoverable eco" href={baseOf(o!)}>
+              <a
+                class="card hoverable eco"
+                href={entryHref(o!)}
+                target={o!.external ? '_blank' : undefined}
+                rel={o!.external ? 'noopener' : undefined}
+              >
                 <ProjectLogo slug={o!.slug} name={o!.name} size="sm" />
                 <div>
                   <b>{o!.name}</b>

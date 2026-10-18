@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.1.0",
   "private": true,
-  "description": "码坊开源项目文档站（doc.codewf.com）",
+  "description": "码坊开源矩阵文档站（doc.codewf.com）+ 维刻 Vex 官网（vex.codewf.com）",
   "engines": {
     "node": ">=18.17"
   },
@@ -14,7 +14,11 @@
     "predev": "npm run -s sync",
     "dev": "astro dev",
     "build": "node scripts/build.mjs",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "install:all": "npm install && npm --prefix vex install",
+    "dev:vex": "npm --prefix vex run dev",
+    "build:vex": "npm --prefix vex run build",
+    "preview:vex": "npm --prefix vex run preview"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.11",

@@ -1,6 +1,8 @@
-# 服务器部署手册（doc.codewf.com）
+# 服务器部署手册（doc.codewf.com · vex.codewf.com）
 
 > 本手册覆盖 GitHub Actions 之外的全部服务器/DNS 侧操作。**DNS 已就绪**：`doc.codewf.com` 已解析到 `185.245.41.161`（与主站同机）；当前访问会落到主站默认 vhost（307 → /zh-CN），完成本手册的 Nginx 配置后即指向文档站。
+>
+> 仓库内现有两个站点：**码坊开源矩阵**（根目录，`doc.codewf.com`）与 **维刻 Vex 官网**（`vex/` 子项目，`vex.codewf.com`）。两者构建、部署、Secrets 相互独立；下文第 1-9 节是文档站，第 11 节是 Vex 站。
 
 ## 1. 服务器准备（SSH 到 185.245.41.161）
 
@@ -117,3 +119,88 @@ location ~ ^/(doc|project) { return 301 https://doc.codewf.com$request_uri; }
 ```
 
 - 观察一至两个月后，源仓库内旧 docs/ 与本站的重复内容如何收敛，由你决定（当前策略：文档事实源在各仓库，本站构建时聚合）。
+
+## 11. 维刻 Vex 官网（vex.codewf.com）
+
+站点代码在 `vex/` 子项目，独立依赖树与独立 workflow（`.github/workflows/deploy-vex.yml`）；内容来自 `dotnet9/Vex-Flutter` 的 `docs/`、`README.md`、`CONTRIBUTING.md`、`SECURITY.md`、`apps/vex/assets/documents/CHANGELOG.md`、`design/` 与 `logo.svg`。
+
+### 11.1 DNS
+
+`vex.codewf.com` A 记录 → `185.245.41.161`（与 doc 站同机）。
+
+### 11.2 部署目录与密钥
+
+```bash
+mkdir -p /var/www/vex.codewf.com
+chown -R $USER /var/www/vex.codewf.com
+```
+
+可复用文档站的部署密钥（第 2 节），也可另生成一对：
+
+```bash
+ssh-keygen -t ed25519 -f ~/vex-deploy-key -N "" -C "vex-site-deploy"
+cat ~/vex-deploy-key.pub >> ~/.ssh/authorized_keys
+```
+
+### 11.3 GitHub 仓库 Secrets（dotnet9/Doc）
+
+| Secret | 值 |
+|---|---|
+| `VEX_DEPLOY_SSH_KEY` | 部署私钥全文（复用 doc 站私钥时填同一份） |
+| `VEX_DEPLOY_HOST` | `185.245.41.161` |
+| `VEX_DEPLOY_USER` | `root`（或你部署用的用户） |
+| `VEX_DEPLOY_PATH` | `/var/www/vex.codewf.com/` |
+
+另外在 **dotnet9/Vex-Flutter** 仓库配置 `DOC_SITE_PAT`（Fine-grained token，仅 `dotnet9/Doc`，Contents: Read and write），供 `notify-docs.yml` 在文档/日志/原型变更时实时触发本站构建；未配置时仅每日定时兜底同步。
+
+### 11.4 Nginx 站点配置
+
+`/etc/nginx/conf.d/vex.codewf.com.conf`：
+
+```nginx
+server {
+    listen      80;
+    server_name vex.codewf.com;
+    root        /var/www/vex.codewf.com;
+    index       index.html;
+
+    gzip on;
+    gzip_types text/css application/javascript application/json image/svg+xml;
+
+    # 静态资源缓存；设计原型目录随源仓库更新，不做长缓存
+    location /_astro/ { expires 30d; add_header Cache-Control "public, immutable"; }
+    location /pagefind/ { expires 7d; }
+    location /design/ { expires 1h; }
+
+    # 静态站回退：目录形式 URL → index.html
+    location / {
+        try_files $uri $uri/ $uri/index.html =404;
+    }
+
+    error_page 404 /404.html;
+}
+```
+
+```bash
+nginx -t && systemctl reload nginx
+certbot --nginx -d vex.codewf.com --redirect
+```
+
+### 11.5 首次部署与验证
+
+GitHub → dotnet9/Doc → Actions → 「构建并部署 Vex 站」→ Run workflow。此后 `vex/**` 变更自动部署，源仓库推送与每日定时各自兜底。
+
+```bash
+curl -I https://vex.codewf.com/                     # 200
+curl -I https://vex.codewf.com/docs/                # 200（文档索引）
+curl -I https://vex.codewf.com/changelog/           # 200
+curl -I https://vex.codewf.com/pagefind/pagefind.js # 200（搜索索引）
+curl -I https://vex.codewf.com/design/index.html    # 200（设计原型）
+curl -I https://doc.codewf.com/apps/vex/            # 404（Vex 内容已迁至子站，不做旧链接兼容）
+```
+
+浏览器：落地页截图与下载矩阵 / 文档三栏与侧栏分组 / 更新日志 / Ctrl K 搜索 / 暗色切换 / 评论区块（填入 giscus 配置后显示）。
+
+### 11.6 评论（giscus，可选）
+
+在 `dotnet9/Vex-Flutter` 仓库安装 <https://github.com/apps/giscus>、开启 Discussions 并建 `General` 分类，把 `repoId` / `categoryId` 填入 `vex/src/config/site.ts`，并将 `giscus.enabled` 改为 `true`。未配置时文档页与更新日志页显示「到 GitHub 提交 Issue」的替代入口。

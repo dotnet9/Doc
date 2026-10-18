@@ -2,10 +2,10 @@
 import Giscus from '../components/Giscus.astro';
 import Base from '../layouts/Base.astro';
 import ProjectLogo from '../components/ProjectLogo.astro';
-import { byType, loadMetrics, categories, countText, platformLabels, mmLabel } from '../lib/projects';
+import { contentByType, loadMetrics, categories, countText, platformLabels, mmLabel } from '../lib/projects';
 
-const apps = byType('app');
-const libs = byType('lib');
+const apps = contentByType('app');
+const libs = contentByType('lib');
 const metrics = loadMetrics();
 const grouped = Object.entries(categories).map(([key, c]) => ({
   label: c.label,
@@ -15,7 +15,7 @@ const grouped = Object.entries(categories).map(([key, c]) => ({
 
 <Base
   title="下载中心 - 码坊 CodeWF"
-  description="码坊开源应用下载中心：QuickApp、ClearC、枝见、维刻 全平台安装包与 .NET 组件库 NuGet 安装。"
+  description="码坊开源应用下载中心：QuickApp、ClearC、枝见、码匠工具箱、KidWall、字帖 全平台安装包与 .NET 组件库 NuGet 安装。"
   active="download"
   simpleFooter
 >

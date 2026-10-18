@@ -1,11 +1,11 @@
 import rss from '@astrojs/rss';
-import { projects, loadChangelog, baseOf, type ChangelogEntry } from '../lib/projects';
+import { contentProjects, loadChangelog, baseOf, type ChangelogEntry } from '../lib/projects';
 import { SITE } from '../config/site';
 
-/** 整站 RSS：聚合各项目最近更新条目 */
+/** 整站 RSS：聚合本站承载内容的各项目更新条目（外链项目如维刻 Vex 由子站自行提供订阅） */
 export function GET(context) {
   const items = [];
-  for (const p of projects) {
+  for (const p of contentProjects) {
     const cl = loadChangelog(p.slug);
     for (const e of cl.entries.slice(0, 10)) {
       items.push({ project: p, entry: e as ChangelogEntry });

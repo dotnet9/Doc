@@ -1,6 +1,15 @@
-# CodeWF Docs（doc.codewf.com）
+# CodeWF Docs（doc.codewf.com · vex.codewf.com）
 
-码坊开源项目文档站：**展示 + 文档一体**的开源矩阵站点，部署于主站 codewf.com 的二级域名。
+本仓库包含**两个独立静态站**，共用一份构建脚本约定但各自安装依赖、各自部署：
+
+| 站点 | 目录 | 线上地址 | 定位 |
+|---|---|---|---|
+| 码坊开源矩阵 | 仓库根目录 | `https://doc.codewf.com` | 展示 + 文档一体：应用/组件库矩阵、各项目文档与更新日志 |
+| 维刻 Vex 官网 | `vex/` | `https://vex.codewf.com` | 维刻 Vex（`dotnet9/Vex-Flutter`）的独立官网：落地页 + 文档 + 更新日志 |
+
+维刻 Vex 在汇总站只保留一张外链卡片（点击直达子站），其文档与更新日志只在子站维护；子站结构见下文章节「维刻 Vex 官网（`vex/`）」，服务器侧配置见 [docs/deploy.md](docs/deploy.md) 第 11 节。
+
+汇总站：
 
 - 线上地址：`https://doc.codewf.com`（部署后生效）
 - 技术栈：**Astro**（静态生成）+ 自研文档布局（Starlight 风格三栏）+ Pagefind 本地搜索
@@ -10,23 +19,29 @@
 ## 快速开始
 
 ```bash
-npm install
+npm run install:all   # 安装两个站的依赖（等价于 npm install && npm --prefix vex install）
 
-npm run dev      # 开发（自动以本地模式同步兄弟仓库的文档）
-npm run build    # 构建：同步 → 拉取指标 → astro build → pagefind 索引
-npm run preview  # 预览 dist
+npm run dev           # 汇总站开发（自动以本地模式同步兄弟仓库的文档）
+npm run build         # 汇总站构建：同步 → 拉取指标 → astro build → pagefind 索引
+npm run preview       # 预览汇总站 dist
+
+npm run dev:vex       # Vex 子站开发（http://localhost:4322）
+npm run build:vex     # Vex 子站构建：同步 Vex-Flutter → 指标 → astro build → pagefind
+npm run preview:vex   # 预览 Vex 子站 dist
 ```
 
-本地同步直接读取兄弟目录的仓库检出（`../QuickApp`、`../../libs/*`），无需联网克隆；
+本地同步直接读取兄弟目录的仓库检出（`../QuickApp`、`../../libs/*`、`../Vex-Flutter`），无需联网克隆；
 实时指标（star / 最新 Release / NuGet 下载量）拉取失败时自动降级，不阻塞构建。
+
+> 两个站各自维护 `node_modules` 与 `package-lock.json`；`npm run build` 只构建汇总站，Vex 站用 `npm run build:vex`。
 
 ## 项目结构
 
 ```
 src/
-  data/projects.json      项目清单（单一事实源：元数据、特性、示例、文档来源）
+  data/projects.json      项目清单（单一事实源：元数据、特性、示例、文档来源；external 字段表示外链项目）
   config/site.ts          站点配置（域名、giscus、统计）
-  lib/projects.ts         清单加载与派生数据（文档/日志/指标）
+  lib/projects.ts         清单加载与派生数据（文档/日志/指标；contentByType 排除外链项目）
   styles/                 设计令牌（对齐主站 .NET 紫）+ 全局样式
   layouts/Base.astro      页面骨架（亮暗主题、搜索、统计注入）
   components/             页头（品牌按项目切换）/页脚/搜索弹窗/Giscus/Logo
@@ -39,6 +54,7 @@ scripts/
   lib/markdown.mjs        Markdown 渲染（TOC、代码高亮、标题 slug）
   lib/changelog.mjs       更新日志解析（版本/日期/HTML）
 design/                   评审用 HTML 原型（保留存档）
+vex/                      维刻 Vex 官网子站（结构与本表同构，见下文）
 ```
 
 ## 路由架构
@@ -53,6 +69,9 @@ design/                   评审用 HTML 原型（保留存档）
 /download/                     统一下载中心
 /rss.xml · /sitemap-index.xml  订阅与 SEO
 ```
+
+清单里带 `external` 的项目（维刻 Vex → `https://vex.codewf.com`）**不生成** `/apps/{slug}/**` 内容页：
+卡片与导图节点外链到项目官网，下载页与 RSS 也不列该项目。
 
 ## 内容同步机制
 
@@ -77,6 +96,7 @@ Doc 仓库 deploy workflow 触发条件：
 - **同步**：push 后由 notify workflow 自动通知文档站；文档站解析该文件生成更新日志页与首页动态
 - **应用内读取**：枝见、维刻的帮助窗口运行时读取此文件（csproj 打包），格式变更需同步应用解析逻辑
 - 说明：QuickApp / ClearC 的历史日志已自 GitHub Releases 整理入库
+- 例外：`Vex-Flutter` 使用 `apps/vex/assets/documents/CHANGELOG.md`（随应用打包的内置文档），由 Vex 子站在 `src/data/content.json` 里单独配置路径，不走本约定
 
 ## 新项目接入（一分钟）
 
@@ -104,16 +124,45 @@ jobs:
 
 （`DOC_SITE_PAT` 为具备 `repo` 权限的 PAT，存于各源仓库 Secrets；不加此 workflow 也能工作，文档更新延迟至每日兜底同步。）
 
+## 维刻 Vex 官网（`vex/`）
+
+独立静态站，介绍 `dotnet9/Vex-Flutter`：长落地页（实机截图、四视图、导图、公式/Mermaid、导出、本机 MCP、平台下载矩阵）+ 文档区（36 篇，侧栏分「使用与发布 / 开发与验收」两组）+ 更新日志 + Pagefind 搜索 + RSS/sitemap + giscus，另托管 `design/` 可交互设计原型。
+
+```
+vex/
+  astro.config.mjs       站点配置（site: https://vex.codewf.com）
+  src/data/content.json  内容清单（源仓库、文档分组、标题覆盖）—— 单一事实源
+  src/config/site.ts     站点配置（品牌、仓库、giscus、统计、下载矩阵）
+  src/lib/content.ts     生成物加载与派生（分组、排序、链接、资产探测）
+  src/styles/tokens.css  设计令牌（品牌墨青 #24766B，与设计原型同源）
+  src/components/        页头/页脚/搜索弹窗/Giscus + pages/{Landing,DocsPage,ChangelogPage}
+  src/pages/             / /docs/{path}/ /changelog/ /rss.xml /404
+  scripts/
+    sync-content.mjs     同步 Vex-Flutter：docs + README/CONTRIBUTING/SECURITY + CHANGELOG + logo + design/
+    fetch-metrics.mjs    拉取仓库 star 与最新 Release（含附件清单）
+    build.mjs            构建编排（同步 → 指标 → astro build → pagefind）
+    lib/markdown.mjs     Markdown 渲染（与汇总站同源）
+    lib/changelog.mjs    更新日志解析（与汇总站同源）
+```
+
+与汇总站不同的三处约定：
+
+1. **更新日志来源**是 `apps/vex/assets/documents/CHANGELOG.md`（源仓库没有根目录 `UpdateLog.md`），同步时剥离文件首行标题；
+2. **越界链接**（`../CONTRIBUTING.md`、`../packages/…`、`.flutter-version` 等指向仓库根目录的引用）统一改写成 GitHub blob/tree 链接，站内不产生死链；
+3. **附件白名单**：只同步图片类资源（png/jpg/gif/webp/svg/zip），`docs/validation/**` 下的性能 JSON 归档不进站，正文里指向它们的链接走 GitHub。
+
+实时同步：`dotnet9/Vex-Flutter` 的 `.github/workflows/notify-docs.yml` 在文档/日志/原型变更时发 `vex-source-updated`，本仓库 `deploy-vex.yml` 收到后重建；未配置 PAT 时由每日定时兜底。
+
 ## 上线前配置清单（TODO）
 
 | 项 | 位置 | 状态 |
 |---|---|---|
-| DNS | 域名解析 | ✅ `doc.codewf.com` 已解析到 185.245.41.161 |
-| Nginx + 证书 | 服务器 | ⬜ 按 [docs/deploy.md](docs/deploy.md) 第 4-5 步执行 |
-| 部署 Secrets | Doc 仓库 Settings → Secrets | ⬜ 按 [docs/deploy.md](docs/deploy.md) 第 2-3 步生成密钥并配置 |
-| giscus | `src/config/site.ts` | ✅ ID 已填并启用；⬜ 仅剩安装 giscus App（github.com/apps/giscus 选 dotnet9/Doc） |
-| 访问统计 | `src/config/site.ts` | ⬜ 51.La 添加站点后填 `analytics.key` |
-| 实时同步 | 各源仓库 | ✅ 11 个源仓库已加通知 workflow；⬜ 创建 PAT 配置各仓 `DOC_SITE_PAT`（见 deploy.md 第 7 步） |
+| DNS | 域名解析 | ✅ `doc.codewf.com` 已解析到 185.245.41.161；⬜ `vex.codewf.com` 待解析 |
+| Nginx + 证书 | 服务器 | ⬜ 汇总站按 [docs/deploy.md](docs/deploy.md) 第 4-5 步；Vex 站按第 11.4 步 |
+| 部署 Secrets | Doc 仓库 Settings → Secrets | ⬜ 汇总站按 deploy.md 第 2-3 步；Vex 站另配 `VEX_DEPLOY_*`（第 11.3 步） |
+| giscus | `src/config/site.ts`（两站各一份） | 汇总站 ✅ ID 已填并启用，⬜ 安装 giscus App（选 dotnet9/Doc）；⬜ Vex 站在 dotnet9/Vex-Flutter 装 App 并填 ID |
+| 访问统计 | `src/config/site.ts`（两站各一份） | ⬜ 51.La 添加两个站点后填 `analytics.key` |
+| 实时同步 | 各源仓库 | ✅ 11 个源仓库 + Vex-Flutter 已加通知 workflow；⬜ 创建 PAT 配置各仓 `DOC_SITE_PAT`（见 deploy.md 第 7 步） |
 
 ## 实施状态
 
@@ -126,6 +175,7 @@ jobs:
 | P4 部署（workflow + 部署手册就绪，服务器侧待执行） | ⏳ 按 docs/deploy.md 执行 |
 | P5 SEO（sitemap / RSS / meta） | ✅ |
 | P6 主站改造 | ✅ 主站 doc 代码已移除、菜单外链化（develop 分支）；资源站 site/doc/ 已删除 |
+| P7 维刻 Vex 独立站（`vex/`，落地页 + 文档 + 日志 + 搜索 + 原型托管） | ✅ 已实现；⬜ 服务器侧按 docs/deploy.md 第 11 节上线 |
 
 ## 与主站/资源站的改造（独立阶段执行）
 

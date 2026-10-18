@@ -1,0 +1,66 @@
+{
+  "source": {
+    "repo": "https://github.com/dotnet9/Vex-Flutter",
+    "repoPath": "../../Vex-Flutter",
+    "slug": "vex",
+    "changelog": "docs/更新日志.md",
+    "logo": ["logo.svg", "logo.png", "logo.ico"],
+    "docRoots": ["docs"],
+    "extraDocs": ["README.md"]
+  },
+  "docs": {
+    "overview": "README.md",
+    "groupRules": {
+      "use": {
+        "label": "使用与发布",
+        "desc": "安装、写作、导出与参与",
+        "depth": 0,
+        "alwaysUse": ["README.md"]
+      },
+      "dev": {
+        "label": "开发与验收",
+        "desc": "组件包、本机 MCP、打包脚本与性能记录",
+        "depthAtLeast": 1
+      }
+    },
+    "order": [
+      "README.md",
+      "文档导航.md",
+      "00-从这里开始.md",
+      "01-仓库地图与目录说明.md",
+      "02-需求说明书.md",
+      "03-概要设计.md",
+      "04-详细设计.md",
+      "05-核心原理与源码导读.md",
+      "06-开发调试与测试入门.md",
+      "07-本机打包安装升级与数据备份.md",
+      "08-Markdown阅读练习.md",
+      "安装包与自动发布.md",
+      "窗口关闭验证.md",
+      "国际化.md",
+      "品牌命名与标识.md",
+      "工作区菜单.md",
+      "Markdown公式.md",
+      "Markdown图表.md",
+      "实现验收.md",
+      "桌面体验复核.md",
+      "Android构建.md",
+      "贡献指南.md",
+      "安全政策.md",
+      "更新日志.md",
+      "鸣谢.md"
+    ],
+    "titles": {
+      "README.md": "项目总览",
+      "贡献指南.md": "贡献指南",
+      "安全政策.md": "安全政策",
+      "更新日志.md": "版本记录",
+      "鸣谢.md": "鸣谢与素材许可",
+      "packages/vex_editor/编辑器组件.md": "vex_editor 编辑器控件",
+      "packages/vex_markdown_core/Markdown核心组件.md": "vex_markdown_core 文档模型",
+      "packages/vex_mindmap/导图组件.md": "vex_mindmap 导图控件",
+      "mcp/MCP使用指南.md": "本机 MCP 服务",
+      "design/原型设计.md": "设计原型说明"
+    }
+  }
+}

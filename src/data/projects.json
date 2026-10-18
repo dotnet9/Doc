@@ -19,6 +19,9 @@
   },
   "linux": {
    "label": "Linux"
+  },
+  "android": {
+   "label": "Android"
   }
  },
  "projects": [
@@ -316,99 +319,62 @@
    "slug": "vex",
    "type": "app",
    "name": "维刻",
-   "tagline": "极简之力，妙笔成章",
-   "description": "跨平台 Markdown 编辑器，为写作、技术文档与自媒体排版而生：实时预览、大纲导航、多格式导出（HTML/PDF/PNG 长图/Word）、一键复制微信公众号/知乎/掘金富文本，内置本机 AI MCP Server。",
-   "repo": "https://github.com/dotnet9/Vex",
-   "repoPath": "../Vex",
+   "enName": "Vex",
+   "tagline": "写下想法，看见脉络",
+   "description": "本地优先的开源 Markdown 写作空间：即时编辑、源码、阅读与思维导图四种视图共享同一份文档与撤销历史；六种导图结构可直接整理章节；原生数学／化学公式与 Mermaid 图表；导出 Markdown / HTML / PDF / Word / 导图 PNG。Flutter 原生渲染，已提供 Windows、macOS、Linux 与 Android 安装包。完整介绍、文档与更新日志见官网 vex.codewf.com。",
+   "repo": "https://github.com/dotnet9/Vex-Flutter",
+   "repoPath": "../Vex-Flutter",
+   "external": "https://vex.codewf.com",
    "category": null,
    "tags": [
     "Markdown",
     "写作排版",
-    "MCP"
+    "思维导图",
+    "Flutter"
    ],
    "platforms": [
     "windows",
-    "macos"
+    "macos",
+    "linux",
+    "android"
    ],
    "frameworks": [
-    "net11.0"
+    "Flutter"
    ],
    "features": [
     {
-     "icon": "📝",
-     "title": "编辑 + 实时预览",
-     "desc": "AvaloniaEdit 源码编辑，左侧写右侧看，大纲导航与文档统计随手可得。"
+     "icon": "🗂️",
+     "title": "一份 Markdown，四种视图",
+     "desc": "即时编辑、源码、阅读与思维导图共享同一份文档和撤销历史。"
+    },
+    {
+     "icon": "🌳",
+     "title": "导图整理章节",
+     "desc": "六种结构，新增／改名／升降级／移动章节直接回到 Markdown 原文。"
+    },
+    {
+     "icon": "🧮",
+     "title": "公式与 Mermaid",
+     "desc": "数学、化学表达式与 22 类图表模板，原生 Dart 引擎，不依赖网页内核。"
     },
     {
      "icon": "📤",
-     "title": "多格式导出",
-     "desc": "HTML / PDF / PNG 长图 / Word 一键导出，分享不再折腾格式。"
+     "title": "导出与演示",
+     "desc": "Markdown、独立 HTML、PDF、Word 与导图 PNG，另有正文／大纲／导图演示模式。"
     },
     {
-     "icon": "📋",
-     "title": "社交平台排版",
-     "desc": "复制为微信公众号、知乎、掘金富 HTML，多套排版主题直接带走。"
-    },
-    {
-     "icon": "📂",
-     "title": "文件夹工作流",
-     "desc": "打开目录即列出文档，外部变更自动检测，长篇项目好管理。"
-    },
-    {
-     "icon": "🎨",
-     "title": "明暗与排版主题",
-     "desc": "浅色深色界面 + 多套排版主题，写作环境与成稿风格都能定制。"
+     "icon": "🔒",
+     "title": "文件属于你",
+     "desc": "普通 Markdown 文件保存，无需账户与云服务；自动保存默认关闭，另有草稿与冲突检查。"
     },
     {
      "icon": "🤖",
-     "title": "内置 MCP Server",
-     "desc": "本机 MCP 服务（Bearer Token 鉴权）让 AI 客户端读写、预览当前文档。"
+     "title": "本机 MCP（实验性）",
+     "desc": "可选的本机 MCP 服务：回环地址、访问令牌、写操作默认需确认。"
     }
    ],
-   "screenshots": [
-    {
-     "src": "media/design-main.png",
-     "caption": "主窗口：笔记、编辑与预览三栏"
-    },
-    {
-     "src": "media/design-tour.gif",
-     "caption": "查找替换等界面轮播"
-    }
-   ],
-   "docs": {
-    "sources": [
-     "docs"
-    ],
-    "strip": [
-     "docs"
-    ]
-   },
-   "changelog": [
-    "UpdateLog.md"
-   ],
-   "builtWith": [
-    "codewf-markdown",
-    "codewf-eventbus",
-    "codewf-tools",
-    "lang-avalonia"
-   ],
-   "usedBy": [],
-   "quickStart": [
-    {
-     "title": "下载安装",
-     "desc": "获取安装包，内置自动更新，装完即用。"
-    },
-    {
-     "title": "打开或新建",
-     "desc": "打开单个 Markdown 或整个文件夹，左侧编辑右侧预览。"
-    },
-    {
-     "title": "导出分享",
-     "desc": "导出 PDF/长图/Word，或一键复制公众号、知乎、掘金富文本。"
-    }
-   ],
-   "heroShot": "media/design-main.png",
-   "enName": "Vex"
+   "builtWith": [],
+   "usedBy": []
   },
   {
    "slug": "codewf-toolbox",
