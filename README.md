@@ -7,7 +7,7 @@
 | 码坊开源矩阵 | 仓库根目录 | `https://doc.codewf.com` | 展示 + 文档一体：应用/组件库矩阵、各项目文档与更新日志 |
 | 维刻 Vex 官网 | `vex/` | `https://vex.codewf.com` | 维刻 Vex（`dotnet9/Vex-Flutter`）的独立官网：落地页 + 文档 + 更新日志 |
 
-维刻 Vex 在汇总站只保留一张外链卡片（点击直达子站），其文档与更新日志只在子站维护；子站结构见下文章节「维刻 Vex 官网（`vex/`）」，服务器侧配置见 [docs/deploy.md](docs/deploy.md) 第 11 节。
+维刻 Vex 在汇总站只保留一张外链卡片（点击直达子站），其文档与更新日志只在子站维护；子站结构见下文章节「维刻 Vex 官网（`vex/`）」。
 
 汇总站：
 
@@ -153,17 +153,6 @@ vex/
 
 实时同步：`dotnet9/Vex-Flutter` 的 `.github/workflows/notify-docs.yml` 在文档/日志/原型变更时发 `vex-source-updated`，本仓库 `deploy-vex.yml` 收到后重建；未配置 PAT 时由每日定时兜底。
 
-## 上线前配置清单（TODO）
-
-| 项 | 位置 | 状态 |
-|---|---|---|
-| DNS | 域名解析 | ✅ `doc.codewf.com` 已解析到 185.245.41.161；⬜ `vex.codewf.com` 待解析 |
-| Nginx + 证书 | 服务器 | ⬜ 汇总站按 [docs/deploy.md](docs/deploy.md) 第 4-5 步；Vex 站按第 11.4 步 |
-| 部署 Secrets | Doc 仓库 Settings → Secrets | ⬜ 汇总站按 deploy.md 第 2-3 步；Vex 站另配 `VEX_DEPLOY_*`（第 11.3 步） |
-| giscus | `src/config/site.ts`（两站各一份） | 汇总站 ✅ ID 已填并启用，⬜ 安装 giscus App（选 dotnet9/Doc）；⬜ Vex 站在 dotnet9/Vex-Flutter 装 App 并填 ID |
-| 访问统计 | `src/config/site.ts`（两站各一份） | ⬜ 51.La 添加两个站点后填 `analytics.key` |
-| 实时同步 | 各源仓库 | ✅ 11 个源仓库 + Vex-Flutter 已加通知 workflow；⬜ 创建 PAT 配置各仓 `DOC_SITE_PAT`（见 deploy.md 第 7 步） |
-
 ## 实施状态
 
 | 阶段 | 状态 |
@@ -171,11 +160,11 @@ vex/
 | P0 原型评审（design/ 五页） | ✅ 已确认 |
 | P1 站点骨架（设计令牌、五类页面模板、亮暗主题） | ✅ |
 | P2 清单 + 同步机制（11 项目全量接入） | ✅ |
-| P3 功能（Pagefind / giscus / 下载页 / 日志页 / 首页动态 / 实时徽章） | ✅（统计待填 51.La key） |
-| P4 部署（workflow + 部署手册就绪，服务器侧待执行） | ⏳ 按 docs/deploy.md 执行 |
+| P3 功能（Pagefind / giscus / 下载页 / 日志页 / 首页动态 / 实时徽章） | ✅ |
+| P4 部署（workflow + 部署手册就绪） | ✅ |
 | P5 SEO（sitemap / RSS / meta） | ✅ |
 | P6 主站改造 | ✅ 主站 doc 代码已移除、菜单外链化（develop 分支）；资源站 site/doc/ 已删除 |
-| P7 维刻 Vex 独立站（`vex/`，落地页 + 文档 + 日志 + 搜索 + 原型托管） | ✅ 已实现；⬜ 服务器侧按 docs/deploy.md 第 11 节上线 |
+| P7 维刻 Vex 独立站（`vex/`，落地页 + 文档 + 日志 + 搜索 + 原型托管） | ✅ |
 
 ## 与主站/资源站的改造（独立阶段执行）
 
