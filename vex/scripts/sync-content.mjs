@@ -206,10 +206,12 @@ function main() {
   // 1. 收集 Markdown 与资源（命名空间 = 站内路径）
   const mdFiles = [];
   const assetFiles = [];
+  const excludes = (CONTENT.docs.exclude ?? []).map((p) => p.replace(/\/$/, ''));
   const pushEntry = (abs) => {
     const repoPath = norm(path.relative(srcRoot, abs));
     const ns = toSiteNs(repoPath);
     if (!ns) return;
+    if (excludes.some((x) => ns === x || ns.startsWith(x + '/'))) return;
     (MD_RE.test(ns) ? mdFiles : ASSET_RE.test(ns) ? assetFiles : []).push({ ns, abs, repoPath });
   };
   for (const root of SRC.docRoots) {
