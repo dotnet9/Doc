@@ -151,7 +151,7 @@ cat ~/vex-deploy-key.pub >> ~/.ssh/authorized_keys
 | `VEX_DEPLOY_USER` | `root`（或你部署用的用户） |
 | `VEX_DEPLOY_PATH` | `/var/www/vex.codewf.com/` |
 
-另外在 **dotnet9/Vex-Flutter** 仓库配置 `DOC_SITE_PAT`（Fine-grained token，仅 `dotnet9/Doc`，Contents: Read and write），供 `notify-docs.yml` 在文档/日志/原型变更时实时触发本站构建；未配置时仅每日定时兜底同步。
+另外在 **dotnet9/Vex** 仓库配置 `DOC_SITE_PAT`（Fine-grained token，仅 `dotnet9/Doc`，Contents: Read and write），供 `notify-docs.yml` 在文档/日志/README 变更时发送 `vex-source-updated`，实时触发本站构建；未配置时仅每日定时兜底同步。
 
 ### 11.4 Nginx 站点配置
 
