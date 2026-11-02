@@ -161,7 +161,7 @@ function copyDesign(srcRoot) {
     return false;
   }
   fs.mkdirSync(to, { recursive: true });
-  const skip = new Set(['scripts', 'README.md']);
+  const skip = new Set(['scripts', 'tests', 'README.md']);
   for (const e of fs.readdirSync(from, { withFileTypes: true })) {
     if (skip.has(e.name)) continue;
     fs.cpSync(path.join(from, e.name), path.join(to, e.name), { recursive: true });
