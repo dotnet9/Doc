@@ -52,7 +52,7 @@ jobs:
 
       - name: 部署到自有服务器（rsync）
         if: github.event_name != 'pull_request'
-        uses: easingthemes/ssh-deploy@v5
+        uses: easingthemes/ssh-deploy@v5.1.2
         with:
           SSH_PRIVATE_KEY: ${{ secrets.VEX_DEPLOY_SSH_KEY }}
           ARGS: '-rlgoDz --delete'
