@@ -12,23 +12,24 @@ const cl = loadChangelog();
 const version = metrics.release?.version ?? 'x.y.z';
 const downloadUrl = metrics.release?.url ?? SITE.releasesLatest;
 const docHref = docUrl('');
+const installerUrl = (file: string) => metrics.release?.assets?.find((asset) => asset.name === file.replace('{version}', version))?.url ?? downloadUrl;
 const designOk = hasDesign();
 
-/** 主视觉轮播：能录到动图的都用动图，其余用静态图或示意图 */
+/** 主视觉轮播：优先展示当前版本的真实控件截图。 */
 const shots = [
-  { media: media('views-instant'), tag: '写作工作区', caption: '左侧文件树、中间即时写作、右侧章节导图' },
+  { media: media('views-instant'), tag: '写作工作区', caption: '文件列表、即时编辑与文档大纲，共用一份 Markdown' },
   { media: media('markdown-formulas'), tag: '公式与图表', caption: '公式、矩阵、化学表达式与 Mermaid 原生渲染' },
   { media: media('mindmap-structures'), tag: '思维导图', caption: '六种结构随手切换，改的是同一份 Markdown' },
-  { media: media('appearance-themes'), tag: '配色与排版', caption: '八套配色、六套正文排版' },
+  { media: media('appearance-themes'), tag: '配色与排版', caption: '九套界面配色、十三套正文排版' },
   { media: media('views-source'), tag: '源码视图', caption: '完整 Markdown 与排版结果并排对照' },
-  { media: staticFile('export-formats.svg'), tag: '导出与分享', caption: '四种文件格式，一键复制到自媒体平台' },
+  { media: staticFile('export-formats.svg'), tag: '导出与分享', caption: 'Markdown、HTML、PDF、Word 与 PNG，支持自媒体复制' },
 ].filter(
   (s): s is { media: { src: string; animated: boolean }; tag: string; caption: string } => !!s.media,
 );
 
 /**
  * 四种视图：点标签即切换下方大图。
- * 每项优先取各自录制的动图（views-*.gif），没有则用已有静态截图兜底。
+ * 每项由媒体映射选取当前截图，没有时再使用已有媒体。
  */
 const views = [
   { key: 'edit', name: '即时编辑', one: '点正文直接写，离开后回到排版', icon: 'edit' as const, media: media('views-instant') ?? media('workspace') },
@@ -54,8 +55,8 @@ const blocks = [
     key: 'write',
     en: 'Writing',
     title: '公式、图表、代码都原生',
-    lead: '数学、化学与 Mermaid 由 Dart 引擎渲染，不依赖网页内核或在线服务。',
-    points: ['数学公式、矩阵、化学表达式', '流程图、时序图、甘特图等 22 类模板', '表格单元格可直接编辑，元素右键操作', '专注模式 + 打字机模式'],
+    lead: '基于 .NET 与 Avalonia 原生控件，数学公式、代码与 Mermaid 无需浏览器内核即可呈现。',
+    points: ['数学公式、矩阵、化学表达式', '24 类图表，含 Venn 与 TreeView', '单击图表直接编辑上方源码，点击正文收起', '专注模式 + 打字机模式'],
     icon: 'sigma' as const,
     media: media('markdown-formulas') ?? media('source-preview'),
     alt: media('markdown-mermaid'),
@@ -67,13 +68,13 @@ const blocks = [
     title: '写完就能发出去',
     lead: '同一份文档导出成文件，或直接复制到自媒体平台，排版不用重做。',
     points: [
-      '独立 HTML、PDF、Word、长图 PNG',
+      'Markdown、独立 HTML、PDF、Word 与 PNG',
       '一键复制到微信公众号、知乎、掘金',
       '代码块、表格、公式、图表一并带过去',
       '正文 / 大纲 / 导图三种演示，系统打印入口',
     ],
     icon: 'outbox' as const,
-    media: media('appearance-themes'),
+    media: media('export-formats'),
     alt: staticFile('export-formats.svg'),
     formats: null,
   },
@@ -84,9 +85,9 @@ const cards = [
   { icon: 'folder', title: '文件夹工作流', one: '打开目录即列出文档，外部变更自动检测' },
   { icon: 'search', title: '查找与替换', one: '留在正文区，不遮挡文件栏' },
   { icon: 'palette', title: '外观可定制', one: '明暗模式、字号、紧凑间距、预览水印' },
-  { icon: 'phone', title: '手机与平板', one: '单视图切换、最多双栏，不硬塞桌面布局' },
+  { icon: 'layout', title: '桌面多视图', one: '八种布局、独立文档窗口与悬浮缩放' },
   { icon: 'book', title: '四种界面语言', one: '简中、繁中、English、日本語即时切换' },
-  { icon: 'history', title: '草稿与冲突检查', one: '恢复草稿、关闭提醒、磁盘变更检测' },
+  { icon: 'history', title: '异常退出恢复', one: '正常保存或放弃后清理，异常退出才提示草稿' },
 ] as const;
 
 const localPoints = [
@@ -95,25 +96,18 @@ const localPoints = [
   { icon: 'terminal', title: '本机 MCP（实验性）', one: '回环地址、访问令牌，写操作需确认' },
 ] as const;
 
-const boundaries = ['0.x 早期项目，先用副本文档试用', 'Windows 无签名；macOS 无公证', 'iOS / HarmonyOS 暂无可安装包'];
+const boundaries = ['五个平台与架构组合提供 Native AOT 安装包', '签名、公证与兼容性请查看对应版本说明'];
 
-const platformIcon = (platform: string) =>
-  platform === 'Android' || platform === 'iOS'
-    ? ('phone' as const)
-    : platform === 'Linux'
-      ? ('linux' as const)
-      : platform === 'HarmonyOS'
-        ? ('terminal' as const)
-        : ('desktop' as const);
+const platformIcon = (platform: string) => platform === 'Linux' ? ('linux' as const) : ('desktop' as const);
 ---
 
 <Base
   title="维刻 Vex · 写下想法，看见脉络"
-  description="本地优先的开源 Markdown 写作空间：即时编辑、源码、阅读与思维导图四种视图共享同一份文档；原生公式与 Mermaid 图表；导出 PDF/Word/长图。Windows、macOS、Linux 与 Android 安装包开源免费。"
+  description="本地优先的开源 Markdown 写作空间：即时编辑、源码、阅读与思维导图四种视图共享同一份文档；原生公式与 Mermaid 图表；导出 PDF/Word/长图。Windows、macOS、Linux 桌面安装包开源免费。"
   active="home"
 >
   <div class="wrap" data-pagefind-body>
-    <!-- Hero：一句话 + 主 CTA + 实机图 -->
+    <!-- Hero：一句话 + 主 CTA + 当前界面图 -->
     <section class="hero hero-compact" data-pagefind-meta="title:维刻 Vex 官网">
       <img src="/logos/vex.svg" alt="维刻 Vex" width="72" height="72" style="margin:0 auto 14px" />
       <h1><span class="grad">写下想法，看见脉络</span></h1>
@@ -127,7 +121,7 @@ const platformIcon = (platform: string) =>
         </a>
         <a class="btn btn-ghost btn-lg" href={docHref}><Icon name="book" size={17} /> 阅读文档</a>
       </div>
-      <p class="hero-note">Windows · macOS · Linux · Android · 开源免费 · MIT License</p>
+      <p class="hero-note">Windows · macOS · Linux · 开源免费 · MIT License</p>
     </section>
 
     <!-- 主视觉：界面演示轮播 -->
@@ -136,7 +130,7 @@ const platformIcon = (platform: string) =>
         <section class="section" id="shots" style="padding-top: 20px">
           <ScreenshotCarousel shots={shots.map((s) => ({ ...s, ...s.media }))} />
           <p class="shot-note">
-            点击缩略图或让它自己播
+            Vex 1.20.0.0 · 当前 Avalonia 界面渲染
             {metrics.stars > 0 && <> · GitHub ★ {metrics.stars}</>}
           </p>
         </section>
@@ -249,7 +243,7 @@ const platformIcon = (platform: string) =>
       <div class="sec-head center">
         <h2>下载</h2>
         <p>
-          无需 Flutter、Git 或编译环境
+          无需 .NET 运行时、Git 或编译环境
           {metrics.release?.date && <> · 最新版 {metrics.release.date}</>}
         </p>
       </div>
@@ -260,8 +254,9 @@ const platformIcon = (platform: string) =>
               <span class="ic"><Icon name={platformIcon(d.platform)} /></span>
               <b>{d.platform}</b>
               <span class="dl-arch">{d.arch}</span>
+              <p class="hint">{d.hint}</p>
               {d.available ? (
-                <a class="btn btn-ghost btn-sm" href={downloadUrl} target="_blank" rel="noopener">
+                <a class="btn btn-ghost btn-sm" href={installerUrl(d.file)} target="_blank" rel="noopener">
                   <Icon name="download" size={14} /> {version}
                 </a>
               ) : (
@@ -286,7 +281,7 @@ const platformIcon = (platform: string) =>
           <Icon name="book" size={18} />
           <div><b>项目总览</b><span>仓库结构与文档索引</span></div>
         </a>
-        <a class="card eco" href={docUrl('安装包与自动发布')}>
+        <a class="card eco" href={docUrl('安装与发布')}>
           <Icon name="outbox" size={18} />
           <div><b>安装包与发布</b><span>构建、签名与平台限制</span></div>
         </a>
@@ -307,9 +302,9 @@ const platformIcon = (platform: string) =>
         <div class="oss-left">
           <h2>开源与鸣谢</h2>
           <p>
-            Vex 使用 Flutter 原生渲染，编辑体验参考 Typora，是
-            <a href="https://github.com/dotnet9/Vex" target="_blank" rel="noopener">原 Vex 项目</a>
-            的 Flutter 实现。感谢 Flutter、Dart 生态与所有贡献者。
+            Vex 基于 .NET 10 与 Avalonia 12，通用编辑与渲染能力由
+            <a href="https://github.com/dotnet9/CodeWF.Avalonia" target="_blank" rel="noopener">CodeWF.Avalonia</a>
+            提供。感谢 Avalonia、Semi、Ursa、Mermaider 及所有贡献者。
           </p>
         </div>
         <div class="cta-row">

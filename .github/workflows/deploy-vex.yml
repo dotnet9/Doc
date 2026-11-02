@@ -12,10 +12,10 @@ on:
       - '.github/workflows/deploy-vex.yml'
   workflow_dispatch:
   schedule:
-    # 每日 UTC 19:30（北京时间 03:30）兜底同步 Vex-Flutter 文档，与文档站错开
+    # 每日 UTC 19:30（北京时间 03:30）兜底同步 Vex 文档，与文档站错开
     - cron: '30 19 * * *'
   repository_dispatch:
-    # Vex-Flutter push 后发来的实时同步通知（event_type: vex-source-updated）
+    # Vex push 后发来的实时同步通知（event_type: vex-source-updated）
     types: [vex-source-updated]
 
 permissions:
@@ -42,7 +42,7 @@ jobs:
 
       - run: npm ci
 
-      - name: 同步 Vex-Flutter 内容（depth-1 克隆到 vex/.source/）
+      - name: 同步 Vex 内容（depth-1 克隆到 vex/.source/）
         run: node scripts/sync-content.mjs --ci
 
       - name: 构建（实时指标 + Astro + Pagefind 索引）

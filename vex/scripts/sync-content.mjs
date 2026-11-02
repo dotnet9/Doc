@@ -1,8 +1,8 @@
 /**
- * 内容同步（维刻 Vex 官网）：把 Vex-Flutter 仓库的文档 / 更新日志 / logo / 设计原型同步进本站。
+ * 内容同步（维刻 Vex 官网）：把 Vex 仓库的文档 / 更新日志 / logo / 设计原型同步进本站。
  *
  * 两种模式：
- *   node scripts/sync-content.mjs        本地模式：直接读取兄弟目录的 Vex-Flutter 检出
+ *   node scripts/sync-content.mjs        本地模式：直接读取兄弟目录的 Vex 检出
  *   node scripts/sync-content.mjs --ci   CI 模式：depth-1 克隆 GitHub 仓库到 .source/ 再读取
  *
  * 产物（均为 gitignore，构建时生成）：

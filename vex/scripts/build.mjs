@@ -25,7 +25,7 @@ const run = (label, cmd, args, { optional = false } = {}) => {
   return true;
 };
 
-if (!NO_SYNC) run('同步 Vex-Flutter 内容（本地模式）', 'node', ['scripts/sync-content.mjs']);
+if (!NO_SYNC) run('同步 Vex 内容（本地模式）', 'node', ['scripts/sync-content.mjs']);
 run('拉取实时指标', 'node', ['scripts/fetch-metrics.mjs'], { optional: true });
 run('Astro 构建', 'node', [path.join('node_modules', 'astro', 'astro.js'), 'build']);
 

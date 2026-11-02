@@ -1,9 +1,9 @@
 /**
- * 演示媒体解析：源仓库 `docs/media/` 下的实机截图与 GIF 由同步脚本复制到
- * `/assets/vex/media/`。这里按「候选文件名」挑第一个存在的文件，因此
- * 录制新 GIF 后只需在 content 里加一行文件名，无需改组件。
+ * 演示媒体解析：优先使用源仓库 `docs/图片/` 的当前 Avalonia 控件截图。
+ * 同步脚本将它们复制到 `/assets/vex/图片/`，采集方式见源仓库的截图说明。
+ * 当前截图缺失时，再按候选文件名查找 `docs/media/` 下的已有媒体。
  *
- * 约定（录制后放进 Vex-Flutter 的 docs/media/）：
+ * 约定（录制后放进 Vex 的 docs/media/）：
  *   views-instant.gif / views-source.gif / views-read.gif / views-mindmap.gif  四种视图
  *   mindmap-structures.gif   六种导图结构切换
  *   markdown-formulas.gif    公式 / 矩阵 / 化学表达式
@@ -36,8 +36,28 @@ export function pickMedia(candidates: string[]): { src: string; animated: boolea
   return null;
 }
 
-/** 便捷包装：`media('views-instant')` → 先找 .gif 再找 .png */
-export const media = (base: string) => pickMedia([`${base}.gif`, `${base}.png`]);
+/** 当前桌面版截图与源仓库快速开始共用一套文件，避免优先展示过期动图。 */
+const currentShots: Record<string, string> = {
+  'views-instant': '主界面',
+  'workspace': '工作区与大纲',
+  'views-source': '源码对照',
+  'source-preview': '源码对照',
+  'views-read': '阅读视图',
+  'views-mindmap': '思维导图',
+  'mindmap-structures': '思维导图',
+  'mindmap-dark': '思维导图',
+  'appearance-themes': '外观与配色',
+  'markdown-formulas': '公式与代码',
+  'markdown-mermaid': 'Mermaid图表',
+  'export-formats': '导出设置',
+};
+
+export const media = (base: string) => {
+  const current = currentShots[base] ? `图片/${currentShots[base]}.png` : null;
+  return current && exists(current)
+    ? { src: assetUrl(current), animated: false }
+    : pickMedia([`${base}.gif`, `${base}.png`]);
+};
 
 /** 站点自带示意图（放在 public/ 根下，如导出格式 SVG），始终可用 */
 export const staticFile = (name: string): { src: string; animated: boolean } => ({
