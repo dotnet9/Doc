@@ -321,25 +321,25 @@
    "name": "维刻",
    "enName": "Vex",
    "tagline": "写下想法，看见脉络",
-   "description": "本地优先的开源 Markdown 写作空间：即时编辑、源码、阅读与思维导图四种视图共享同一份文档与撤销历史；六种导图结构可直接整理章节；原生数学／化学公式与 Mermaid 图表；导出 Markdown / HTML / PDF / Word / 导图 PNG。Flutter 原生渲染，已提供 Windows、macOS、Linux 与 Android 安装包。完整介绍、文档与更新日志见官网 vex.codewf.com。",
-   "repo": "https://github.com/dotnet9/Vex-Flutter",
-   "repoPath": "../Vex-Flutter",
+   "description": "基于 .NET 与 Avalonia 的本地 Markdown 写作空间：即时编辑、源码、阅读与章节导图共享同一份文档，支持原生公式、24 类 Mermaid 图表、导出和本机 MCP。提供 Windows、macOS、Linux 桌面安装包；文档与更新日志在 vex.codewf.com 维护。",
+   "repo": "https://github.com/dotnet9/Vex",
+   "repoPath": "../Vex",
    "external": "https://vex.codewf.com",
    "category": null,
    "tags": [
     "Markdown",
     "写作排版",
     "思维导图",
-    "Flutter"
+    "Avalonia"
    ],
    "platforms": [
     "windows",
     "macos",
-    "linux",
-    "android"
+    "linux"
    ],
    "frameworks": [
-    "Flutter"
+    "net11.0",
+    "Avalonia"
    ],
    "features": [
     {
@@ -355,7 +355,7 @@
     {
      "icon": "🧮",
      "title": "公式与 Mermaid",
-     "desc": "数学、化学表达式与 22 类图表模板，原生 Dart 引擎，不依赖网页内核。"
+     "desc": "数学、化学表达式与 24 类 Mermaid 图表，基于 .NET / Avalonia 原生控件呈现。"
     },
     {
      "icon": "📤",
@@ -373,7 +373,127 @@
      "desc": "可选的本机 MCP 服务：回环地址、访问令牌、写操作默认需确认。"
     }
    ],
-   "builtWith": [],
+   "builtWith": [
+    "codewf-avalonia",
+    "codewf-toolkit"
+   ],
+   "usedBy": []
+  },
+  {
+   "slug": "vox",
+   "type": "app",
+   "name": "维声",
+   "enName": "Vox",
+   "tagline": "一处落笔，处处有声",
+   "description": "基于 .NET 与 Avalonia 的桌面写作、内容仓库治理和多平台分发工作台。当前为 0.2.0-preview.2 预览版：七个工作区覆盖文章、图片、站点数据、发布与 MCP。源码 / 分屏 / 预览 / 导图共用当前文章，列表和年 / 月树共用虚拟化宿主。文档媒体包含尚未发布的大纲修复本地验收构建，平台发布能力分官方 API、实验性接口与复制助手。",
+   "repo": "https://github.com/dotnet9/Vox",
+   "repoPath": "../Vox",
+   "category": null,
+   "tags": [
+    "Markdown",
+    "博客写作",
+    "内容仓库",
+    "Avalonia"
+   ],
+   "platforms": [
+    "windows",
+    "macos",
+    "linux"
+   ],
+   "frameworks": [
+    "net11.0",
+    "Avalonia",
+    "Arc"
+   ],
+   "features": [
+    {
+     "icon": "✍️",
+     "title": "四视图写作",
+     "desc": "源码、分屏、预览、思维导图共享当前文章，配合元数据与大纲面板。"
+    },
+    {
+     "icon": "🗂️",
+     "title": "列表与树形",
+     "desc": "参照 Vex 的单行导航、选中样式与虚拟化；年 / 月目录支持键盘展开折叠。"
+    },
+    {
+     "icon": "🧭",
+     "title": "阅读大纲",
+     "desc": "本地验收：层级编号、标题筛选、章节定位与阅读跟随；修复尚未发布。"
+    },
+    {
+     "icon": "📝",
+     "title": "博客 YAML",
+     "desc": "内联 front matter、可空字段和自定义键，包含 NativeAOT 往返验证。"
+    },
+    {
+     "icon": "📤",
+     "title": "分发与状态",
+     "desc": "Git 网站、官方 API、实验性接口、复制助手分级接入，按实际任务结果核验。"
+    },
+    {
+     "icon": "🔌",
+     "title": "本机 MCP",
+     "desc": "客户端、工具与审计在本机管理，按访问范围控制自动化。"
+    }
+   ],
+   "docs": {
+    "sources": [
+     "README.md",
+     "docs"
+    ],
+    "strip": [
+     "docs"
+    ]
+   },
+   "changelog": [
+    "docs/更新日志.md"
+   ],
+   "heroShot": "images/runtime-write-light.png",
+   "screenshots": [
+    {
+     "src": "images/runtime-navigation.gif",
+     "caption": "真实应用：列表 / 树形切换与键盘展开折叠"
+    },
+    {
+     "src": "images/runtime-writing.gif",
+     "caption": "真实应用：源码、分屏、预览与导图"
+    },
+    {
+     "src": "images/runtime-outline.gif",
+     "caption": "本地验收：大纲导航与阅读跟随，尚未发布"
+    },
+    {
+     "src": "images/runtime-library-light.png",
+     "caption": "文章库与筛选"
+    },
+    {
+     "src": "images/runtime-publish-light.png",
+     "caption": "发布中心；演示未连接凭据或执行远程发布"
+    },
+    {
+     "src": "images/runtime-settings-light.png",
+     "caption": "设置与外观"
+    }
+   ],
+   "quickStart": [
+    {
+     "title": "下载安装",
+     "desc": "GitHub Releases 获取对应系统安装包并核对 SHA256。"
+    },
+    {
+     "title": "选择仓库",
+     "desc": "设置本地 Markdown 内容仓库，或用目录 / 文章参数打开。"
+    },
+    {
+     "title": "写作与核验",
+     "desc": "检查正文、YAML 与预览，按平台能力选择发布或复制。"
+    }
+   ],
+   "builtWith": [
+    "codewf-avalonia",
+    "codewf-toolkit"
+   ],
    "usedBy": []
   },
   {
@@ -620,7 +740,8 @@
     "quickapp",
     "vex",
     "zitie",
-    "codewf-avalonia"
+    "codewf-avalonia",
+    "vox"
    ]
   },
   {
@@ -710,7 +831,8 @@
     "vex",
     "zitie",
     "kidwall",
-    "codewf-toolbox"
+    "codewf-toolbox",
+    "vox"
    ]
   },
   {
