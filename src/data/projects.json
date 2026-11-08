@@ -385,7 +385,7 @@
    "name": "维声",
    "enName": "Vox",
    "tagline": "一处落笔，处处有声",
-   "description": "基于 .NET 与 Avalonia 的桌面写作、内容仓库治理和多平台分发工作台。当前为 0.2.0-preview.2 预览版：七个工作区覆盖文章、图片、站点数据、发布与 MCP。源码 / 分屏 / 预览 / 导图共用当前文章，列表和年 / 月树共用虚拟化宿主。文档媒体包含尚未发布的大纲修复本地验收构建，平台发布能力分官方 API、实验性接口与复制助手。",
+   "description": "基于 .NET 与 Avalonia 的桌面写作、内容仓库治理和多平台分发工作台。当前源码版本为 0.2.0-preview.3：七个工作区覆盖文章、图片、站点数据、发布与 MCP。源码 / 分屏 / 预览 / 导图共用当前文章，列表和年 / 月树共用虚拟化宿主。大纲支持层级编号、筛选与阅读跟随；安装包以对应 GitHub Release 为准，平台发布能力分官方 API、实验性接口与复制助手。",
    "repo": "https://github.com/dotnet9/Vox",
    "repoPath": "../Vox",
    "category": null,
@@ -419,7 +419,7 @@
     {
      "icon": "🧭",
      "title": "阅读大纲",
-     "desc": "本地验收：层级编号、标题筛选、章节定位与阅读跟随；修复尚未发布。"
+     "desc": "层级编号、标题筛选、章节定位与阅读跟随，纳入 0.2.0-preview.3。"
     },
     {
      "icon": "📝",
@@ -461,7 +461,7 @@
     },
     {
      "src": "images/runtime-outline.gif",
-     "caption": "本地验收：大纲导航与阅读跟随，尚未发布"
+     "caption": "真实应用录制：大纲导航与阅读跟随，修复纳入 0.2.0-preview.3"
     },
     {
      "src": "images/runtime-library-light.png",
