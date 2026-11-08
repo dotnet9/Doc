@@ -1,5 +1,5 @@
 /**
- * 演示媒体解析：优先使用源仓库 `docs/图片/` 的当前 Avalonia 控件截图。
+ * 演示媒体解析：优先使用明确映射的当前交互 GIF，再使用当前 Avalonia 控件截图。
  * 同步脚本将它们复制到 `/assets/vex/图片/`，采集方式见源仓库的截图说明。
  * 当前截图缺失时，再按候选文件名查找 `docs/media/` 下的已有媒体。
  *
@@ -53,6 +53,14 @@ const currentShots: Record<string, string> = {
 };
 
 export const media = (base: string) => {
+  // 只优先选择本轮实际采集的动图，避免旧目录中的过时 GIF 抢占当前 PNG。
+  const recordings: Record<string, string> = {
+    'views-switch': '四视图切换',
+    'outline-reading': '大纲导航与阅读跟随',
+    'appearance-themes': '外观切换',
+  };
+  const recording = recordings[base] ? `图片/${recordings[base]}.gif` : null;
+  if (recording && exists(recording)) return { src: assetUrl(recording), animated: true };
   const current = currentShots[base] ? `图片/${currentShots[base]}.png` : null;
   return current && exists(current)
     ? { src: assetUrl(current), animated: false }
