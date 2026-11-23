@@ -29,6 +29,8 @@ const firstDigest = (text) => {
  * 若整个文件没有任何带版本的标题，则视为单条目（标题用文件名语义）。
  */
 export function parseChangelog(md) {
+  // 剥 UTF-8 BOM：BOM 粘在首行标题上会让 ^#{1,2} 匹配失败，首节整体丢失
+  md = md.replace(/^\uFEFF/, '');
   const lines = md.split(/\r?\n/);
   const sections = [];
   let current = null;

@@ -12,6 +12,26 @@ const stripInline = (s) =>
     .replace(/[*_`~]/g, '')
     .trim();
 
+// 源文档归一化：剥 UTF-8 BOM；首行 --- 视为 front matter 候选，整块移除到闭合行——
+// marked v18 没有 front matter 概念，不剥的话 YAML 会被渲染成 hr 加 setext 标题，
+// 还会劫持 title/excerpt/TOC；候选块里没有任何 key: 行时（正文以分隔线开头）保持原样不吞内容。
+const normalizeSource = (md) => {
+  const text = String(md).replace(/^\uFEFF/, '');
+  const lines = text.split('\n');
+  if ((lines[0] ?? '').trim() !== '---') return text;
+  let close = -1;
+  for (let i = 1; i < lines.length; i++) {
+    if (lines[i].trim() === '---') {
+      close = i;
+      break;
+    }
+  }
+  if (close < 0) return text;
+  const candidate = lines.slice(1, close);
+  if (!candidate.some((line) => /^[A-Za-z][\w-]*\s*:/.test(line.trimStart()))) return text;
+  return lines.slice(close + 1).join('\n');
+};
+
 /**
  * 渲染 Markdown 为 HTML，附带产物：
  * - 移除正文首个 h1（由页面模板负责展示标题）
@@ -20,6 +40,7 @@ const stripInline = (s) =>
  * 适配 marked v18 的 token 式 renderer API。
  */
 export function renderMarkdown(md) {
+  md = normalizeSource(md);
   const slugger = new GithubSlugger();
   const toc = [];
 
